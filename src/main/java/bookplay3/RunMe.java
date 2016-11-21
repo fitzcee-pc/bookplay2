@@ -1,7 +1,10 @@
 package bookplay3;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,16 +15,31 @@ import org.jsoup.select.Elements;
 
 
 public class RunMe {
-// boo
+
 	public static RunMe runMe = new RunMe();
 
 	public static void main(String[] args) throws IOException {
-		String basePath = new String("C:\\Data\\_A-F\\Dev\\git\\bookplay2\\");
-//		String basePath = new String("/Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/test/");
-//		String basePath = new String("/Volumes/NO NAME/Julie's Chinese Books - Vol 2 (beta)/");
-//		String basePath = new String("/Volumes/NO NAME/Julie's Chinese Books - Vol 2 (beta)/www.69shu.com/24559/");
-        //Document doc = Jsoup.connect("https://www.example.com").get(); 
-//        Document doc = Jsoup.parse(new File(basePath + "index.html"),"utf-8");  
+		Properties prop = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream("src/main/resources/config.properties");
+			// load a properties file
+			prop.load(input);			
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		//**************
+		String basePath = new String(prop.getProperty("basePath"));
+
         Document doc = Jsoup.parse(new File(basePath + "www.69shu.com/txt/11519/7984604.html"),"utf-8");  
         int lvl = 0;
         
