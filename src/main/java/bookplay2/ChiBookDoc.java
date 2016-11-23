@@ -33,11 +33,25 @@ public class ChiBookDoc  {
 				{
 					hasNextPrevVars = true;
 					prevPageLink = m1.group(1); // value only
+					if (!prevPageLink.substring(prevPageLink.length() - 5).equals(".html")) {
+						prevPageLink = prevPageLink.concat(".html");
+					}
+					if (prevPageLink.substring(0,1).equals("/")) {
+						prevPageLink = prevPageLink.substring(1);
+					}
+
 					try {
 						p1 = Pattern.compile("(?is)next_page = \"(.+?)\""); // Regex for the value of the key
 						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
 						while (m1.find()) {
 							nextPageLink = m1.group(1); // value only
+							if (!nextPageLink.substring(nextPageLink.length() - 5).equals(".html")) {
+								nextPageLink = nextPageLink.concat(".html");
+							}
+							if (nextPageLink.substring(0,1).equals("/")) {
+								nextPageLink = nextPageLink.substring(1);
+							}
+
 						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -48,11 +62,11 @@ public class ChiBookDoc  {
 			}
 		
 			
-			if (hasNextPrevVars) {
-		
-				System.out.println("\t prev: " + prevPageLink);
-				System.out.println("\t next: " + nextPageLink);
-			}
+//			if (hasNextPrevVars) {
+//		
+//				System.out.println("\t prev: " + prevPageLink);
+//				System.out.println("\t next: " + nextPageLink);
+//			}
 		
 		}
 		

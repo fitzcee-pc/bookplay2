@@ -17,9 +17,38 @@ import org.jsoup.select.Elements;
 public class Test {
 
 	public static Test test = new Test();
+	private static Properties props;
 
 	public static void main(String[] args) throws IOException {
 		
+		props = getProps();
+		
+		//**************
+		String basePath = new String(props.getProperty("basePath"));
+		String startingDoc = new String(props.getProperty("startingDoc"));
+		
+//        Document doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
+//        ChiBookDoc doc = new ChiBookDoc("File", "basePath + startingDoc","utf-8");  
+//		ChiBookDoc doc = new ChiBookDoc(basePath);
+//		(Document) doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
+		ChiBookDoc chiDoc = new ChiBookDoc(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
+//        int lvl = 0;
+		
+        System.out.println("title: " + chiDoc.doc.title());
+        System.out.println("prev: " + chiDoc.prevPageLink);
+        System.out.println("next: " + chiDoc.nextPageLink);
+        
+		chiDoc = new ChiBookDoc(Jsoup.parse(new File(basePath + chiDoc.nextPageLink),"utf-8"));  
+
+        System.out.println("title: " + chiDoc.doc.title());
+        System.out.println("prev: " + chiDoc.prevPageLink);
+        System.out.println("next: " + chiDoc.nextPageLink);
+      
+//        test.PrintDocInfo(chiDoc.doc, basePath, lvl);
+        
+	}
+
+	private static Properties getProps() {
 		Properties prop = new Properties();
 		InputStream input = null;
 		try {
@@ -37,20 +66,7 @@ public class Test {
 				}
 			}
 		}
-		
-		//**************
-		String basePath = new String(prop.getProperty("basePath"));
-		String startingDoc = new String(prop.getProperty("startingDoc"));
-		
-//        Document doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
-//        ChiBookDoc doc = new ChiBookDoc("File", "basePath + startingDoc","utf-8");  
-//		ChiBookDoc doc = new ChiBookDoc(basePath);
-//		(Document) doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
-		ChiBookDoc chiDoc = new ChiBookDoc(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
-        int lvl = 0;
-        
-        test.PrintDocInfo(chiDoc.doc, basePath, lvl);
-        
+		return prop;
 	}
 
 	public void PrintDocInfo(Document theDoc, String theBasePath, int theLevel) throws IOException {
