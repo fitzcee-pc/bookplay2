@@ -46,11 +46,11 @@ public class RunMe {
 //        ChiBookDoc doc = new ChiBookDoc("File", "basePath + startingDoc","utf-8");  
 //		ChiBookDoc doc = new ChiBookDoc(basePath);
 //		(Document) doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
-		ChiBookDoc doc = (ChiBookDoc) Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
+		ChiBookDoc chiDoc = new ChiBookDoc(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
         int lvl = 0;
         
 //        runMe = new RunMe();
-        runMe.PrintDocInfo(doc, basePath, lvl);
+        runMe.PrintDocInfo(chiDoc.doc, basePath, lvl);
         
 	}
 
@@ -74,41 +74,41 @@ public class RunMe {
 	        System.out.println(tabs + "next link : " + nextLink);
 
 
-            Elements scripts = theDoc.select("script");
-            for (Element scr : scripts) {
-            	boolean hasNextPrevVars = false;
-            	String prevPageLink = new String("");
-            	String nextPageLink = new String("");
-            	try {
-            		Pattern p1 = Pattern.compile("(?is)preview_page = \"(.+?)\""); // Regex for the value of the key
-            		Matcher m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
-            		if( m1.find() )
-            		{
-            			hasNextPrevVars = true;
-            			prevPageLink = m1.group(1); // value only
-    					try {
-    						p1 = Pattern.compile("(?is)next_page = \"(.+?)\""); // Regex for the value of the key
-    						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
-    						while (m1.find()) {
-    							nextPageLink = m1.group(1); // value only
-    						}
-    					} catch (Exception e1) {
-    						e1.printStackTrace();
-    					}
-            		}
-            	} catch (Exception e1) {
-            		e1.printStackTrace();
-            	}
-
-            	
-            	if (hasNextPrevVars) {
-
-            		System.out.println("\t prev: " + prevPageLink);
-            		System.out.println("\t next: " + nextPageLink);
-            	}
-
-
-            }
+//            Elements scripts = theDoc.select("script");
+//            for (Element scr : scripts) {
+//            	boolean hasNextPrevVars = false;
+//            	String prevPageLink = new String("");
+//            	String nextPageLink = new String("");
+//            	try {
+//            		Pattern p1 = Pattern.compile("(?is)preview_page = \"(.+?)\""); // Regex for the value of the key
+//            		Matcher m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
+//            		if( m1.find() )
+//            		{
+//            			hasNextPrevVars = true;
+//            			prevPageLink = m1.group(1); // value only
+//    					try {
+//    						p1 = Pattern.compile("(?is)next_page = \"(.+?)\""); // Regex for the value of the key
+//    						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
+//    						while (m1.find()) {
+//    							nextPageLink = m1.group(1); // value only
+//    						}
+//    					} catch (Exception e1) {
+//    						e1.printStackTrace();
+//    					}
+//            		}
+//            	} catch (Exception e1) {
+//            		e1.printStackTrace();
+//            	}
+//
+//            	
+//            	if (hasNextPrevVars) {
+//
+//            		System.out.println("\t prev: " + prevPageLink);
+//            		System.out.println("\t next: " + nextPageLink);
+//            	}
+//
+//
+//            }
 
 			
 			if (theLevel < 3) {
