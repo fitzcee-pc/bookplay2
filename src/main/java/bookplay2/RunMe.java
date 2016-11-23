@@ -1,4 +1,4 @@
-package bookplay3;
+package bookplay2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +19,7 @@ public class RunMe {
 	public static RunMe runMe = new RunMe();
 
 	public static void main(String[] args) throws IOException {
+		
 		Properties prop = new Properties();
 		InputStream input = null;
 		try {
@@ -39,35 +40,17 @@ public class RunMe {
 		
 		//**************
 		String basePath = new String(prop.getProperty("basePath"));
-
-        Document doc = Jsoup.parse(new File(basePath + "www.69shu.com/txt/11519/7984604.html"),"utf-8");  
+		String startingDoc = new String(prop.getProperty("startingDoc"));
+		
+//        Document doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
+//        ChiBookDoc doc = new ChiBookDoc("File", "basePath + startingDoc","utf-8");  
+//		ChiBookDoc doc = new ChiBookDoc(basePath);
+//		(Document) doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
+		ChiBookDoc doc = (ChiBookDoc) Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
         int lvl = 0;
         
 //        runMe = new RunMe();
         runMe.PrintDocInfo(doc, basePath, lvl);
-        //        String title = doc.title();  
-//        System.out.println("title is: " + title);  
-//        
-//        Elements links = doc.select("a[href]");  
-//        for (Element link : links) {  
-//            System.out.println("\nlink : " + link.attr("href"));  
-//            System.out.println("text : " + link.text());  
-//            
-//            String filename2 = new String(
-//            		"/Volumes/NO NAME/Julie's Chinese Books - Vol 2 (beta)/" + link.attr("href"));  
-//            System.out.println("filename2 = " + filename2);
-//            Document doc2 = Jsoup.parse(new File(
-//            		"/Volumes/NO NAME/Julie's Chinese Books - Vol 2 (beta)/" + link.attr("href")),"utf-8");  
-//            String title2 = doc.title();  
-//            System.out.println("\ttitle2 is: " + title2);  
-//            
-//            Elements links2 = doc.select("a[href]");  
-//            for (Element link2 : links2) {  
-//                System.out.println("\n\tlink2 : " + link2.attr("href"));  
-//                System.out.println("\ttext2 : " + link2.text());  
-//                
-//            } 
-//        } 
         
 	}
 
