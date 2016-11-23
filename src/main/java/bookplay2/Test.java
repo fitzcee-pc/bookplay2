@@ -14,9 +14,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
-public class RunMe {
+public class Test {
 
-	public static RunMe runMe = new RunMe();
+	public static Test test = new Test();
 
 	public static void main(String[] args) throws IOException {
 		
@@ -49,8 +49,7 @@ public class RunMe {
 		ChiBookDoc chiDoc = new ChiBookDoc(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
         int lvl = 0;
         
-//        runMe = new RunMe();
-        runMe.PrintDocInfo(chiDoc.doc, basePath, lvl);
+        test.PrintDocInfo(chiDoc.doc, basePath, lvl);
         
 	}
 
@@ -73,48 +72,10 @@ public class RunMe {
 	        String nextLink = new String(theBasePath + link.attr("href"));
 	        System.out.println(tabs + "next link : " + nextLink);
 
-
-//            Elements scripts = theDoc.select("script");
-//            for (Element scr : scripts) {
-//            	boolean hasNextPrevVars = false;
-//            	String prevPageLink = new String("");
-//            	String nextPageLink = new String("");
-//            	try {
-//            		Pattern p1 = Pattern.compile("(?is)preview_page = \"(.+?)\""); // Regex for the value of the key
-//            		Matcher m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
-//            		if( m1.find() )
-//            		{
-//            			hasNextPrevVars = true;
-//            			prevPageLink = m1.group(1); // value only
-//    					try {
-//    						p1 = Pattern.compile("(?is)next_page = \"(.+?)\""); // Regex for the value of the key
-//    						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
-//    						while (m1.find()) {
-//    							nextPageLink = m1.group(1); // value only
-//    						}
-//    					} catch (Exception e1) {
-//    						e1.printStackTrace();
-//    					}
-//            		}
-//            	} catch (Exception e1) {
-//            		e1.printStackTrace();
-//            	}
-//
-//            	
-//            	if (hasNextPrevVars) {
-//
-//            		System.out.println("\t prev: " + prevPageLink);
-//            		System.out.println("\t next: " + nextPageLink);
-//            	}
-//
-//
-//            }
-
-			
 			if (theLevel < 3) {
 				try {
 					Document doc2 = Jsoup.parse(new File(nextLink),	"utf-8");
-					runMe.PrintDocInfo(doc2, theBasePath, theLevel + 1);
+					test.PrintDocInfo(doc2, theBasePath, theLevel + 1);
 				} catch (Exception e) {
 					System.out.println(tabs + "missing : " + nextLink);
 //					e.printStackTrace();
