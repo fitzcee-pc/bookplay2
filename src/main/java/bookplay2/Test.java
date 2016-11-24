@@ -31,18 +31,21 @@ public class Test {
 //        ChiBookDoc doc = new ChiBookDoc("File", "basePath + startingDoc","utf-8");  
 //		ChiBookDoc doc = new ChiBookDoc(basePath);
 //		(Document) doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
-		ChiBookDoc chiDoc = new ChiBookDoc(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
+		Book chiDoc = new Book(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
 //        int lvl = 0;
 		
-        System.out.println("title: " + chiDoc.doc.title());
-        System.out.println("prev: " + chiDoc.prevPageLink);
-        System.out.println("next: " + chiDoc.nextPageLink);
-        
-		chiDoc = new ChiBookDoc(Jsoup.parse(new File(basePath + chiDoc.nextPageLink),"utf-8"));  
+//        System.out.println("title: " + chiDoc.doc.title());
+//        System.out.println("prev: " + chiDoc.prevPageLink);
+//        System.out.println("next: " + chiDoc.nextPageLink);
 
-        System.out.println("title: " + chiDoc.doc.title());
-        System.out.println("prev: " + chiDoc.prevPageLink);
-        System.out.println("next: " + chiDoc.nextPageLink);
+		System.out.println(chiDoc.toString());
+		
+		chiDoc = new Book(Jsoup.parse(new File(chiDoc.urlBeforePageName + chiDoc.nextPageName),"utf-8"));  
+		System.out.println(chiDoc.toString());
+//
+//        System.out.println("title: " + chiDoc.doc.title());
+//        System.out.println("prev: " + chiDoc.prevPageLink);
+//        System.out.println("next: " + chiDoc.nextPageLink);
       
 //        test.PrintDocInfo(chiDoc.doc, basePath, lvl);
         
