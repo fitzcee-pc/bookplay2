@@ -12,15 +12,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-//import org.jsoup.Jsoup;
-//import org.jsoup.nodes.Document;
-
 public class Book  {
 //TODO: Make this an Interface/Superclass, which is implemented/Subclassed for each different book site. (e.g., 69chu.com)
 	
 	Document doc = null;
-	URL url = null;
-	String urlBeforePageName = new String("");
+	private URL url = null;
+	private String fullDecodedUrl = new String("");
+	String urlPathBeforePageName = new String("");
 	String thisPageName = new String("");
 	String prevPageName = new String("");;
 	String nextPageName = new String("");;
@@ -37,17 +35,23 @@ public class Book  {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		urlBeforePageName = url.toString();
-		urlBeforePageName = urlBeforePageName.substring(0, urlBeforePageName.lastIndexOf("/") + 1);
 		try {
-			urlBeforePageName = URLDecoder.decode(urlBeforePageName, "utf-8");
+			fullDecodedUrl = URLDecoder.decode(url.toString(), "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		urlPathBeforePageName = url.getPath();
+		urlPathBeforePageName = urlPathBeforePageName.substring(0, urlPathBeforePageName.lastIndexOf("/") + 1);
+		
+		try {
+			urlPathBeforePageName = URLDecoder.decode(urlPathBeforePageName, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// parse out current page name
-		thisPageName = url.toString().substring(urlBeforePageName.lastIndexOf("/") + 1);
+		thisPageName = url.toString().substring(url.toString().lastIndexOf("/") + 1);
 		
 		// find next/prev page links
         Elements scripts = this.doc.select("script");
@@ -95,7 +99,7 @@ public class Book  {
 	
 	public String toString() {
 		String me = new String("at: " + this.doc.baseUri()
-				+ "\n\tbase of url: " + this.urlBeforePageName
+				+ "\n\tbase of url: " + this.urlPathBeforePageName
 				+ "\n\ttitle: " + this.doc.title()
 				+ "\n\tthis page: " + this.thisPageName
 				+ "\n\tprev page: " + this.prevPageName

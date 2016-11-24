@@ -40,7 +40,7 @@ public class Test {
 
 		System.out.println(chiDoc.toString());
 		
-		chiDoc = new Book(Jsoup.parse(new File(chiDoc.urlBeforePageName + chiDoc.nextPageName),"utf-8"));  
+		chiDoc = new Book(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.nextPageName),"utf-8"));  
 		System.out.println(chiDoc.toString());
 //
 //        System.out.println("title: " + chiDoc.doc.title());
