@@ -4,6 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,12 +32,14 @@ public class Test {
 		//**************
 		String basePath = new String(props.getProperty("basePath"));
 		String startingDoc = new String(props.getProperty("startingDoc"));
+		String outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
 		
 //        Document doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
 //        ChiBookDoc doc = new ChiBookDoc("File", "basePath + startingDoc","utf-8");  
 //		ChiBookDoc doc = new ChiBookDoc(basePath);
 //		(Document) doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
-		Book chiDoc = new Book(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
+//		BookPage chiDoc = new BookPage(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
+		BookPage chiDoc = new BookPage(Jsoup.parse(new File(basePath + startingDoc),null));  
 //        int lvl = 0;
 		
 //        System.out.println("title: " + chiDoc.doc.title());
@@ -39,8 +47,12 @@ public class Test {
 //        System.out.println("next: " + chiDoc.nextPageLink);
 
 		System.out.println(chiDoc.toString());
+		List<String> lines = Arrays.asList(new String[] { "<html>","<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gbk\" /></head>", "<body>boo", chiDoc.toString(), "</body>", "</html>" });
+		Path path = Paths.get(outTextPathAndFile);
+        Files.write(path, lines, StandardCharsets.UTF_8);
 		
-		chiDoc = new Book(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.nextPageName),"utf-8"));  
+//		chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.nextPageName),"utf-8"));  
+		chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.nextPageName),null));  
 		System.out.println(chiDoc.toString());
 //
 //        System.out.println("title: " + chiDoc.doc.title());
