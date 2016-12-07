@@ -20,17 +20,40 @@ public class Book {
 			if (theFirstPage != null) {this.firstPage = theFirstPage;}
 			if (theLastPage != null) {this.lastPage = theLastPage;}
 		
-			if (theLastPage == null & theIndexPage != null) {FindLastPageGivenIndex();}
-			if (theFirstPage == null & theIndexPage != null) {FindFirstPageGivenIndex();}
-			if (theLastPage == null & theFirstPage != null) {FindLastPageGivenFirst();}
-			if (theFirstPage == null & theLastPage != null) {FindFirstPageGivenLast();}
+			if (this.lastPage == null & this.indexPage != null) {FindLastPageGivenIndex();}
+			if (this.firstPage == null & this.indexPage != null) {FindFirstPageGivenIndex();}
+			if (this.lastPage == null & this.firstPage != null) {FindLastPageGivenFirst();}
+			if (this.firstPage == null & this.lastPage != null) {FindFirstPageGivenLast();}
+			if (this.indexPage == null & this.lastPage != null) {FindIndexPageGivenLast();}
+			if (this.indexPage == null & this.firstPage != null) {FindIndexPageGivenFirst();}
 		}
 		
 		
 	}
 	
-	private void FindFirstPageGivenLast() {
-		// TODO Auto-generated method stub
+	private void FindIndexPageGivenFirst() {
+		BookPage chiDoc = null;
+		try {
+			chiDoc = new BookPage(Jsoup.parse(new File(firstPage.urlPathBeforePageName + firstPage.indexPageName),null));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}  
+
+		this.indexPage = chiDoc;
+		
+	}
+
+	private void FindIndexPageGivenLast() {
+		BookPage chiDoc = null;
+		try {
+			chiDoc = new BookPage(Jsoup.parse(new File(lastPage.urlPathBeforePageName + lastPage.indexPageName),null));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}  
+
+		this.indexPage = chiDoc;
 		
 	}
 
@@ -39,29 +62,62 @@ public class Book {
 		
 	}
 
+	private void FindFirstPageGivenLast() {
+		
+		BookPage chiDoc = null;
+		try {
+			chiDoc = new BookPage(Jsoup.parse(new File(lastPage.urlPathBeforePageName + lastPage.prevPageName),null));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}  
+		
+		while (!chiDoc.prevPageName.equals(chiDoc.indexPageName)) {
+			try {
+				chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.prevPageName),null));
+			} catch (IOException e) {
+				break;
+			}  
+		}
+		this.firstPage = chiDoc;
+	}
+
 	private void FindLastPageGivenIndex() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	private void FindLastPageGivenFirst() {
+		
 		BookPage chiDoc = null;
 		try {
-			chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.prevPageName),null));
+			chiDoc = new BookPage(Jsoup.parse(new File(firstPage.urlPathBeforePageName + firstPage.nextPageName),null));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}  
-
-		while (chiDoc.prevPageName != chiDoc.indexPageName) {
+		
+		while (!chiDoc.nextPageName.equals(chiDoc.indexPageName)) {
 			try {
-				chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.prevPageName),null));
+				chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.nextPageName),null));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				break;
 			}  
 		}
-		this.firstPage = chiDoc;
+		this.lastPage = chiDoc;
 	}
+	
+	public String toString() {
+		String indexPageString = (indexPage == null) ? "no Index" : indexPage.toString();
+		String firstPageString = (firstPage == null) ? "no First Page" : firstPage.toString();
+		String lastPageString = (lastPage == null) ? "no Last Page" : lastPage.toString();
+		String me = new String(
+				"-----index page-----\n\t" + indexPageString
+				+ "\n-----first page-----\n\t" + firstPageString
+				+ "\n-----last page-----\n\t" + lastPageString);
+		return me;
+		
+	}
+	
+
 	
 }

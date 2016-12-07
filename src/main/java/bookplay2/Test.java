@@ -8,7 +8,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -34,33 +38,46 @@ public class Test {
 		String startingDoc = new String(props.getProperty("startingDoc"));
 		String outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
 		
-//        Document doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
-//        ChiBookDoc doc = new ChiBookDoc("File", "basePath + startingDoc","utf-8");  
-//		ChiBookDoc doc = new ChiBookDoc(basePath);
-//		(Document) doc = Jsoup.parse(new File(basePath + startingDoc),"utf-8");  
-//		BookPage chiDoc = new BookPage(Jsoup.parse(new File(basePath + startingDoc),"utf-8"));  
-		BookPage chiDoc = new BookPage(Jsoup.parse(new File(basePath + startingDoc),null));  
-//        int lvl = 0;
-		
-//        System.out.println("title: " + chiDoc.doc.title());
-//        System.out.println("prev: " + chiDoc.prevPageLink);
-//        System.out.println("next: " + chiDoc.nextPageLink);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		System.out.println(chiDoc.toString());
-		List<String> lines = Arrays.asList(new String[] { "<html>","<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gbk\" /></head>", "<body>boo", chiDoc.toString(), "</body>", "</html>" });
+		Date today = Calendar.getInstance().getTime();        
+		String runDateTime = df.format(today);
+		
+		
+		BookPage chiDocPage = new BookPage(Jsoup.parse(new File(basePath + startingDoc),null));  
+		
+//		System.out.println(runDateTime);
+//		System.out.println(chiDocPage.toString());
+//		System.out.println();
+
+		Book chiBook = new Book(null, chiDocPage, null);
+		System.out.println(runDateTime);
+		System.out.println(chiBook.toString());
+		System.out.println();
+		
+
+		List<String> lines = Arrays.asList(new String[] { 
+				"<html>"
+				,"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gbk\" /></head>"
+				, "<body>boo"
+				, runDateTime
+				, chiBook.toString()
+				, "</body>"
+				, "</html>" });
 		Path path = Paths.get(outTextPathAndFile);
         Files.write(path, lines, StandardCharsets.UTF_8);
 		
-//		chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.nextPageName),"utf-8"));  
-		chiDoc = new BookPage(Jsoup.parse(new File(chiDoc.urlPathBeforePageName + chiDoc.nextPageName),null));  
-		System.out.println(chiDoc.toString());
+//		chiDocPage = new BookPage(Jsoup.parse(new File(chiDocPage.urlPathBeforePageName + chiDocPage.nextPageName),null));  
+//		System.out.println(runDateTime);
+//		System.out.println(chiDocPage.toString());
+//		System.out.println();
 //
-//        System.out.println("title: " + chiDoc.doc.title());
-//        System.out.println("prev: " + chiDoc.prevPageLink);
-//        System.out.println("next: " + chiDoc.nextPageLink);
-      
-//        test.PrintDocInfo(chiDoc.doc, basePath, lvl);
-        
+//		
+//		chiBook = new Book(null, null, chiDocPage);
+//		System.out.println(runDateTime);
+//		System.out.println(chiBook.toString());
+//		System.out.println();
+		
 	}
 
 	private static Properties getProps() {
