@@ -148,14 +148,15 @@ public class BookPage  {
 		 * 				...
 		 * 				<div class="yd_text2">
 		 * 					<div id="txtright">
-		 * 						<script>txttopshow3();</script>
+		 * 						<script>txttopshow3();
+		 * 						</script>
 		 * 					</div>
 		 * 					<!--章节内容开始-->&nbsp;&nbsp;&nbsp;&nbsp;八角亭中传来吟吟的笑声，几名娇美的少女正在讨论些什么，脸上挂着明媚的笑容，而在她们的身侧还坐着两个男子，俊逸非凡，一看便知不是普通人，身上自有一番贵气。<br />
 		 * 					<br />&nbsp;&nbsp;&nbsp;&nbsp;“韩 ...
 		 * 					...
-		 * 					<br />
-		 * 					&nbsp;&nbsp;&nbsp;&nbsp;听到她的责骂，温微暖却是没什么反应，反而还疑惑地看着温薇菱，“哪里脏了？鱼儿很可爱啊，二姐你吃它的时候怎么不觉得脏？”
-		 * 					<script>txttopshow7();</script>
+		 * 					<br />&nbsp;&nbsp;&nbsp;&nbsp;听到她的责骂，温微暖却是没什么反应，反而还疑惑地看着温薇菱，“哪里脏了？鱼儿很可爱啊，二姐你吃它的时候怎么不觉得脏？”
+		 * 					<script>txttopshow7();
+		 * 					</script>
 		 * 					<!--章节内容结束-->
 		 * 				</div>
 		 * 				<script>tool2();</script>
@@ -167,9 +168,14 @@ public class BookPage  {
 		 * 		- could also get this by targeting elementsByClass and then accessing .first()
 		 * - TODO strip out the divs and scripts
 		 */
+		// regex: https://www.tutorialspoint.com/java/java_regular_expressions.htm
+		//        https://www.udemy.com/learn-to-program-with-java/?tc=blog.javastringreplaceall&couponCode=half-off-for-blog&utm_source=blog&utm_medium=udemyads&utm_content=post118252&utm_campaign=content-marketing-blog&xref=blog
+		// replaceAll: https://blog.udemy.com/java-string-replaceall/
+		String bodyTextTrimmed = bodyText.replaceAll("<div id=\"txtright\">[\\S\\s]*(?>(script>){1})","boo");
 		
-		return bodyText;
-		
+//		return bodyText;
+
+		return bodyTextTrimmed;
 	}
 	
 	public String toString() {
