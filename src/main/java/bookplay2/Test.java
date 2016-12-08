@@ -28,65 +28,33 @@ public class Test {
 
 	public static Test test = new Test();
 	private static Properties props;
+	private static String runDateTime;
+	private static Book book;
+	private static String outTextPathAndFile;
 
 	public static void main(String[] args) throws IOException {
 		
 		props = getProps();
 		
-		//**************
 		String basePath = new String(props.getProperty("basePath"));
 		String startingDoc = new String(props.getProperty("startingDoc"));
-		String outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
+		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		Date today = Calendar.getInstance().getTime();        
-		String runDateTime = df.format(today);
+		runDateTime = df.format(today);
 		
-		
-		BookPage chiDocPage = new BookPage(Jsoup.parse(new File(basePath + startingDoc),null));  
-		
-//		System.out.println(runDateTime);
-//		System.out.println(chiDocPage.toString());
-//		System.out.println();
+		BookPage bookPage = new BookPage(Jsoup.parse(new File(basePath + startingDoc),null));  
 
-		Book chiBook = new Book(null, chiDocPage, null);
+		book = new Book(null, bookPage, null);
+
 		System.out.println(runDateTime);
-		System.out.println(chiBook.toString());
-		System.out.println(chiBook.firstPage.getBodyText()); // !!!! NOTE: display in console was fixed(?) by hard-selecting UTF-8 in eclipse run->run config->common
-		System.out.println();
 
-		String pageCountString = chiBook.PagesBetween(chiBook.firstPage, chiBook.lastPage).toString();
-		
-		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
-//				"<html>"
-//				,"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head>"
-//				, "<body>boo"
-//				, runDateTime
-				runDateTime
-				, chiBook.toString()
-				, "pageCount: " + pageCountString
-				, "first page body: " + chiBook.firstPage.getBodyText()
-				, "</body>"
-				, "</html>" });
-		Path path = Paths.get(outTextPathAndFile);
-        Files.write(path, lines, StandardCharsets.UTF_8);
-        System.out.println();
-        System.out.println("===========================");
-        System.out.println(lines);
-        
-		
-//		chiDocPage = new BookPage(Jsoup.parse(new File(chiDocPage.urlPathBeforePageName + chiDocPage.nextPageName),null));  
-//		System.out.println(runDateTime);
-//		System.out.println(chiDocPage.toString());
-//		System.out.println();
-//
-//		
-//		chiBook = new Book(null, null, chiDocPage);
-//		System.out.println(runDateTime);
-//		System.out.println(chiBook.toString());
-//		System.out.println();
-		
+		System.out.println(getBookDeets());
+
+		writeDeetsToOutfile(getBookDeets());
+
 	}
 
 	private static Properties getProps() {
@@ -110,38 +78,35 @@ public class Test {
 		return prop;
 	}
 
-	public void PrintDocInfo(Document theDoc, String theBasePath, int theLevel) throws IOException {
-
-//		URL url = new URL();
+	private static String getBookDeets() {
+		String bookDeets;
 		
-		String tabs = new String("");
-		for (int i = 0; i < theLevel; i++) {
-			tabs += "\t";
-		}
-	    String title = theDoc.title();  
-	    System.out.println(tabs + "title is: " + title);  
-	    
-	    Elements links = theDoc.select("a[href]");  
-	    for (Element link : links) {  
-	        System.out.println("\n" + tabs + "link : " + link.attr("href"));  
-	        System.out.println(tabs + "text : " + link.text());  
-	    
-	        String nextLink = new String(theBasePath + link.attr("href"));
-	        System.out.println(tabs + "next link : " + nextLink);
+		bookDeets = "\n" + book.toString();
+		bookDeets += "\n" + book.firstPage.getBodyText();
+		bookDeets += "\n";
 
-			if (theLevel < 3) {
-				try {
-					Document doc2 = Jsoup.parse(new File(nextLink),	"utf-8");
-					test.PrintDocInfo(doc2, theBasePath, theLevel + 1);
-				} catch (Exception e) {
-					System.out.println(tabs + "missing : " + nextLink);
-//					e.printStackTrace();
-				}
-			}
-	        
-	    } 
-	} 
-	
-	
+		
+		return bookDeets;
+	}	
+
+	private static void writeDeetsToOutfile(String theDeets) {
+		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
+				"<html>"
+				,"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head>"
+				, "<body>"
+				, runDateTime
+				, theDeets
+				, "</body>"
+				, "</html>" 
+		});
+
+		Path path = Paths.get(outTextPathAndFile);
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

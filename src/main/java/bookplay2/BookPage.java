@@ -134,7 +134,7 @@ public class BookPage  {
 		String bodyText = new String("body");
 		
 		Elements bodyDivX = doc.getElementsByClass("yd_text2");
-		bodyText = "\n\ttoString: \n" + bodyDivX.first().toString();
+		bodyText = "-----body text-----\n" + bodyDivX.first().toString();
 //		Element bodyDiv = doc.getElementById("txtright");
 //		bodyText = "\n\ttoString: \n" + bodyDiv.toString()
 //			+ "\n\tparent toString: \n" + bodyDiv.parent().toString()
