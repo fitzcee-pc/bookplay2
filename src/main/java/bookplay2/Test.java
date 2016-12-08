@@ -53,15 +53,17 @@ public class Test {
 		Book chiBook = new Book(null, chiDocPage, null);
 		System.out.println(runDateTime);
 		System.out.println(chiBook.toString());
+		System.out.println(chiBook.firstPage.getBodyText()); // !!!! NOTE: display in console was fixed(?) by hard-selecting UTF-8 in eclipse run->run config->common
 		System.out.println();
 
 		String pageCountString = chiBook.PagesBetween(chiBook.firstPage, chiBook.lastPage).toString();
 		
-		List<String> lines = Arrays.asList(new String[] { 
-				"<html>"
-				,"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gbk\" /></head>"
-				, "<body>boo"
-				, runDateTime
+		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
+//				"<html>"
+//				,"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head>"
+//				, "<body>boo"
+//				, runDateTime
+				runDateTime
 				, chiBook.toString()
 				, "pageCount: " + pageCountString
 				, "first page body: " + chiBook.firstPage.getBodyText()
@@ -69,6 +71,10 @@ public class Test {
 				, "</html>" });
 		Path path = Paths.get(outTextPathAndFile);
         Files.write(path, lines, StandardCharsets.UTF_8);
+        System.out.println();
+        System.out.println("===========================");
+        System.out.println(lines);
+        
 		
 //		chiDocPage = new BookPage(Jsoup.parse(new File(chiDocPage.urlPathBeforePageName + chiDocPage.nextPageName),null));  
 //		System.out.println(runDateTime);
