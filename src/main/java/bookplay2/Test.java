@@ -64,6 +64,7 @@ public class Test {
 				, runDateTime
 				, chiBook.toString()
 				, "pageCount: " + pageCountString
+				, "first page body: " + chiBook.firstPage.getBodyText()
 				, "</body>"
 				, "</html>" });
 		Path path = Paths.get(outTextPathAndFile);
