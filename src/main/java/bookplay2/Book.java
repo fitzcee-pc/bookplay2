@@ -28,7 +28,6 @@ public class Book {
 			if (this.indexPage == null & this.firstPage != null) {FindIndexPageGivenFirst();}
 		}
 		
-		
 	}
 	
 	private void FindIndexPageGivenFirst() {
@@ -113,11 +112,43 @@ public class Book {
 		String me = new String(
 				"-----index page-----\n\t" + indexPageString
 				+ "\n-----first page-----\n\t" + firstPageString
-				+ "\n-----last page-----\n\t" + lastPageString);
+				+ "\n-----last page-----\n\t" + lastPageString
+				+ "\n-----page count----\n\t" + PagesBetween(firstPage, lastPage));
 		return me;
 		
 	}
 	
+	public Double PagesBetween(BookPage startPage, BookPage endPage) {
+		
+		Double pageCount = 1.0;// count start
 
+		BookPage curPage = null;
+		try {
+			curPage = new BookPage(Jsoup.parse(new File(startPage.urlPathBeforePageName + startPage.nextPageName),null));
+//			if (!chiDoc.thisPageName.equals(endPage.thisPageName)) {
+				pageCount += 1; // don't double count end page in case only 2
+//			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}  
+		
+		while (!curPage.nextPageName.equals(endPage.thisPageName)) {
+			try {
+				curPage = new BookPage(Jsoup.parse(new File(curPage.urlPathBeforePageName + curPage.nextPageName),null));
+				pageCount += 1;
+			} catch (IOException e) {
+				break;
+			}  
+		}
+
+		if (curPage.nextPageName.equals(endPage.thisPageName)) {
+			pageCount +=1;
+		}
+		
+
+		return pageCount;
+		
+	}
+	
 	
 }

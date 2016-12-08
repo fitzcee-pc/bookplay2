@@ -54,14 +54,16 @@ public class Test {
 		System.out.println(runDateTime);
 		System.out.println(chiBook.toString());
 		System.out.println();
-		
 
+		String pageCountString = chiBook.PagesBetween(chiBook.firstPage, chiBook.lastPage).toString();
+		
 		List<String> lines = Arrays.asList(new String[] { 
 				"<html>"
 				,"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gbk\" /></head>"
 				, "<body>boo"
 				, runDateTime
 				, chiBook.toString()
+				, "pageCount: " + pageCountString
 				, "</body>"
 				, "</html>" });
 		Path path = Paths.get(outTextPathAndFile);
