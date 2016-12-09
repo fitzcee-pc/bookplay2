@@ -54,6 +54,8 @@ public class Test {
 		System.out.println(getBookDeets());
 
 		writeDeetsToOutfile(getBookDeets());
+		
+		System.out.println("-----Run Complete-----");
 
 	}
 
