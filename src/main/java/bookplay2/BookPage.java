@@ -170,6 +170,7 @@ public class BookPage  {
 		 */
 		// regex: https://www.tutorialspoint.com/java/java_regular_expressions.htm
 		//        https://www.udemy.com/learn-to-program-with-java/?tc=blog.javastringreplaceall&couponCode=half-off-for-blog&utm_source=blog&utm_medium=udemyads&utm_content=post118252&utm_campaign=content-marketing-blog&xref=blog
+		//		  http://stackoverflow.com/questions/7124778/how-to-match-anything-up-until-this-sequence-of-characters-in-a-regular-expres
 		// replaceAll: https://blog.udemy.com/java-string-replaceall/
 		String bodyTextTrimmed = bodyText.replaceFirst("<div class=\"yd_text2\">","");
 		bodyText = bodyTextTrimmed;
@@ -181,7 +182,7 @@ public class BookPage  {
 		bodyText = bodyTextTrimmed;
 		bodyTextTrimmed = bodyText.replaceFirst("</div>","");
 		bodyText = bodyTextTrimmed;
-		bodyTextTrimmed = bodyText.replaceAll("&nbsp;[\\S\\s]*?[^(&nbsp;)]","");
+		bodyTextTrimmed = bodyText.replaceAll("&nbsp;[\\S\\s]*?(?=[^(&nbsp;)])","");
 		bodyText = bodyTextTrimmed;
 		bodyTextTrimmed = bodyText.replaceAll("<br>","\n");
 		
