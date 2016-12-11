@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+<head>
+  <meta content="Atlantis Word Processor 1.6.5.8" name="Generator" />
+  <link href="../Styles/style.css" rel="stylesheet" type="text/css" />
+
+  <title></title>
+</head>
+
+<body>
+  <h1 id="heading_id_2">How to Make an ePub eBook by Hand</h1>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_3">Overview and Required Tools</h2>
+
+  <p>&nbsp;</p>
+
+  <p><b>Tools Needed:</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;A text editor. Anything that can edit text files, HTML, and XML. (Example: Notepad)</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;A .zip program. Anything that can create .zip files. (Example: Windows XP's built-in .zip support)</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>Optional Tools:</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>You can make ePub files with just the programs that came with your operating system, but here are some suggestions for tools that can make the process easier.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>For Windows:</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;Edit Plus (shareware)</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;Notpad++</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;Info-Zip</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>For OS X:</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;Text Wrangler</p>
+
+  <p>&nbsp;</p>
+
+  <p>Several people have written to tell me that OS X's built in zip support works just fine. Just layout your files, then compress the folder they're in (right-click, then click "Compress"). Others prefer the command line zip program.</p>
+
+  <p><br /></p>
+
+  <p><b>Preparing Source Documents:</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>Please see Part 1 of this tutorial for details on how to get your book into HTML format, and how to format it to make your book look it's best.</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_4">The process of making an ePub eBook</h2>
+
+  <p>&nbsp;</p>
+
+  <p>The process of making an ePub book can be broken down into three parts:</p>
+
+  <div style="margin-left: 2em">
+    <ul>
+      <li>Prepare the content</li>
+
+      <li>Prepare the XML files</li>
+
+      <li>Put in in the container.</li>
+    </ul>
+  </div>
+
+  <p>First, let's go check out the official specs. Yes, it's very boring and hard to follow, but aren't they all?</p>
+
+  <p>These will come in handy later on though. After getting the basic structure of the file setup, the official specs are handy to reference for tags that aren't used very often, or if you can't remember what exactly goes in a certain tag.</p>
+
+  <p>Don't let them scare you though, we really only have to fiddle with two XML files, the rest is either straight XHTML, or files that you can copy from the sample file that we'll be looking at later.</p>
+
+  <div style="margin-left: 2em">
+    <ul>
+      <li><a href="http://www.idpf.org/doc_library/epub/OPS_2.0.1_draft.htm">(Allowed Mark-up reference for included XHTML files)</a></li>
+
+      <li><a href="http://www.idpf.org/doc_library/epub/OPF_2.0.1_draft.htm">Structure</a></li>
+
+      <li><a href="http://www.idpf.org/ocf/ocf1.0/index.htm">Container</a></li>
+    </ul>
+  </div>
+
+  <p>&nbsp;</p>
+
+  <p><b>Note:</b> If you want to download an ePub file to un-zip and poke at it's guts to see how it works, I recommend either the sample ePub file mentioned in this guide, or "A Girl of the Commune" by G.A. Henty from the Books page. (Why that one you ask? The reason is that I made all the books on my books page back when the ePub format was brand spanking new. Since then, the format has had a number of minor revisions. You&nbsp; should be able to read all of those books, but they might not all validate properly. I've updated "A Girl of the Commune" so that it should validate now. Yes, but why that one in particular? Simple. It's the first one in the folder. ;)&nbsp; )</p>
+
+  <p><br /></p>
+
+  <h2 id="heading_id_5">Step 1: Prepare the content</h2>
+
+  <p>&nbsp;</p>
+
+  <p>For full details on preparing content, see Part 1 of this tutorial.</p>
+
+  <p><br /></p>
+
+  <h2 id="heading_id_6">Step 2: Prepare the XML files</h2>
+
+  <p>&nbsp;</p>
+
+  <p>The XML files are all the other stuff in the ePub book that tells where your content is, and what to do with it.</p>
+
+  <p>Before we start preparing our own eBook, lets look inside a sample file.</p>
+
+  <div style="margin-left: 2em">
+    <ul>
+      <li>Download the sample file ( <a href="http://www.jedisaber.com/eBooks/books/sample.epub">http://www.jedisaber.com/eBooks/books/sample.epub</a>) to your hard drive</li>
+
+      <li>Rename the .epub extension to .zip</li>
+
+      <li>Open the Zip file</li>
+    </ul>
+  </div>
+
+  <p>Great. Now what is all this stuff?</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;<span style="font-family: Arial;"><img alt="" src="../Images/Tutori1.jpg" />&nbsp;</span><span style="font-family: Arial;"><img alt="" src="../Images/Tutori2.jpg" />&nbsp;</span><span style="font-family: Arial;"><img alt="" src="../Images/Tutori3.jpg" /></span></p>
+
+  <p>The root of the zip file &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; The Meta-inf folder &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;the OEBPS folder</p>
+
+  <p>&nbsp;</p>
+
+  <p>A .epub file contains, at a bare minimum, the following files/folders:</p>
+
+  <p>&nbsp;</p>
+
+  <ul>
+    <li><b>mimetype</b> - tells a reader/operating system what's in here<br /></li>
+
+    <li><b>META-INF folder</b> - This folder contains, at minimum, the container.xml file, which tells the reader software where in the zip file to find the book.<br /></li>
+
+    <li><b>OEBPS folder</b> - Recommended location for the books content. It contains:<br /></li>
+
+    <li style="list-style: none; display: inline">
+      <ul>
+        <li><b>images folder</b> - images go here</li>
+
+        <li><b>Content.opf</b> - XML file that lists what's in the zip file</li>
+
+        <li><b>toc.ncx</b> - This is the table of Contents</li>
+
+        <li><b>xhtml files</b> - The book's contents are in these</li>
+
+        <li><b>page-template.xpgt</b> - This file isn't really needed, but it makes it look pretty in Adobe Digital Editions</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>Lets look at each of these in more detail.</p>
+
+  <p>(Feel free to extract these files from the sample.epub and use them as a template)</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>One thing to note</b> before we get started: the filenames are case sensitive.</p>
+
+  <p>This means that if you have a file named "Chapter1.xhtml" and you refer to it as "chapter1.xhtml" in the .OPF file or .NCX file, the book will not display properly.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>mimetype</b></p>
+
+  <p>This file is just a plain ASCII text file that contains the line:</p>
+
+  <p>"application/epub+zip"</p>
+
+  <p>The operating system can look at this file to figure out what a .epub file is instead of using the file extension.</p>
+
+  <p>This file must be the first file in the zip file, and must not be compressed.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>META-INF Folder</b></p>
+
+  <p>This contains the container.xml file, which points to the location of the Content.opf file.</p>
+
+  <p>This folder is the same for every e-book, so you should be able to recycle the whole folder from the sample file without making changes.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>OEBPS Folder</b></p>
+
+  <p>Notes on the OEBPS folder:</p>
+
+  <p>This is the folder where the book content is stored. According to the IDPF spec, you don't have to put your book content in here, but it is recommended. I've come across at least two readers that won't read the book properly if the content isn't in this folder. (If you do put your book content somewhere else, make sure that you update container.xml to point to the correct location of the content.opf file.)</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>- images Folder</b></p>
+
+  <p>If you have any images for your eBook, they go in here.</p>
+
+  <p><b>Note:</b> most reading systems support a variety of images, but according to the OPF spec, only PNG must be supported by reading system</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_7"><b>- Content.opf</b></h2>
+
+  <p>This file gives a list of all files in the .epub container, defines the order of files, and stores meta data (author, genre, publisher, etc.) information.</p>
+
+  <p><b>Note</b> that this file can be named anything you want to call it, as long as the container.xml file mentioned above points to the correct filename.</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <p><b><font color="#008000">&lt;?xml version="1.0"?&gt;<br />
+  &lt;package version="2.0" xmlns="http://www.idpf.org/2007/opf"<br />
+  unique-identifier="BookId"&gt;<br />
+  &lt;metadata xmlns:dc="http://purl.org/dc/elements/1.1/"<br />
+  xmlns:opf="http://www.idpf.org/2007/opf"&gt;<br /></font> <font color="#800000">&lt;dc:title&gt;Sample .epub eBook&lt;/dc:title&gt;</font> <font color="#008000"><br />
+  &lt;dc:creator opf:role="aut"&gt;Yoda47&lt;/dc:creator&gt;<br /></font> <font color="#800080">&lt;dc:language&gt;en-US&lt;/dc:language&gt;</font> <font color="#008000"><br />
+  &lt;dc:rights&gt;Public Domain&lt;/dc:rights&gt;<br />
+  &lt;dc:publisher&gt;Jedisaber.com&lt;/dc:publisher&gt;<br /></font> <font color="#FF3399">&lt;dc:identifier id="BookId"&gt;urn:uuid:jedisaber.com06282007214712&lt;/dc:identifier&gt;</font><font color="#008000"><br />
+  &lt;/metadata&gt;<br /></font> <font color="#FF9933">&lt;manifest&gt;<br />
+  &lt;item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" /&gt;<br />
+  &lt;item id="style" href="stylesheet.css" media-type="text/css" /&gt;<br />
+  &lt;item id="pagetemplate" href="page-template.xpgt" media-type="application/vnd.adobe-page-template+xml" /&gt;<br />
+  &lt;item id="titlepage" href="title_page.xhtml" media-type="application/xhtml+xml" /&gt;<br />
+  &lt;item id="chapter01" href="chap01.xhtml" media-type="application/xhtml+xml" /&gt;<br />
+  &lt;item id="chapter02" href="chap02.xhtml" media-type="application/xhtml+xml" /&gt;<br />
+  &lt;item id="imgl" href="images/sample.png" media-type="image/png" /&gt;<br />
+  &lt;/manifest&gt;</font><font color="#008000"><br /></font> <font color="#008080">&lt;spine toc="ncx"&gt;<br />
+  &lt;itemref idref="titlepage" /&gt;<br />
+  &lt;itemref idref="chapter01" /&gt;<br />
+  &lt;itemref idref="chapter02" /&gt;<br />
+  &lt;/spine&gt;</font><font color="#008000"><br />
+  &lt;/package&gt;</font></b></p>
+
+  <p>&nbsp;</p>
+
+  <p>Lots of stuff in this file. I'll go through each required tag here. Check the specs to see more information about optional meta data tags.</p>
+
+  <p>&nbsp;<br />
+  <b><font color="#800000">dc:title</font></b> - Title of the book<br />
+  <b><font color="#800080">dc:language</font></b> - Identifies the language used in the book content. The content has to comply with <a href="http://www.ietf.org/rfc/rfc3066.txt">RFC 3066</a>. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php">List of language codes</a>. (I'd just copy the language tag from the sample...)<br />
+  <font color="#FF00FF"><b>dc:identifier</b></font> - This is the book's unique ID. This has to be a unique identifier for every different e-book. The spec doesn't give any sort of recommendation for what to use, but an ISBN number would be a good bet. I used the name of my web site and the date and time.<br />
+  One thing to note, because of how the file interacts with toc.ncx, just modify what's after the " uuid:" on this line.</p>
+
+  <p><br /></p>
+
+  <p>Next comes the <b><font color="#FF9933">manifest</font></b>. This is just a listing of the files in the .epub container, and their file type.<br />
+  Each item is also assigned an item ID that's used in the spine section of content.opf. This list does not have to be in any particular order. (But you'll be happier if it is. Also, see the section below on the NCX file for more information on the id attribute.)</p>
+
+  <p><br /></p>
+
+  <p>The <b><font color="#008080">spine</font></b> section lists the reading order of the contents. The spine doesn't have to list every file in the manifest, just the reading order. For example, if the manifest lists images, they do not have to be listed in the spine, and in fact, can't be. Only content (i.e. the XHTML files) can be listed here.&nbsp;</p><!--EndFragment-->
+
+  <p>&nbsp;</p>
+
+  <p>The value for the idref tag in the spine has to match the ID tag for that entry in the manifest.</p>
+
+  <p>(example: if you have a file named "chap01.xhtml", and the manifest reference looks like: &lt;item id="chapter01" href="chap01.xhtml" media-type="applicatin/xhtml+xml" /&gt; then your spine entry for Chapter 1 of your book would be &lt;itemref&nbsp; idref="chapter01" /&gt;. See the image above for a live example from a complete file.)</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_8"><b>- toc.ncx</b></h2>
+
+  <p>This is the table of contents. This file controls what shows up in the left Table of Contents pane in Digital Editions</p>
+
+  <p>&nbsp;</p>
+
+  <p><b><font color="#008000">&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br />
+  &lt;ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1"&gt;<br />
+  <br />
+  &lt;head&gt;<br />
+  &nbsp;</font><font color="#800000">&nbsp;&nbsp; &lt;meta name="dtb:uid" content="jedisaber.com06282007214712"/&gt;</font><font color="#008000"><br />
+  &nbsp;&nbsp;&nbsp; &lt;meta name="dtb:depth" content="1"/&gt;<br />
+  &nbsp;&nbsp;&nbsp; &lt;meta name="dtb:totalPageCount" content="0"/&gt;<br />
+  &nbsp;&nbsp;&nbsp; &lt;meta name="dtb:maxPageNumber" content="0"/&gt;<br />
+  &lt;/head&gt;<br />
+  <br /></font> <font color="#FF3399">&lt;docTitle&gt;<br />
+  &nbsp;&nbsp;&nbsp; &lt;text&gt;Sample .epub eBook&lt;/text&gt;<br />
+  &lt;/docTitle&gt;</font><font color="#008000"><br />
+  <br />
+  &lt;navMap&gt;<br /></font> <font color="#0066FF">&nbsp;&nbsp;&nbsp; &lt;navPoint id="</font><font color="#800080">title_page</font><font color="#0066FF">" playOrder="</font><font color="#800080">1</font><font color="#0066FF">"&gt;<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;navLabel&gt;<br /></font> <font color="#800080">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;text&gt;Title Page&lt;/text&gt;</font><font color="#0066FF"><br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/navLabel&gt;<br /></font> <font color="#800080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;content src="title_page.xhtml"/&gt;</font><font color="#0066FF"><br />
+  &nbsp;&nbsp;&nbsp; &lt;/navPoint&gt;<br />
+  <br />
+  &lt;navPoint id="</font><font color="#800080">chapter01</font><font color="#0066FF">" playOrder="</font><font color="#800080">2</font><font color="#0066FF">"&gt;<br />
+  &nbsp;&nbsp;&nbsp; &lt;navLabel&gt;<br /></font> <font color="#800080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;text&gt;Chapter 1&lt;/text&gt;</font><font color="#0066FF"><br />
+  &nbsp;&nbsp;&nbsp; &lt;/navLabel&gt;<br /></font> <font color="#800080">&nbsp;&nbsp;&nbsp; &lt;content src="chap01.xhtml"/&gt;</font><font color="#0066FF"><br />
+  &lt;/navPoint&gt;<br />
+  <br />
+  &lt;navPoint id="</font><font color="#800080">chapter02</font><font color="#0066FF">" playOrder="</font><font color="#800080">3</font><font color="#0066FF">"&gt;<br />
+  &nbsp;&nbsp;&nbsp; &lt;navLabel&gt;<br /></font> <font color="#800080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;text&gt;Chapter 2&lt;/text&gt;</font><font color="#0066FF"><br />
+  &nbsp;&nbsp;&nbsp; &lt;/navLabel&gt;<br /></font> <font color="#800080">&nbsp;&nbsp;&nbsp; &lt;content src="chap02.xhtml"/&gt;</font><font color="#0066FF"><br />
+  &lt;/navPoint&gt;</font><font color="#008000"><br />
+  <br />
+  &lt;/navMap&gt;<br />
+  &lt;/ncx&gt;</font></b></p>
+
+  <p>&nbsp;</p>
+
+  <p>Things you need to change (if you copy and re-use the sample toc.ncx file):</p>
+
+  <div style="margin-left: 2em">
+    <ul>
+      <li>Make sure the uid matches what you have in content.opf</li>
+
+      <li>doctitle: The text inside the text tag is what will show up as the books title in the reader software</li>
+
+      <li>The navpoint tag.</li>
+    </ul>
+  </div>
+
+  <p><b>The navPoint tag</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>Each nav point is a chapter listing, the text is the chapter name, and the src is the file it links to.</p>
+
+  <p>If you copy a navpoint tag set to add chapters, make sure to update the id and playorder values.</p>
+
+  <p>&nbsp;</p>
+
+  <p>Let's look at our example file to clarify this:</p>
+
+  <p>&nbsp;</p>
+
+  <p>&lt;navPoint id="<b>chapter01</b>" playOrder="<b>1</b>"&gt;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;navLabel&gt;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;text&gt;<b>Chapter 1</b>&lt;/text&gt;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/navLabel&gt;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;content src="<b>chap01.xhtml</b>" /&gt;</p>
+
+  <p>&lt;/navPoint&gt;</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;navPoint id="<b>chapter01</b>" playOrder="<b>1</b>"&gt;</p>
+
+  <p>&nbsp;</p>
+
+  <p>According to the spec, the id can be anything you want, but it's easier to keep track of things if you use the same id you used for that file in the .OPF file. Also, some readers won't properly display the Table of Contents if the ID doesn't match.</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;navPoint id="<b>chapter01</b>" playOrder="<b>1</b>"&gt;</p>
+
+  <p>&nbsp;</p>
+
+  <p>The playOrder values have to be in order. (An item with playorder 1 will be before an item with playorder 2, etc.) They also have to be listed in order, and can't have any gaps. (You'll get an error if you jump from 1 to 20, etc)</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;text&gt;<b>Chapter 1</b>&lt;/text&gt;</p>
+
+  <p>&nbsp;</p>
+
+  <p>The stuff you type inside the text tag is what actually shows up in the reading software's table of contents. This can be any text you want.</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;content src="<b>chap01.xhtml</b>"&gt; /&gt;</p>
+
+  <p>&nbsp;</p>
+
+  <p>The content tag links the table of contents item to the XHTML file it points to. If your id tag and text tag both point to chapter 1, and your content tag points to chapter 4, you'll go to chapter 4 when you click the link to chapter 1 in the table of contents.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>Notes on the toc.ncx:</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>You can't format the contents of the toc.ncx. This file is used by the reading software to display the table of contents. Each program will display the contents of toc.ncx differently. If you want to present a formatted table of contents to the reader, you need to make a XHTML file with the contents formatted however you want. (In fact, this is a good idea as there are still some ePub reading programs that don't use toc.ncx.)</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_9">- page-template.xpgt</h2>
+
+  <p>This file isn't part of the IDPF spec, but Adobe Digital Editions uses it for formatting and setting column settings and whatnot. You don't need this file at all, but your book will look nicer in Digital Editions if you include it. Other readers should just ignore it.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>Note:</b> You can use a .css style sheet file to layout styles for your book as well. Just make sure to list it in the manifest section of Content.opf</p>
+
+  <p>Also of note here, any styling should be done in a CSS stylesheet, and not in the document.</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_10">- Content .xhtml files</h2>
+
+  <p>Content files should be XML 1.1 documents</p>
+
+  <p>If you're not familiar with XML, it's basically HTML with closing tags for every element, and several style tags are not supported.</p>
+
+  <p>As far as how to put the content, you can have it all in one document with bookmarks at each chapter, or each chapter in a separate .xhtml file. The latter looks nicer in most readers, as well as decreases the time it takes for the book to load when you first open it.</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_11">- A Note about Cover Images:</h2>
+
+  <p>&nbsp;</p>
+
+  <p>The ePub specification doesn't say anything about where or how to do your book cover, but there are a few "best practices" that have emerged into a kind of non-spoken convention.</p>
+
+  <p>Most readers will display the first image in the book as the book's cover, but not all of them do this. Almost all readers that support cover images will correctly display a cover if you do this:</p>
+
+  <p>&nbsp;</p>
+
+  <div style="margin-left: 2em">
+    <ul>
+      <li>save your cover in the JPEG format</li>
+
+      <li>name your cover "Cover.jpg"</li>
+
+      <li>Save it in the "Images" folder inside the "OEPBS" folder in your ePub zip container.</li>
+
+      <li>Make a file called "Cover.xhtml" as the first file in your book.</li>
+
+      <li>The only thing in the Cover.xhtml file should be the cover image (Put the title page, author, etc, in another XHTML file)</li>
+    </ul>
+  </div>
+</body>
+</html>

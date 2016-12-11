@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+<head>
+  <meta content="Atlantis Word Processor 1.6.5.8" name="Generator" />
+  <link href="../Styles/style.css" rel="stylesheet" type="text/css" />
+
+  <title></title>
+  <style type="text/css">
+
+  /*<![CDATA[*/
+
+  p.sgc-1 {font-weight: bold}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <h1 id="heading_id_2">Formatting Your Source Content</h1>
+
+  <p>&nbsp;</p>
+
+  <p class="sgc-1">Overview and Required Tools</p>
+
+  <p>&nbsp;</p>
+
+  <p>Why am I talking about source documents? Because the end result--your book-- is only going to look as good as the code that goes into it. When I first created the ePub tutorial, I skimmed over creating the source document and just talked about the ePub format. After making and editing several ePubs for my own use, I have seen more and more that the HTML you start with determine how nice the final book looks.</p>
+
+  <p>&nbsp;</p>
+
+  <p class="sgc-1">&nbsp;&nbsp;&nbsp;&nbsp; Tools Needed:</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp; A text or HTML editor. Anything that can edit text files, HTML, and XML. (Example: Notepad, Komposer)</p>
+
+  <p>&nbsp;</p>
+
+  <p class="sgc-1">&nbsp;&nbsp;&nbsp;&nbsp; Tools for cleaning up source documents:</p>
+
+  <p>&nbsp;</p>
+
+  <p>Below are some tools for cleaning up the HTML/XHTML files often used for sources for ePub books. Cleaner source code will produce a better looking book. Most of the ePub readers right now only support basic tags and do strange and wonderful things when they see a tag they don't recognize. Whether you make an eBook by hand, or use a program to convert a text or HTML document to an ePub file, the cleaner the HTML looks, the nicer the final book will look. The fewer the tags in the source document, the better.</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp; &nbsp; <a href="http://home.ccil.org/~cowan/XML/tagsoup/">Tag Soup</a> - cleans up HTML tags</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://www.convertfiles.com/">Convert Files</a> - converts various files from one format to another. Can be used to get your source document into HTML. (Can also convert straight to ePub, but the formatting of most automated tools is.... "interesting".)</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://www.atlantiswordprocessor.com/en/">Atlantis Word Processor</a> - Atlantis is a word processor much like MS Word. Like Word, it can export to HTML. Unlike Word, it outputs clean HTML, and can also export straight to ePub, but can't edit existing ePub books.</p>
+
+  <p>&nbsp;</p>
+
+  <p>I had a nice Windows program specifically to clean MS Word crap out of HTML pages... but I can't seem to find what I did with it. I'll keep looking and post a link here if I can find it again...</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_3">&nbsp;Creating a Document</h2>
+
+  <p><b>Where to get content?</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>Well, that's really up to you. You can type it yourself, you can download text files from Project Gutenberg (Yes, they now have ePub as a download option. If you think the layout is ugly, keep reading. The beauty of ePub is that you can fiddle with it yourself to get the book to look how you want it to look.) Sometimes content will be in a Word Document.</p>
+
+  <p>&nbsp;</p>
+
+  <p>See <a href="http://www.jedisaber.com/eBooks/Books.shtml">http://www.jedisaber.com/eBooks/Books.shtml</a> for more places to get books in the ePub format, both for free, and to buy.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>Important note:</b> If you are creating these files in a text editor, be sure to save in UTF-8 format, not ANSI. (In notepad, this is an option under the "save as" box. Most readers will still open the book if you forget to do this, but you'll get errors when you check for them.)</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>What file extension to use?</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>For best validation results, source documents should have a .XHTML extension. HTM, HTML, and XML file extensions on your documents will work, but the official specs call for XHTML (Note, this is likely to change back to just HTML when ePub version 3 is implemented. I'll update the guide when that happens.) Some nit-picky reading programs might possibly have a fit if you don't have everything just right.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>What HTML tags to use?</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>The ePub specification supports most (but not all) of the valid XHTML tags. For best results though, keep it simple. Not all readers will support all the tags and CSS that the official ePub spec supports. That, and the simpler the HTML, the nicer the book will look (not to mention it will be easier to edit.) The tags I recommend are:</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt; - for paragraphs. This seems simple, but some of the automatic conversion tools (or if you've saved as HTML from Word) put a bunch of &lt;span&gt; and other stuff in there. Sigil is really fond of trying to use &lt;div&gt; tags instead of &lt;p&gt; tags as well.</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt; - or any of the heading tags, but I recommend to use the &lt;h1&gt; tag for the title and all chapter headings. We'll get into why later.</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt; or &lt;ol&gt; - for any lists.</p>
+
+  <p>&nbsp;</p>
+
+  <p>That's really about all you need for most books. Yes, you can use &lt;b&gt; and &lt;i&gt; for bold and italics, but it's preferred to to that with CSS.</p>
+
+  <p><br /></p>
+
+  <p>If you don't know anything about HTML, a good place to start is the <a href="http://www.w3schools.com/html/">W3C Tutorial</a></p>
+
+  <p>&nbsp;</p>
+
+  <p>Follow <a href="http://idpf.org/epub/20/spec/OPS_2.0.1_draft.htm#Section2.0">this link</a> if you want to know the full list of allowed tags.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>Notes for specific reader programs:</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>All reader programs SHOULD show everything perfectly if you use the styling recommendations here. Sadly, just because they should, doesn't mean they do. Like Microsoft making up it's own non-standard tags for IE, many companies that make ePub reading programs do things just a bit differently than what the specification calls for. Why? I don't know, probably has to do with the fact that they don't really want you to be able to read your books anywhere but on their program/device.</p>
+
+  <p>Nevertheless, if you keep styling to the minimum, your book will be readable in all readers. It might not look the way you want it, it might not be pretty, but people will be able to read it.</p>
+
+  <p>If you want to make different ePub files for different readers, check out the forums at Mobileread for tons of information on the quirks for your reader of choice.</p>
+
+  <p><br /></p>
+
+  <p><b>Formatting your book with CSS</b></p>
+
+  <p>&nbsp;</p>
+
+  <p>Speaking of CSS, that's where you want to do all your styling. It's the preferred way to stylize things in both XHTML and the ePub standard. (There are a very few reader programs out there that won't recognize CSS. Mot of them do by now though, and if you keep the HTML to the basics, the book will still be readable if the reader program doesn't recognize CSS.</p>
+
+  <p>&nbsp;</p>
+
+  <p><b>Note:</b> Although CSS is the preferred way to style books, there are quite a few reader programs out there that either don't support it, or only support some CSS. In particular, I've seen a lot of them that don't center the headings like the CSS tells them to.</p>
+
+  <p>&nbsp;</p>
+
+  <p>Here's a CSS stylesheet you can use. You can either copy and paste it, or just steal the file from the sample ePub book I provide (more on the sample in Part 2)</p>
+
+  <p>&nbsp;</p>
+
+  <p>/* Style Sheet for ePub Books */</p>
+
+  <p>&nbsp;</p>
+
+  <p>/* Set margins at 2% (This gives a white border around the book) */</p>
+
+  <p>&nbsp;</p>
+
+  <p>body {margin-left:2%;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;margin-right:2%;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;margin-top:2%;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;margin-bottom:2%;}</p>
+
+  <p>&nbsp;</p>
+
+  <p>/* Text indent will make a paragraph indent, like putting a tab at the beginning of each new paragraph</p>
+
+  <p>The margin settings get rid of the white space between paragraphs, again so it looks more like a book</p>
+
+  <p>The text-align line justifies the margins. If you don't want them justified, change it to left, or remove that line</p>
+
+  <p>You don't have to specify a font, but you can */</p>
+
+  <p>&nbsp;</p>
+
+  <p>p {text-indent: .3in;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;margin-left:0;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;margin-right:0;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;margin-top:0;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;margin-bottom:0;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;text-align: justify;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;font-family:"Times New Roman";}</p>
+
+  <p>&nbsp;</p>
+
+  <p>/* Here we make our headings centered</p>
+
+  <p>We've also made the headings the same font as the body text */</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;h1 { text-align: center;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;font-family:"Times New Roman"; }</p>
+
+  <p>h2 { text-align: center;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;font-family:"Times New Roman"; }</p>
+
+  <p>h3 { text-align: center;</p>
+
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;font-family:"Times New Roman"; }</p>
+
+  <p>&nbsp;</p>
+
+  <p>That's it for the basics of styling ePub books. You can do more with CSS and different HTML tags. For that, I would encourage you to look up other resources on the net about HTML and CSS.</p>
+</body>
+</html>

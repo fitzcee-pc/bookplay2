@@ -2,10 +2,12 @@ package bookplay2;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 
 public class Book {
+	List<BookPage> toc; //TODO create TOC
 	BookPage indexPage;
 	BookPage firstPage;
 	BookPage lastPage;

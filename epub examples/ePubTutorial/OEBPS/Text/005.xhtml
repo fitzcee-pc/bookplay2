@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+<head>
+  <meta content="Atlantis Word Processor 1.6.5.8" name="Generator" />
+  <link href="../Styles/style.css" rel="stylesheet" type="text/css" />
+
+  <title></title>
+</head>
+
+<body>
+  <h1 id="heading_id_2">Step 3: Put it in the Container</h1>
+
+  <p>&nbsp;</p>
+
+  <p>Now we make the .epub container that all these files go in.</p>
+
+  <div style="margin-left: 2em">
+    <ul>
+      <li>Create an empty .zip file with whatever name you like (See notes below for detailed instructions on how to do this.)</li>
+
+      <li>Copy the mimetype file into the zip file (don't use compression on this file)</li>
+
+      <li>Copy the rest of the files and folders mentioned above into the zip file *</li>
+
+      <li>Re-name the .zip extension to .epub</li>
+    </ul>
+  </div>
+
+  <p>&nbsp;* The specification recommends that the books files go in an "OEBPS" folder inside the zip file. If you put them in another spot, be sure that container.xml in the META-INF folder points to the correct location of the *.opf file. Note also that some readers won't open the book if the content files are not in the OEBPS folder.</p>
+
+  <p>&nbsp;</p>
+
+  <p>The zip file layout should look something like this:</p>
+
+  <p>&nbsp;</p>
+
+  <p>- mimetype</p>
+
+  <p>META-INF</p>
+
+  <p>&nbsp;&nbsp;&nbsp;- container.xml</p>
+
+  <p>OEBPS</p>
+
+  <p>&nbsp;&nbsp;&nbsp;images</p>
+
+  <p>- sample.jpg</p>
+
+  <p>&nbsp;&nbsp;&nbsp;- content.opf</p>
+
+  <p>&nbsp;&nbsp;&nbsp;- toc.ncx</p>
+
+  <p>&nbsp;&nbsp;&nbsp;- stylesheet.css</p>
+
+  <p>&nbsp;&nbsp;&nbsp;- content.xhtml</p>
+
+  <p>&nbsp;</p>
+
+  <p>You should now be able to open your eBook in Adobe Digital Editions, or any other reader that supports the .epub format.</p>
+
+  <p>&nbsp;</p>
+
+  <p>One thing to note is that the ePub specification calls the mimetype file to be the first file in the container. If you are using a GUI zip program, this is done by making a blank zip file, then copying just the mimetype file into the zip file, then the rest of the files.</p>
+
+  <p>If you are using a command line zip utility, then you can either add the mimetype file first, or if your zip program of choice supports adding multiple files/folders at a time, make sure the mimetype file is the first one in the list.</p>
+
+  <p>&nbsp;</p>
+
+  <p>If you want to cheat, download the file below. It's a zip file that has empty chapter pages, and the content and toc files pre filled out, so all you have to do is copy and paste your content into the empty files, and modify the OPF and NCX files.</p>
+
+  <p>You can download the blank sample file from: <a href="http://www.jedisaber.com/eBooks/books/sample2.zip">http://www.jedisaber.com/eBooks/books/sample2.zip</a></p>
+
+  <p><br /></p>
+
+  <h2 id="heading_id_3">Creating the Container in Windows XP</h2>
+
+  <p>&nbsp;</p>
+
+  <p>Below are detailed steps to get your content into a zip file and turn it into an ePub book. (I only have instructions for XP because that's the version of Windows I have. Other versions should be similar.)</p>
+
+  <p>&nbsp;</p>
+
+  <div style="margin-left: 2em">
+    <ol>
+      <li>Open My Computer or Windows Explorer and navigate to where your book content is.</li>
+
+      <li>Right-click on a blank spot, and go to: New&gt;&gt;Compressed (zipped) folder</li>
+
+      <li>Type in a new name for the zip file that has been created (leave the .zip on the end. If you don't see the ".zip" at the end of the file name, read the note below.)</li>
+
+      <li>Drag the mimetype file onto the zip folder.</li>
+
+      <li>Drag the rest of the content onto the zip folder.</li>
+
+      <li>Right-click the zip folder, click "Re-name"</li>
+
+      <li>Change ".zip" to ".epub"</li>
+
+      <li>Click "Yes" when it asks if you're sure if you want to re-name the file.</li>
+    </ol>
+  </div>
+
+  <p>&nbsp;</p>
+
+  <p><b>Note:</b></p>
+
+  <p>&nbsp;Sometimes Windows doesn't show the extensions for files. I think it's trying to be "helpful". Here's how to get it to show them to you:</p>
+
+  <p>&nbsp;</p>
+
+  <div style="margin-left: 2em">
+    <ol>
+      <li>Open My Computer</li>
+
+      <li>Click Tools&gt;&gt;Folder Options</li>
+
+      <li>Click the "View" tab.</li>
+
+      <li>Remove the check mark next to "Hide extensions for known file types."</li>
+
+      <li>Click the "OK" button.</li>
+
+      <li>Windows should now show the ".zip" after the name of the zip file, along with the extensions for all the other file types.</li>
+    </ol>
+  </div>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_4">Creating the Container in OS X</h2>
+
+  <p>&nbsp;</p>
+
+  <p>The way the built-in zip support in OS X works makes the process a tad different than on Windows or Linux.</p>
+
+  <div style="margin-left: 2em">
+    <ol>
+      <li>Prepare your content like normal</li>
+
+      <li>Right-click the folder the files are in (ensure they are in their own file first) and click "Compress Folder"</li>
+
+      <li>Change the "zip" extension to "epub"</li>
+    </ol>
+  </div>
+
+  <p>&nbsp;The problem with this method is that the mimetype file isn't necessarily added to the zip folder first.</p>
+
+  <p>A user at the mobileread forums has created a script file that will do the zipping for you, in the right order. You can get it here: <a href="http://www.mobileread.com/forums/showthread.php?t=55681">http://www.mobileread.com/forums/showthread.php?t=55681</a></p>
+
+  <p>&nbsp;</p>
+
+  <p><b>Note:</b></p>
+
+  <p>I have heard reports of OS X copying metadata files into the container. It's not supposed to do that, but if it does you can do through and delete any folder or file with a period in front of the name.</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <h2 id="heading_id_5">Checking Your ePub file</h2>
+
+  <p>&nbsp;</p>
+
+  <p>So you've made a sample ePub book, and it won't open, or it opens with an error, or looks funky. What now?</p>
+
+  <p>&nbsp;</p>
+
+  <p>epubcheck is a program that will scan your ePub file and display any errors it finds in the book.</p>
+
+  <p>You can download it from: <a href="http://code.google.com/p/epubcheck/">http://code.google.com/p/epubcheck/</a></p>
+
+  <p>&nbsp;</p>
+
+  <p>You can also go to threepress's website to have it scanned online.</p>
+</body>
+</html>

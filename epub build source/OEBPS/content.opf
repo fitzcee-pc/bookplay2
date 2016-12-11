@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId" version="2.0">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:identifier id="BookId">jedisaber.com012320121146</dc:identifier>
+    <dc:title>ePubTutorial</dc:title>
+    <dc:subject>Reference</dc:subject>
+    <dc:rights>Copyright Aaron DeMott 2012</dc:rights>
+    <dc:creator opf:file-as="DeMott, Aaron" opf:role="aut">Aaron DeMott</dc:creator>
+    <dc:description>How to make epub eBooks</dc:description>
+    <dc:date opf:event="publication">2012-01-23</dc:date>
+    <dc:language>en</dc:language>
+    <meta name="cover" content="epub_logo_color.jpg" />
+    <meta content="0.5.0" name="Sigil version" />
+  </metadata>
+  <manifest>
+    <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
+    <item href="Styles/style.css" id="style" media-type="text/css" />
+    <item href="Text/Contents.xhtml" id="Contents.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/002.xhtml" id="x002.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/003.xhtml" id="x003.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/004.xhtml" id="x004.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/005.xhtml" id="x005.xhtml" media-type="application/xhtml+xml" />
+    <item href="Text/Cover.xhtml" id="Cover.xhtml" media-type="application/xhtml+xml" />
+    <item href="Images/epub_logo_color.jpg" id="epub_logo_color.jpg" media-type="image/jpeg" />
+    <item href="Images/Tutori3.jpg" id="Tutori3.jpg" media-type="image/jpeg" />
+    <item href="Images/Tutori1.jpg" id="Tutori1.jpg" media-type="image/jpeg" />
+    <item href="Images/Tutori2.jpg" id="Tutori2.jpg" media-type="image/jpeg" />
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="Cover.xhtml" />
+    <itemref idref="Contents.xhtml" />
+    <itemref idref="x002.xhtml" />
+    <itemref idref="x003.xhtml" />
+    <itemref idref="x004.xhtml" />
+    <itemref idref="x005.xhtml" />
+  </spine>
+  <guide>
+    <reference href="Text/Cover.xhtml" title="Cover" type="cover" />
+  </guide>
+</package>

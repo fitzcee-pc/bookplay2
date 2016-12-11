@@ -183,9 +183,9 @@ public class BookPage  {
 		bodyTextTrimmed = bodyText.replaceFirst("</div>","");
 		bodyText = bodyTextTrimmed;
 		bodyTextTrimmed = bodyText.replaceAll("&nbsp;[\\S\\s]*?(?=[^(&nbsp;)])","");
-		bodyText = bodyTextTrimmed;
-		bodyTextTrimmed = bodyText.replaceAll("<br>","\n");
-		
+//		bodyText = bodyTextTrimmed;
+//		bodyTextTrimmed = bodyText.replaceAll("<br>","\n");
+//		
 		
 //		return bodyText;
 
