@@ -1,27 +1,27 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
 <body>
-2016-12-10 22:48:54
+2016-12-11 18:57:34
 
 -----index page-----
-	at: C:\Data\_A-F\Dev\git\bookplay2\www.69shu.com\txt\11519\index.html
-	base of url: /C:/Data/_A-F/Dev/git/bookplay2/www.69shu.com/txt/11519/
+	at: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/www.69shu.com/txt/11519/index.html
+	base of url: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/www.69shu.com/txt/11519/
 	title: Page has moved
 	this page: index.html
 	prev page: 
 	next page: 
 	index page: 
 -----first page-----
-	at: C:\Data\_A-F\Dev\git\bookplay2\www.69shu.com\txt\11519\7304390.html
-	base of url: /C:/Data/_A-F/Dev/git/bookplay2/www.69shu.com/txt/11519/
+	at: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/www.69shu.com/txt/11519/7304390.html
+	base of url: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/www.69shu.com/txt/11519/
 	title: 妃本猖狂：痴傻三小姐-1.第1章 小疯子-69书吧
 	this page: 7304390.html
 	prev page: index.html
 	next page: 7304392.html
 	index page: index.html
 -----last page-----
-	at: C:\Data\_A-F\Dev\git\bookplay2\www.69shu.com\txt\11519\10374816.html
-	base of url: /C:/Data/_A-F/Dev/git/bookplay2/www.69shu.com/txt/11519/
+	at: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/www.69shu.com/txt/11519/10374816.html
+	base of url: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/www.69shu.com/txt/11519/
 	title: 妃本猖狂：痴傻三小姐-1643.第1643章 ：大大大结局-69书吧
 	this page: 10374816.html
 	prev page: 10374815.html
