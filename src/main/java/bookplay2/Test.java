@@ -10,12 +10,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -39,13 +41,30 @@ public class Test {
 	private static Book book;
 	private static String outTextPathAndFile;
 	private static BookPage bookPage;
+	private static String epubBuildRoot;
+	private static String basePath;
+	private static String startingDoc;
+	private static String epubBuildSrcRoot;
+	private static String epubBuildSrcMetaInf;
+	private static String epubBuildSrcOebpsRoot;
+	private static String epubBuildSrcOebpsImages;
+	private static String epubBuildSrcOebpsStyles;
+	private static String epubBuildSrcOebpsText;
 
 	public static void main(String[] args) throws IOException {
 
+		initProps();
+		
 		doBookStuff();
 		
-//		outputChapter("C:\\Data\\_A-F\\Dev\\git\\bookplay2\\epub build dest\\testChap1.html","");
-		outputChapter("epub build dest\\testChap1.html",book.firstPage.getBodyText());
+		setupEpubBuildSrcDirStructure();
+		
+		writeMimetypeFile(epubBuildSrcRoot + "mimetype");
+		writeContainerFile(epubBuildSrcMetaInf + "container.xml");
+		writeCssFile(epubBuildSrcOebpsStyles + "style.css");
+		
+//		writeChapterFile("C:\\Data\\_A-F\\Dev\\git\\bookplay2\\epub build dest\\testChap1.html","");
+		writeChapterFile(epubBuildSrcOebpsText + "testChap1.html",book.firstPage.getBodyText());
 		
 //		buildEpub();
 		
@@ -75,19 +94,31 @@ public class Test {
 //					StandardCopyOption.REPLACE_EXISTING ); 
 //		} 
 	}
-	
-	private static void doBookStuff() {
+
+	private static void initProps() {
 		props = getProps();
 
-		String basePath = new String(props.getProperty("basePath"));
-		String startingDoc = new String(props.getProperty("startingDoc"));
+		basePath = new String(props.getProperty("basePath"));
+		startingDoc = new String(props.getProperty("startingDoc"));
 		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
-
+		epubBuildRoot = new String(props.getProperty("epubBuildSrcRoot"));
+		epubBuildSrcRoot = new String(props.getProperty("epubBuildSrcRoot"));
+		epubBuildSrcMetaInf = new String(props.getProperty("epubBuildSrcMetaInf"));
+		epubBuildSrcOebpsRoot = new String(props.getProperty("epubBuildSrcOebpsRoot"));
+		epubBuildSrcOebpsImages = new String(props.getProperty("epubBuildSrcOebpsImages"));
+		epubBuildSrcOebpsStyles = new String(props.getProperty("epubBuildSrcOebpsStyles"));
+		epubBuildSrcOebpsText = new String(props.getProperty("epubBuildSrcOebpsText"));
+		
+		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		Date today = Calendar.getInstance().getTime();        
 		runDateTime = df.format(today);
 
+		
+	}
+	
+	private static void doBookStuff() {
 		try {
 			bookPage = new BookPage(Jsoup.parse(new File(basePath + startingDoc),null));
 		} catch (IOException e) {
@@ -135,12 +166,80 @@ public class Test {
 		String bookDeets;
 
 		bookDeets = "\n" + book.toString();
-		bookDeets += "\n" + book.firstPage.getBodyText();
+		bookDeets += "\n-----body text-----\n" + book.firstPage.getBodyText();
 		bookDeets += "\n";
 
 
 		return bookDeets;
 	}	
+
+	private static void writeMimetypeFile(String outPathAndFile) {
+		List<String> lines = Arrays.asList(new String[] { 
+				"application/epub+zip"
+		});
+
+		Path path = Paths.get(outPathAndFile);
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void writeContainerFile(String outPathAndFile) {
+		List<String> lines = Arrays.asList(new String[] { 
+				  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				, "<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">"
+				, "   <rootfiles>"
+				, "       <rootfile full-path=\"OEBPS/content.opf\" media-type=\"application/oebps-package+xml\"/>"
+				, "   </rootfiles>"
+				, "</container>"
+
+		});
+
+		Path path = Paths.get(outPathAndFile);
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void writeCssFile(String outPathAndFile) {
+		List<String> lines = Arrays.asList(new String[] { 
+				  "/* Style Sheet */"
+				, "/* This defines styles and classes used in the book */"
+				, "body { margin-left: 5%; margin-right: 5%; margin-top: 5%; margin-bottom: 5%; text-align: justify; }"
+				, "pre { font-size: x-small; }"
+				, "h1 { text-align: center; }"
+				, "h2 { text-align: center; }"
+				, "h3 { text-align: center; }"
+				, "h4 { text-align: center; }"
+				, "h5 { text-align: center; }"
+				, "h6 { text-align: center; }"
+				, ".CI {"
+				, "    text-align:center;"
+				, "    margin-top:0px;"
+				, "    margin-bottom:0px;"
+				, "    padding:0px;"
+				, "    }"
+				, ".center   {text-align: center;}"
+				, ".smcap    {font-variant: small-caps;}"
+				, ".u        {text-decoration: underline;}"
+				, ".bold     {font-weight: bold;}"
+
+		});
+
+		Path path = Paths.get(outPathAndFile);
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	private static void writeDeetsToOutfile(String theDeets) {
 		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
@@ -163,7 +262,7 @@ public class Test {
 
 	}
 
-	public static void zipFiles1() {
+	private static void zipFiles1() {
 		try
 		{
 			ZipOutputStream out = new ZipOutputStream(new 
@@ -190,7 +289,7 @@ public class Test {
 
 	}
 
-	public static void zipFiles2() {
+	private static void zipFiles2() {
 		try {
 			FileOutputStream fos = new FileOutputStream("somecompressed-test.zip");
 			ZipOutputStream zos = new ZipOutputStream(fos);
@@ -222,7 +321,31 @@ public class Test {
 
 	}
 
-	public static void buildEpub() {
+	private static void setupEpubBuildSrcDirStructure() {
+		doFolder(epubBuildSrcRoot);
+		doFolder(epubBuildSrcMetaInf);
+		doFolder(epubBuildSrcOebpsRoot);
+		doFolder(epubBuildSrcOebpsImages);
+		doFolder(epubBuildSrcOebpsStyles);
+		doFolder(epubBuildSrcOebpsText);
+
+	}
+
+	private static void doFolder(String theFolder) {
+		Path path = Paths.get(theFolder);
+
+		try {
+			Path newDir = Files.createDirectory(path);
+		} catch(FileAlreadyExistsException e){
+			// the directory already exists.
+		} catch (IOException e) {
+			//something else went wrong
+			e.printStackTrace();
+		}
+
+	}
+	
+	private static void buildEpub() {
 		try {
 			FileOutputStream fos = new FileOutputStream("epub build dest/testBook01.epub");
 			ZipOutputStream zos = new ZipOutputStream(fos);
@@ -230,24 +353,24 @@ public class Test {
 
 			// Set compression level to STORED (uncompressed) for mimetype
 			zos.setLevel(ZipOutputStream.STORED);
-			addToZipFile("epub build source/", "mimetype", zos);
+			addToZipFile(epubBuildRoot, "mimetype", zos);
 
 			// Set compression level to DEFLATED (compressed) for everything else
 			zos.setLevel(ZipOutputStream.DEFLATED);
-			addToZipFile("epub build source/", "META-INF/container.xml", zos);
-			addToZipFile("epub build source/", "OEBPS/content.opf", zos);
-			addToZipFile("epub build source/", "OEBPS/toc.ncx", zos);
-			addToZipFile("epub build source/", "OEBPS/Images/epub_logo_color.jpg", zos);
-			addToZipFile("epub build source/", "OEBPS/Images/Tutori1.jpg", zos);
-			addToZipFile("epub build source/", "OEBPS/Images/Tutori2.jpg", zos);
-			addToZipFile("epub build source/", "OEBPS/Images/Tutori3.jpg", zos);
-			addToZipFile("epub build source/", "OEBPS/Styles/style.css", zos);
-			addToZipFile("epub build source/", "OEBPS/Text/002.xhtml", zos);
-			addToZipFile("epub build source/", "OEBPS/Text/003.xhtml", zos);
-			addToZipFile("epub build source/", "OEBPS/Text/004.xhtml", zos);
-			addToZipFile("epub build source/", "OEBPS/Text/005.xhtml", zos);
-			addToZipFile("epub build source/", "OEBPS/Text/Contents.xhtml", zos);
-			addToZipFile("epub build source/", "OEBPS/Text/Cover.xhtml", zos);
+			addToZipFile(epubBuildRoot, "META-INF/container.xml", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/content.opf", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/toc.ncx", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Images/epub_logo_color.jpg", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Images/Tutori1.jpg", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Images/Tutori2.jpg", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Images/Tutori3.jpg", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Styles/style.css", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Text/002.xhtml", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Text/003.xhtml", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Text/004.xhtml", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Text/005.xhtml", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Text/Contents.xhtml", zos);
+			addToZipFile(epubBuildRoot, "OEBPS/Text/Cover.xhtml", zos);
 
 			
 			zos.close();
@@ -261,7 +384,7 @@ public class Test {
 
 	}
 
-	public static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
+	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
 
 		System.out.println("Writing '" + fileName + "' to zip file");
 
@@ -280,7 +403,7 @@ public class Test {
 		fis.close();
 	}
 
-	public static void outputChapter(String outPathAndFile, String bodyText) {
+	private static void writeChapterFile(String outPathAndFile, String bodyText) {
 
 		if (bodyText == null) {
 			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
@@ -316,7 +439,7 @@ public class Test {
 
 		Path path = Paths.get(outPathAndFile);
 		try {
-			Files.write(path, lines, StandardCharsets.UTF_8);
+			Files.write(path, lines, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
