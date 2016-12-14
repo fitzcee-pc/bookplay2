@@ -1,6 +1,7 @@
 package bookplay2;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -129,6 +131,19 @@ public class BookPage  {
 		}
 	}
 
+	public BookPage getNextPage() {
+			
+			BookPage bookPage = null;
+			try {
+				bookPage = new BookPage(Jsoup.parse(new File(this.urlPathBeforePageName + this.nextPageName),null));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}  
+			
+			return bookPage;
+
+	}
+	
 	public String getBodyText() {
 
 		String bodyText = new String("body");

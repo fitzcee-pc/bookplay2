@@ -65,6 +65,8 @@ public class Test {
 		
 //		writeChapterFile("C:\\Data\\_A-F\\Dev\\git\\bookplay2\\epub build dest\\testChap1.html","");
 		writeChapterFile(epubBuildSrcOebpsText + "testChap1.html",book.firstPage.getBodyText());
+		writeChapterFile(epubBuildSrcOebpsText + "testChap2.html",book.firstPage.getNextPage().getBodyText());
+		writeChapterFile(epubBuildSrcOebpsText + "testChapLast.html",book.lastPage.getBodyText());
 		
 //		buildEpub();
 		
