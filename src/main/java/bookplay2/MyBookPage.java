@@ -14,7 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class BookPage  {
+public class MyBookPage  {
 //TODO: Make this an Interface/Superclass, which is implemented/Subclassed for each different book site. (e.g., 69chu.com)
 	
 	Document doc = null;
@@ -22,14 +22,17 @@ public class BookPage  {
 	private String fullDecodedUrl = new String("");
 	String urlPathBeforePageName = new String("");
 	String thisPageName = new String("");
+	String thisPageOutfileName = new String("");
 	String indexPageName = new String("");
 	String prevPageName = new String("");
 	String nextPageName = new String("");
 
-	public BookPage(Document theDoc) {
+	public MyBookPage(Document theDoc, String outfileName) {
 		
 		// note underlying JSoup doc
 		this.doc = theDoc;
+		
+		this.thisPageOutfileName = outfileName;
 
 		initializePathBeforePageName();
 
@@ -131,16 +134,16 @@ public class BookPage  {
 		}
 	}
 
-	public BookPage getNextPage() {
+	public MyBookPage getNextPage() {
 			
-			BookPage bookPage = null;
+			MyBookPage myBookPage = null;
 			try {
-				bookPage = new BookPage(Jsoup.parse(new File(this.urlPathBeforePageName + this.nextPageName),null));
+				myBookPage = new MyBookPage(Jsoup.parse(new File(this.urlPathBeforePageName + this.nextPageName),null),"");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}  
 			
-			return bookPage;
+			return myBookPage;
 
 	}
 	

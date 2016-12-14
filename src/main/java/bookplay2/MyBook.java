@@ -2,25 +2,44 @@ package bookplay2;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.Jsoup;
 
-public class Book {
-	List<BookPage> toc; //TODO create TOC
-	BookPage indexPage;
-	BookPage firstPage;
-	BookPage lastPage;
+public class MyBook {
+	MyBookPage indexPage;
+	MyBookPage firstPage;
+	MyBookPage lastPage;
+	List<MyBookPage> pages;
+	List<String> toc;
 	
-	public Book(BookPage theIndexPage, BookPage theFirstPage, BookPage theLastPage) {
+	
+	// TODO: 1. require first page
+	//       2. add first page to thisMyBook.
+	//       3. FindLastGivenFirst - add pages to thisMyBook as we go.
+	public MyBook(MyBookPage theIndexPage, MyBookPage theFirstPage, MyBookPage theLastPage) {
 
 		if (theIndexPage == null & theFirstPage == null & theLastPage == null) {
 			// TODO throw error
 		} else {
 			
-			if (theIndexPage != null) {this.indexPage = theIndexPage;}
-			if (theFirstPage != null) {this.firstPage = theFirstPage;}
-			if (theLastPage != null) {this.lastPage = theLastPage;}
+			pages = new ArrayList<MyBookPage>();
+			toc = new ArrayList<String>();
+			
+			if (theIndexPage != null) {
+				this.indexPage = theIndexPage;
+				pages.add(theIndexPage);
+				}
+			if (theFirstPage != null) {
+				this.firstPage = theFirstPage;
+				pages.add(theFirstPage);
+				this.appendToToc(theFirstPage.thisPageOutfileName);
+				}
+			if (theLastPage != null) {
+				this.lastPage = theLastPage;
+				pages.add(theLastPage);
+				}
 		
 			if (this.lastPage == null & this.indexPage != null) {FindLastPageGivenIndex();}
 			if (this.firstPage == null & this.indexPage != null) {FindFirstPageGivenIndex();}
@@ -33,28 +52,28 @@ public class Book {
 	}
 	
 	private void FindIndexPageGivenFirst() {
-		BookPage bookPage = null;
+		MyBookPage myBookPage = null;
 		try {
-			bookPage = new BookPage(Jsoup.parse(new File(firstPage.urlPathBeforePageName + firstPage.indexPageName),null));
+			myBookPage = new MyBookPage(Jsoup.parse(new File(firstPage.urlPathBeforePageName + firstPage.indexPageName),null),"Chap00001.html");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}  
 
-		this.indexPage = bookPage;
+		this.indexPage = myBookPage;
 		
 	}
 
 	private void FindIndexPageGivenLast() {
-		BookPage bookPage = null;
+		MyBookPage myBookPage = null;
 		try {
-			bookPage = new BookPage(Jsoup.parse(new File(lastPage.urlPathBeforePageName + lastPage.indexPageName),null));
+			myBookPage = new MyBookPage(Jsoup.parse(new File(lastPage.urlPathBeforePageName + lastPage.indexPageName),null),"Chap99999Last.html");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}  
 
-		this.indexPage = bookPage;
+		this.indexPage = myBookPage;
 		
 	}
 
@@ -65,21 +84,21 @@ public class Book {
 
 	private void FindFirstPageGivenLast() {
 		
-		BookPage bookPage = null;
+		MyBookPage myBookPage = null;
 		try {
-			bookPage = new BookPage(Jsoup.parse(new File(lastPage.urlPathBeforePageName + lastPage.prevPageName),null));
+			myBookPage = new MyBookPage(Jsoup.parse(new File(lastPage.urlPathBeforePageName + lastPage.prevPageName),null),"xxx");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}  
 		
-		while (!bookPage.prevPageName.equals(bookPage.indexPageName)) {
+		while (!myBookPage.prevPageName.equals(myBookPage.indexPageName)) {
 			try {
-				bookPage = new BookPage(Jsoup.parse(new File(bookPage.urlPathBeforePageName + bookPage.prevPageName),null));
+				myBookPage = new MyBookPage(Jsoup.parse(new File(myBookPage.urlPathBeforePageName + myBookPage.prevPageName),null),"xxx");
 			} catch (IOException e) {
 				break;
 			}  
 		}
-		this.firstPage = bookPage;
+		this.firstPage = myBookPage;
 	}
 
 	private void FindLastPageGivenIndex() {
@@ -89,25 +108,31 @@ public class Book {
 
 	private void FindLastPageGivenFirst() {
 		
-		BookPage bookPage = null;
+		Integer chapterNum = 1;
+		
+		MyBookPage myBookPage = null;
 		try {
-			bookPage = new BookPage(Jsoup.parse(new File(firstPage.urlPathBeforePageName + firstPage.nextPageName),null));
+			myBookPage = new MyBookPage(Jsoup.parse(new File(firstPage.urlPathBeforePageName + firstPage.nextPageName),null), "Chap" + String.format("%04d", chapterNum) + ".html");
+			appendToToc(myBookPage.thisPageOutfileName);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}  
 		
-		while (!bookPage.nextPageName.equals(bookPage.indexPageName)) {
+		while (!myBookPage.nextPageName.equals(myBookPage.indexPageName)) {
+			chapterNum += 1;
 			try {
-				bookPage = new BookPage(Jsoup.parse(new File(bookPage.urlPathBeforePageName + bookPage.nextPageName),null));
+				myBookPage = new MyBookPage(Jsoup.parse(new File(myBookPage.urlPathBeforePageName + myBookPage.nextPageName),null), "Chap" + String.format("%04d", chapterNum) + ".html");
+				appendToToc(myBookPage.thisPageOutfileName);
 			} catch (IOException e) {
 				break;
 			}  
 		}
-		this.lastPage = bookPage;
+		this.lastPage = myBookPage;
 	}
 	
 	public String toString() {
+		String tocString = (toc == null) ? "empty toc" : toc.toString();
 		String indexPageString = (indexPage == null) ? "no Index" : indexPage.toString();
 		String firstPageString = (firstPage == null) ? "no First Page" : firstPage.toString();
 		String lastPageString = (lastPage == null) ? "no Last Page" : lastPage.toString();
@@ -115,18 +140,19 @@ public class Book {
 				"-----index page-----\n\t" + indexPageString
 				+ "\n-----first page-----\n\t" + firstPageString
 				+ "\n-----last page-----\n\t" + lastPageString
+				+ "\n-----toc-----\n\t" + tocString
 				+ "\n-----page count----\n\t" + PagesBetween(firstPage, lastPage));
 		return me;
 		
 	}
 	
-	public Double PagesBetween(BookPage startPage, BookPage endPage) {
+	public Double PagesBetween(MyBookPage startPage, MyBookPage endPage) {
 		
 		Double pageCount = 1.0;// count start
 
-		BookPage curPage = null;
+		MyBookPage curPage = null;
 		try {
-			curPage = new BookPage(Jsoup.parse(new File(startPage.urlPathBeforePageName + startPage.nextPageName),null));
+			curPage = new MyBookPage(Jsoup.parse(new File(startPage.urlPathBeforePageName + startPage.nextPageName),null), "");
 //			if (!bookPage.thisPageName.equals(endPage.thisPageName)) {
 				pageCount += 1; // don't double count end page in case only 2
 //			}
@@ -136,7 +162,7 @@ public class Book {
 		
 		while (!curPage.nextPageName.equals(endPage.thisPageName)) {
 			try {
-				curPage = new BookPage(Jsoup.parse(new File(curPage.urlPathBeforePageName + curPage.nextPageName),null));
+				curPage = new MyBookPage(Jsoup.parse(new File(curPage.urlPathBeforePageName + curPage.nextPageName),null), "");
 				pageCount += 1;
 			} catch (IOException e) {
 				break;
@@ -151,6 +177,9 @@ public class Book {
 		return pageCount;
 		
 	}
-	
+
+	public void appendToToc(String fileName){
+		toc.add(fileName);
+	}
 	
 }

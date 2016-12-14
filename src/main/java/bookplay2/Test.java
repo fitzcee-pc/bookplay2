@@ -38,9 +38,9 @@ public class Test {
 	public static Test test = new Test();
 	private static Properties props;
 	private static String runDateTime;
-	private static Book book;
+	private static MyBook myBook;
 	private static String outTextPathAndFile;
-	private static BookPage bookPage;
+	private static MyBookPage myBookPage;
 	private static String epubBuildRoot;
 	private static String basePath;
 	private static String startingDoc;
@@ -53,21 +53,47 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 
+//		Double x = 1.23456;
+//		System.out.println(x.toString());
+//		System.out.println(String.format("%1.1f", x));
+//		Integer y = 1;
+//		System.out.println(String.format("%03d", y));
+//		
+		
+		
 		initProps();
 		
-		doBookStuff();
-		
+		System.out.println(runDateTime);
+
+//		doBookStuff();
+		try {
+			myBookPage = new MyBookPage(Jsoup.parse(new File(basePath + startingDoc),null),"");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		myBook = new MyBook(null, myBookPage, null);
+
 		setupEpubBuildSrcDirStructure();
 		
 		writeMimetypeFile(epubBuildSrcRoot + "mimetype");
 		writeContainerFile(epubBuildSrcMetaInf + "container.xml");
 		writeCssFile(epubBuildSrcOebpsStyles + "style.css");
 		
-//		writeChapterFile("C:\\Data\\_A-F\\Dev\\git\\bookplay2\\epub build dest\\testChap1.html","");
-		writeChapterFile(epubBuildSrcOebpsText + "testChap1.html",book.firstPage.getBodyText());
-		writeChapterFile(epubBuildSrcOebpsText + "testChap2.html",book.firstPage.getNextPage().getBodyText());
-		writeChapterFile(epubBuildSrcOebpsText + "testChapLast.html",book.lastPage.getBodyText());
-		
+//		writeChapterFile(epubBuildSrcOebpsText + "testChap1.html",myBook.firstPage.getBodyText());
+//		myBook.appendToToc("testChap1.html");
+//		writeChapterFile(epubBuildSrcOebpsText + "testChap2.html",myBook.firstPage.getNextPage().getBodyText());
+//		myBook.appendToToc("testChap2.html");
+//		writeChapterFile(epubBuildSrcOebpsText + "testChapLast.html",myBook.lastPage.getBodyText());
+//		myBook.appendToToc("testChapLast.html");
+
+		System.out.println(getBookDeets());
+
+		writeDeetsToOutfile(getBookDeets());
+
+
+//		doBookStuff();
+
 //		buildEpub();
 		
 //		doZFSStuff();
@@ -122,13 +148,13 @@ public class Test {
 	
 	private static void doBookStuff() {
 		try {
-			bookPage = new BookPage(Jsoup.parse(new File(basePath + startingDoc),null));
+			myBookPage = new MyBookPage(Jsoup.parse(new File(basePath + startingDoc),null),"");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 
-		book = new Book(null, bookPage, null);
+		myBook = new MyBook(null, myBookPage, null);
 
 		System.out.println(runDateTime);
 
@@ -167,8 +193,8 @@ public class Test {
 	private static String getBookDeets() {
 		String bookDeets;
 
-		bookDeets = "\n" + book.toString();
-		bookDeets += "\n-----body text-----\n" + book.firstPage.getBodyText();
+		bookDeets = "\n" + myBook.toString();
+		bookDeets += "\n-----body text-----\n" + myBook.firstPage.getBodyText();
 		bookDeets += "\n";
 
 
