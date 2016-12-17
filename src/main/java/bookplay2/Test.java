@@ -76,9 +76,9 @@ public class Test {
 
 		setupEpubBuildSrcDirStructure();
 		
-		writeMimetypeFile(epubBuildSrcRoot + "mimetype");
-		writeContainerFile(epubBuildSrcMetaInf + "container.xml");
-		writeCssFile(epubBuildSrcOebpsStyles + "style.css");
+		writeEpubSrc_MimetypeFile(epubBuildSrcRoot + "mimetype");
+		writeEpubSrc_ContainerFile(epubBuildSrcMetaInf + "container.xml");
+		writeEpubSrc_CssFile(epubBuildSrcOebpsStyles + "style.css");
 		
 //		writeChapterFile(epubBuildSrcOebpsText + "testChap1.html",myBook.firstPage.getBodyText());
 //		myBook.appendToToc("testChap1.html");
@@ -201,7 +201,7 @@ public class Test {
 		return bookDeets;
 	}	
 
-	private static void writeMimetypeFile(String outPathAndFile) {
+	private static void writeEpubSrc_MimetypeFile(String outPathAndFile) {
 		List<String> lines = Arrays.asList(new String[] { 
 				"application/epub+zip"
 		});
@@ -215,7 +215,7 @@ public class Test {
 
 	}
 
-	private static void writeContainerFile(String outPathAndFile) {
+	private static void writeEpubSrc_ContainerFile(String outPathAndFile) {
 		List<String> lines = Arrays.asList(new String[] { 
 				  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">"
@@ -235,7 +235,7 @@ public class Test {
 
 	}
 
-	private static void writeCssFile(String outPathAndFile) {
+	private static void writeEpubSrc_CssFile(String outPathAndFile) {
 		List<String> lines = Arrays.asList(new String[] { 
 				  "/* Style Sheet */"
 				, "/* This defines styles and classes used in the book */"
@@ -269,6 +269,125 @@ public class Test {
 
 	}
 
+
+	private static void writeEpubSrc_tocFile_overlyComplicated(String outPathAndFile) {
+		// according to one source, much of this is not needed.
+		// https://gist.github.com/elmimmo/d7b8dbebc4e972734e9a
+		List<String> lines = Arrays.asList(new String[] { 
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				, "<!DOCTYPE ncx PUBLIC \"-//NISO//DTD ncx 2005-1//EN\" \"http://www.daisy.org/z3986/2005/ncx-2005-1.dtd\">"
+				, " "
+				, "<ncx xmlns=\"http://www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\">"
+				, "	<head>"
+				, "		<meta name=\"dtb:uid\" content=\"015ffaec-9340-42f8-b163-a0c5ab7d0611\" />"
+				, "		<meta name=\"dtb:depth\" content=\"2\" />"
+				, "		<meta name=\"dtb:totalPageCount\" content=\"0\" />"
+				, "		<meta name=\"dtb:maxPageNumber\" content=\"0\" />"
+				, "</head>"
+				, "<docTitle>"
+				, "	<text>mple .epub eBook</text>"
+				, "</docTitle>"
+				, "<navMap>"
+				, "	<navPoint id=\"navPoint-1\" playOrder=\"1\">"
+				, "		<navLabel>"
+				, "			<text>Sample Book</text>"
+				, "		</navLabel>"
+				, "		<content src=\"Text/title_page.xhtml\" />"
+				, "	</navPoint>"
+				, "	<navPoint id=\"navPoint-2\" playOrder=\"2\">"
+				, "		<navLabel>"
+				, "			<text>A Sample .epub Book</text>"
+				, "		</navLabel>"
+				, "		<content src=\"Text/title_page.xhtml#heading_id_3\" />"
+				, "		<navPoint id=\navPoint-3\" playOrder=\"3\">"
+				, "			<navLabel>"
+				, "				<text>Title Page</text>"
+				, "			</navLabel>"
+				, "			<content src=\"Text/title_page.xhtml#heading_id_4\" />"
+				, "		</navPoint>"
+				, "		<navPoint id=\"navPoint-4\" playOrder=\"4\">"
+				, "			<navLabel>"
+				, "				<text>Chapter 1</text>"
+				, "			</navLabel>"
+				, "			<content src=\"Text/chap01.xhtml\" />"
+				, "		</navPoint>"
+				, "		<navPoint id=\"navPoint-5\" playOrder=\"5\">"
+				, "			<navLabel>"
+				, "				<text>Chapter 2</text>"
+				, "			</navLabel>"
+				, "			<content src=\"Text/chap02.xhtml\" />"
+				, "		</navPoint>"
+				, "	</navPoint>"
+				, "</navMap>"
+				, "</ncx>" 
+
+		});
+
+		Path path = Paths.get(outPathAndFile);
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void writeEpubSrc_tocFile(String outPathAndFile) {
+		List<String> lines = Arrays.asList(new String[] { 
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				, "<ncx xmlns=\"http://www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\">"
+				, "	<head>"
+				, "		<meta name=\"dtb:uid\" content=\"015ffaec-9340-42f8-b163-a0c5ab7d0611\" />"
+				, "</head>"
+				, "<docTitle>"
+				, "	<text>sample .epub eBook</text>"
+				, "</docTitle>"
+				, "<navMap>"
+				, "	<navPoint id=\"navPoint-1\" playOrder=\"1\">"
+				, "		<navLabel>"
+				, "			<text>Sample Book</text>"
+				, "		</navLabel>"
+				, "		<content src=\"Text/title_page.xhtml\" />"
+				, "	</navPoint>"
+				, "	<navPoint id=\"navPoint-2\" playOrder=\"2\">"
+				, "		<navLabel>"
+				, "			<text>A Sample .epub Book</text>"
+				, "		</navLabel>"
+				, "		<content src=\"Text/title_page.xhtml#heading_id_3\" />"
+				, "		<navPoint id=\navPoint-3\" playOrder=\"3\">"
+				, "			<navLabel>"
+				, "				<text>Title Page</text>"
+				, "			</navLabel>"
+				, "			<content src=\"Text/title_page.xhtml#heading_id_4\" />"
+				, "		</navPoint>"
+				, "		<navPoint id=\"navPoint-4\" playOrder=\"4\">"
+				, "			<navLabel>"
+				, "				<text>Chapter 1</text>"
+				, "			</navLabel>"
+				, "			<content src=\"Text/chap01.xhtml\" />"
+				, "		</navPoint>"
+				, "		<navPoint id=\"navPoint-5\" playOrder=\"5\">"
+				, "			<navLabel>"
+				, "				<text>Chapter 2</text>"
+				, "			</navLabel>"
+				, "			<content src=\"Text/chap02.xhtml\" />"
+				, "		</navPoint>"
+				, "	</navPoint>"
+				, "</navMap>"
+				, "</ncx>" 
+
+		});
+
+		Path path = Paths.get(outPathAndFile);
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	
 	private static void writeDeetsToOutfile(String theDeets) {
 		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
 				"<html>"
@@ -431,7 +550,7 @@ public class Test {
 		fis.close();
 	}
 
-	private static void writeChapterFile(String outPathAndFile, String bodyText) {
+	private static void writeEpubSrc_ChapterFile(String outPathAndFile, String bodyText) {
 
 		if (bodyText == null) {
 			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
