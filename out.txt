@@ -1,27 +1,27 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
 <body>
-2016-12-14 13:25:06
+2016-12-17 20:39:19
 
 -----index page-----
-	at: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/epub examples/My Chinese Test Book/txt/Book1/index.html
-	base of url: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/epub examples/My Chinese Test Book/txt/Book1/
+	at: C:\Data\_A-F\Dev\git\bookplay2\epub examples\My Chinese Test Book\txt\Book1\index.html
+	base of url: /C:/Data/_A-F/Dev/git/bookplay2/epub examples/My Chinese Test Book/txt/Book1/
 	title: Page has moved
 	this page: index.html
 	prev page: 
 	next page: 
 	index page: 
 -----first page-----
-	at: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/epub examples/My Chinese Test Book/txt/Book1/10001.html
-	base of url: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/epub examples/My Chinese Test Book/txt/Book1/
+	at: C:\Data\_A-F\Dev\git\bookplay2\epub examples\My Chinese Test Book\txt\Book1\10001.html
+	base of url: /C:/Data/_A-F/Dev/git/bookplay2/epub examples/My Chinese Test Book/txt/Book1/
 	title: 妃本猖狂：痴傻三小姐-1.第1章 ：娶你？不可能-69书吧 My Chapter 1
 	this page: 10001.html
 	prev page: index.html
 	next page: 10002.html
 	index page: index.html
 -----last page-----
-	at: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/epub examples/My Chinese Test Book/txt/Book1/10004.html
-	base of url: /Users/jay anderson/_nonBoxSync/My Box Other Stuff/OtherA-F/dev/ws-mars-4.5.2/bookplay2/epub examples/My Chinese Test Book/txt/Book1/
+	at: C:\Data\_A-F\Dev\git\bookplay2\epub examples\My Chinese Test Book\txt\Book1\10004.html
+	base of url: /C:/Data/_A-F/Dev/git/bookplay2/epub examples/My Chinese Test Book/txt/Book1/
 	title: 妃本猖狂：痴傻三小姐-4.第1521章 ：别这样，有外人在-69书吧
 	this page: 10004.html
 	prev page: index.html
