@@ -1,8 +1,11 @@
 package bookplay2;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class EpubBuilder {
@@ -10,7 +13,23 @@ public class EpubBuilder {
 	private EpubSourceMaterial esm;
 	private String destPath;
 	private String destFilename;
+	private static String srcPathRoot;
 	
+	/*
+	 * constructors
+	 */
+
+	/*
+	 * getters and setters
+	 */
+	public String getSrcPathRoot() {
+		return srcPathRoot;
+	}
+
+	public void setSrcPathRoot(String srcPathRoot) {
+		this.srcPathRoot = srcPathRoot;
+	}
+
 	public EpubSourceMaterial getEsm() {
 		return esm;
 	}
@@ -27,7 +46,10 @@ public class EpubBuilder {
 		this.destFilename = destFilename;
 	}
 
-	private static void buildEpub() {
+	/*
+	 * public methods
+	 */
+	public static void buildEpub() {
 		try {
 			FileOutputStream fos = new FileOutputStream("epub build dest/testBook01.epub");
 			ZipOutputStream zos = new ZipOutputStream(fos);
@@ -35,24 +57,24 @@ public class EpubBuilder {
 
 			// Set compression level to STORED (uncompressed) for mimetype
 			zos.setLevel(ZipOutputStream.STORED);
-			addToZipFile(epubBuildRoot, "mimetype", zos);
+			addToZipFile(srcPathRoot, "mimetype", zos);
 
 			// Set compression level to DEFLATED (compressed) for everything else
 			zos.setLevel(ZipOutputStream.DEFLATED);
-			addToZipFile(epubBuildRoot, "META-INF/container.xml", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/content.opf", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/toc.ncx", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Images/epub_logo_color.jpg", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Images/Tutori1.jpg", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Images/Tutori2.jpg", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Images/Tutori3.jpg", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Styles/style.css", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Text/002.xhtml", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Text/003.xhtml", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Text/004.xhtml", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Text/005.xhtml", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Text/Contents.xhtml", zos);
-			addToZipFile(epubBuildRoot, "OEBPS/Text/Cover.xhtml", zos);
+			addToZipFile(srcPathRoot, "META-INF/container.xml", zos);
+			addToZipFile(srcPathRoot, "OEBPS/content.opf", zos);
+			addToZipFile(srcPathRoot, "OEBPS/toc.ncx", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Images/epub_logo_color.jpg", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori1.jpg", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori2.jpg", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori3.jpg", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Styles/style.css", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/002.xhtml", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/003.xhtml", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/004.xhtml", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/005.xhtml", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/Contents.xhtml", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/Cover.xhtml", zos);
 
 			
 			zos.close();
@@ -64,6 +86,28 @@ public class EpubBuilder {
 			e.printStackTrace();
 		}
 
+	}
+
+	/*
+	 * private methods
+	 */
+	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
+
+		System.out.println("Writing '" + fileName + "' to zip file");
+
+		File file = new File(sourceFolder + fileName);
+		FileInputStream fis = new FileInputStream(file);
+		ZipEntry zipEntry = new ZipEntry(fileName);
+		zos.putNextEntry(zipEntry);
+
+		byte[] bytes = new byte[1024];
+		int length;
+		while ((length = fis.read(bytes)) >= 0) {
+			zos.write(bytes, 0, length);
+		}
+
+		zos.closeEntry();
+		fis.close();
 	}
 
 

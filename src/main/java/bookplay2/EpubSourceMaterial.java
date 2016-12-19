@@ -1,5 +1,6 @@
 package bookplay2;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +38,7 @@ public class EpubSourceMaterial {
 	private static String srcOebpsImages;
 	private static String srcOebpsStyles;
 	private static String srcOebpsText;
-	private List<String> chapterPathAndFileNames = new ArrayList<String>();
+	private List<String> chapterPathAndFilenames = new ArrayList<>(Arrays.asList("Chap01", "Chap02", "Chap03"));
 
 	/*
 	 * constructors
@@ -197,7 +198,10 @@ public class EpubSourceMaterial {
 	}
 
 	public void writeTocFile() {
-		List<String> lines = Arrays.asList(new String[] { 
+		// WTF: what is the diff?  http://stackoverflow.com/questions/16748030/difference-between-arrays-aslistarray-vs-new-arraylistintegerarrays-aslist
+		// List<String> lines = Arrays.asList(new String[] { 
+		// the one above wouldn't let me lines.add
+		List<String> lines = new ArrayList<String>(Arrays.asList(new String[] { 
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<ncx xmlns=\"http://www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\">"
 				, "	<head>"
@@ -207,40 +211,22 @@ public class EpubSourceMaterial {
 				, "	<text>sample .epub eBook</text>"
 				, "</docTitle>"
 				, "<navMap>"
-				, "	<navPoint id=\"navPoint-1\" playOrder=\"1\">"
-				, "		<navLabel>"
-				, "			<text>Sample Book</text>"
-				, "		</navLabel>"
-				, "		<content src=\"Text/title_page.xhtml\" />"
-				, "	</navPoint>"
-				, "	<navPoint id=\"navPoint-2\" playOrder=\"2\">"
-				, "		<navLabel>"
-				, "			<text>A Sample .epub Book</text>"
-				, "		</navLabel>"
-				, "		<content src=\"Text/title_page.xhtml#heading_id_3\" />"
-				, "		<navPoint id=\navPoint-3\" playOrder=\"3\">"
-				, "			<navLabel>"
-				, "				<text>Title Page</text>"
-				, "			</navLabel>"
-				, "			<content src=\"Text/title_page.xhtml#heading_id_4\" />"
-				, "		</navPoint>"
-				, "		<navPoint id=\"navPoint-4\" playOrder=\"4\">"
-				, "			<navLabel>"
-				, "				<text>Chapter 1</text>"
-				, "			</navLabel>"
-				, "			<content src=\"Text/chap01.xhtml\" />"
-				, "		</navPoint>"
-				, "		<navPoint id=\"navPoint-5\" playOrder=\"5\">"
-				, "			<navLabel>"
-				, "				<text>Chapter 2</text>"
-				, "			</navLabel>"
-				, "			<content src=\"Text/chap02.xhtml\" />"
-				, "		</navPoint>"
-				, "	</navPoint>"
-				, "</navMap>"
-				, "</ncx>" 
 
-		});
+		}));
+
+		Integer i = 0;
+		for(String s: chapterPathAndFilenames) {
+			i++;
+			lines.add("	<navPoint id=\"navPoint-" + i.toString() + "\" playOrder=\"" + i.toString() + "\">");
+			lines.add("		<navLabel>");
+			lines.add("			<text>" + s + "</text>");
+			lines.add("		</navLabel>");
+			lines.add("		<content src=\"Text/" + s + "\" />");
+			lines.add("	</navPoint>");
+		}
+
+		lines.add("</navMap>");
+		lines.add("</ncx>"); 
 
 		Path path = Paths.get(srcOebpsRoot + "toc.ncx");
 		try {
@@ -294,6 +280,22 @@ public class EpubSourceMaterial {
 		}
 
 		
+	}
+	
+	public void writeChapterSequenceFile() {
+		Path path = Paths.get(srcRoot + "ChapSeq.txt");
+		try (BufferedWriter writer = Files.newBufferedWriter(path)) 
+		{
+			for(String s: chapterPathAndFilenames) {
+				writer.write(s + "\n");
+			}
+			// WTF: how do you do lambdas where function throws exception?
+//			chapterPathAndFilenames.forEach(s -> writer.write(s + "\n"));
+//		    writer.write("Hello World !!");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void setupEpubBuildSrcDirStructure() {

@@ -77,6 +77,8 @@ public class Test {
 		esm.writeEpubSrc_MimetypeFile();
 		esm.writeContainerFile();
 		esm.writeCssFile();
+		esm.writeChapterSequenceFile();
+		esm.writeTocFile();
 		
 //		writeChapterFile(epubBuildSrcOebpsText + "testChap1.html",myBook.firstPage.getBodyText());
 //		myBook.appendToToc("testChap1.html");
@@ -108,7 +110,7 @@ public class Test {
 		basePath = new String(props.getProperty("basePath"));
 		startingDoc = new String(props.getProperty("startingDoc"));
 		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
-		epubBuildRoot = new String(props.getProperty("epubBuildSrcRoot"));
+//		epubBuildRoot = new String(props.getProperty("epubBuildSrcRoot"));
 		epubBuildSrcRoot = new String(props.getProperty("epubBuildSrcRoot"));
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -252,25 +254,6 @@ public class Test {
 			e.printStackTrace();
 		}
 
-	}
-
-	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
-
-		System.out.println("Writing '" + fileName + "' to zip file");
-
-		File file = new File(sourceFolder + fileName);
-		FileInputStream fis = new FileInputStream(file);
-		ZipEntry zipEntry = new ZipEntry(fileName);
-		zos.putNextEntry(zipEntry);
-
-		byte[] bytes = new byte[1024];
-		int length;
-		while ((length = fis.read(bytes)) >= 0) {
-			zos.write(bytes, 0, length);
-		}
-
-		zos.closeEntry();
-		fis.close();
 	}
 
 }

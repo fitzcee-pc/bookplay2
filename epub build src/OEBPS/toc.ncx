@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+	<head>
+		<meta name="dtb:uid" content="015ffaec-9340-42f8-b163-a0c5ab7d0611" />
+</head>
+<docTitle>
+	<text>sample .epub eBook</text>
+</docTitle>
+<navMap>
+	<navPoint id="navPoint-1" playOrder="1">
+		<navLabel>
+			<text>Chap01</text>
+		</navLabel>
+		<content src="Text/Chap01" />
+	</navPoint>
+	<navPoint id="navPoint-2" playOrder="2">
+		<navLabel>
+			<text>Chap02</text>
+		</navLabel>
+		<content src="Text/Chap02" />
+	</navPoint>
+	<navPoint id="navPoint-3" playOrder="3">
+		<navLabel>
+			<text>Chap03</text>
+		</navLabel>
+		<content src="Text/Chap03" />
+	</navPoint>
+</navMap>
+</ncx>
