@@ -9,21 +9,27 @@
 <navMap>
 	<navPoint id="navPoint-1" playOrder="1">
 		<navLabel>
-			<text>Chap01</text>
+			<text>testChap1.html</text>
 		</navLabel>
-		<content src="Text/Chap01" />
+		<content src="Text/testChap1.html" />
 	</navPoint>
 	<navPoint id="navPoint-2" playOrder="2">
 		<navLabel>
-			<text>Chap02</text>
+			<text>testChap2.html</text>
 		</navLabel>
-		<content src="Text/Chap02" />
+		<content src="Text/testChap2.html" />
 	</navPoint>
 	<navPoint id="navPoint-3" playOrder="3">
 		<navLabel>
-			<text>Chap03</text>
+			<text>testChap3.html</text>
 		</navLabel>
-		<content src="Text/Chap03" />
+		<content src="Text/testChap3.html" />
+	</navPoint>
+	<navPoint id="navPoint-4" playOrder="4">
+		<navLabel>
+			<text>testChap4.html</text>
+		</navLabel>
+		<content src="Text/testChap4.html" />
 	</navPoint>
 </navMap>
 </ncx>

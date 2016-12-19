@@ -73,23 +73,38 @@ public class Test {
 
 		esm.setupEpubBuildSrcDirStructure();
 		
-		
 		esm.writeEpubSrc_MimetypeFile();
 		esm.writeContainerFile();
 		esm.writeCssFile();
-		esm.writeChapterSequenceFile();
-		esm.writeTocFile();
+
+//		esm.writeChapterFile(myBook.firstPage.getBodyText(), "testChap1.html");
+//		esm.addChapterFile("testChap1.html");
+//		esm.writeChapterFile(myBook.firstPage.getNextPage().getBodyText(), "testChap2.html");
+//		esm.addChapterFile("testChap2.html");
+//		esm.writeChapterFile(myBook.firstPage.getNextPage().getNextPage().getBodyText(), "testChap3.html");
+//		esm.addChapterFile("testChap3.html");
+
+		MyBookPage page = myBook.firstPage;
+
+		Integer i = 0;
+		do {
+			i++;
+			esm.writeChapterFile(page.getBodyText(), "testChap" + i.toString() + ".html");
+			esm.addChapterFile("testChap" + i.toString() + ".html");
+		} while ((page = page.getNextPage()) != null);
 		
-//		writeChapterFile(epubBuildSrcOebpsText + "testChap1.html",myBook.firstPage.getBodyText());
-//		myBook.appendToToc("testChap1.html");
-//		writeChapterFile(epubBuildSrcOebpsText + "testChap2.html",myBook.firstPage.getNextPage().getBodyText());
-//		myBook.appendToToc("testChap2.html");
-//		writeChapterFile(epubBuildSrcOebpsText + "testChapLast.html",myBook.lastPage.getBodyText());
-//		myBook.appendToToc("testChapLast.html");
+		esm.writeTocFile();
+		esm.writeContentFile();
+		
+		EpubBuilder eb = new EpubBuilder();
+		eb.buildEpub();
+		
+//		esm.writeChapterSequenceFile();
 
-		System.out.println(getBookDeets());
 
-		writeDeetsToOutfile(getBookDeets());
+//		System.out.println(getBookDeets());
+//
+//		writeDeetsToOutfile(getBookDeets());
 
 
 //		doBookStuff();

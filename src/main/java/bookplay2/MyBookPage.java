@@ -140,7 +140,7 @@ public class MyBookPage  {
 			try {
 				myBookPage = new MyBookPage(Jsoup.parse(new File(this.urlPathBeforePageName + this.nextPageName),null),"");
 			} catch (IOException e1) {
-				e1.printStackTrace();
+//				e1.printStackTrace();
 			}  
 			
 			return myBookPage;

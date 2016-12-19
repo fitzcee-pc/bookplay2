@@ -50,6 +50,7 @@ public class EpubBuilder {
 	 * public methods
 	 */
 	public static void buildEpub() {
+		srcPathRoot = "epub build src/";
 		try {
 			FileOutputStream fos = new FileOutputStream("epub build dest/testBook01.epub");
 			ZipOutputStream zos = new ZipOutputStream(fos);
@@ -64,17 +65,21 @@ public class EpubBuilder {
 			addToZipFile(srcPathRoot, "META-INF/container.xml", zos);
 			addToZipFile(srcPathRoot, "OEBPS/content.opf", zos);
 			addToZipFile(srcPathRoot, "OEBPS/toc.ncx", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Images/epub_logo_color.jpg", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori1.jpg", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori2.jpg", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori3.jpg", zos);
 			addToZipFile(srcPathRoot, "OEBPS/Styles/style.css", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/002.xhtml", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/003.xhtml", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/004.xhtml", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/005.xhtml", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/Contents.xhtml", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/Cover.xhtml", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/testChap1.html", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/testChap2.html", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/testChap3.html", zos);
+			addToZipFile(srcPathRoot, "OEBPS/Text/testChap4.html", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Images/epub_logo_color.jpg", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori1.jpg", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori2.jpg", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori3.jpg", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/002.xhtml", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/003.xhtml", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/004.xhtml", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/005.xhtml", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/Contents.xhtml", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/Cover.xhtml", zos);
 
 			
 			zos.close();

@@ -38,7 +38,7 @@ public class EpubSourceMaterial {
 	private static String srcOebpsImages;
 	private static String srcOebpsStyles;
 	private static String srcOebpsText;
-	private List<String> chapterPathAndFilenames = new ArrayList<>(Arrays.asList("Chap01", "Chap02", "Chap03"));
+	private List<String> chapterPathAndFilenames = new ArrayList<>(Arrays.asList());
 
 	/*
 	 * constructors
@@ -236,8 +236,60 @@ public class EpubSourceMaterial {
 		}
 
 	}
+	
+	public void writeContentFile() {
+		List<String> lines = new ArrayList<String>(Arrays.asList(new String[] { 
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				, "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
+				, "    <metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf\">"
+				, "				<dc:title>Sample .epub eBook</dc:title>"
+				, "				<dc:language>en</dc:language>"
+				, "		        <dc:rights>Public Domain</dc:rights>"
+				, "				<dc:creator opf:role=\"aut\">Yoda47</dc:creator>"
+				, "		        <dc:publisher>Jedisaber.com</dc:publisher>"
+				, "		        <dc:identifier id=\"BookID\" opf:scheme=\"UUID\">015ffaec-9340-42f8-b163-a0c5ab7d0611</dc:identifier>"
+				, "	    </metadata>"
+				, "	    <manifest>"
+				, "	        <item id=\"ncx\" href=\"toc.ncx\" media-type=\"application/x-dtbncx+xml\"/>"
+				, "	        <item id=\"sample.png\" href=\"Images/sample.png\" media-type=\"image/png\"/>"
+				, "	        <item id=\"page-template.xpgt\" href=\"Styles/page-template.xpgt\" media-type=\"application/vnd.adobe-page-template+xml\"/>"
+				, "	        <item id=\"stylesheet.css\" href=\"Styles/stylesheet.css\" media-type=\"text/css\"/>"
 
-	public  void writeChapterFile(String bodyText, String chapterFileName) {
+		}));
+
+		for(String s: chapterPathAndFilenames) {
+			lines.add("	        <item id=\"" + s + "\" href=\"Text/" + s + "\" media-type=\"application/xhtml+xml\"/>");
+		}
+
+		lines.add("        <item id=\"title_page.xhtml\" href=\"Text/title_page.xhtml\" media-type=\"application/xhtml+xml\"/>");
+		lines.add("    </manifest>");
+		lines.add("    <spine toc=\"ncx\">");
+		lines.add("        <itemref idref=\"title_page.xhtml\"/>");
+
+		for(String s: chapterPathAndFilenames) {
+			lines.add("        <itemref idref=\"" + s + "\"/>");
+		}
+
+		lines.add("    </spine>");
+		lines.add("</package>");
+		lines.add("</navMap>");
+		lines.add("</ncx>"); 
+
+		Path path = Paths.get(srcOebpsRoot + "content.opf");
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+
+	public void addChapterFile(String chapterFilename) {
+		this.chapterPathAndFilenames.add(chapterFilename);
+	}
+	
+	public  void writeChapterFile(String bodyText, String chapterFilename) {
 
 		if (bodyText == null) {
 			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
@@ -271,7 +323,7 @@ public class EpubSourceMaterial {
 
 		});
 
-		Path path = Paths.get(srcOebpsText + chapterFileName);
+		Path path = Paths.get(srcOebpsText + chapterFilename);
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE);
 		} catch (IOException e) {
