@@ -153,6 +153,7 @@ public class MyBookPage  {
 		
 		Elements bodyDivX = doc.getElementsByClass("yd_text2");
 //		bodyText = "-----body text-----\n" + bodyDivX.first().toString();
+		Element bodyElement = bodyDivX.first();
 		bodyText = bodyDivX.first().toString();
 //		Element bodyDiv = doc.getElementById("txtright");
 //		bodyText = "\n\ttoString: \n" + bodyDiv.toString()
@@ -202,8 +203,8 @@ public class MyBookPage  {
 		bodyTextTrimmed = bodyText.replaceFirst("</div>","");
 		bodyText = bodyTextTrimmed;
 		bodyTextTrimmed = bodyText.replaceAll("&nbsp;[\\S\\s]*?(?=[^(&nbsp;)])","");
-//		bodyText = bodyTextTrimmed;
-//		bodyTextTrimmed = bodyText.replaceAll("<br>","\n");
+		bodyText = bodyTextTrimmed;
+		bodyTextTrimmed = bodyText.replaceAll("<br>","\n");
 //		
 		
 //		return bodyText;

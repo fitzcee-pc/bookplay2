@@ -1,10 +1,12 @@
 package bookplay2;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -58,7 +60,7 @@ public class EpubBuilder {
 
 			// Set compression level to STORED (uncompressed) for mimetype
 			zos.setLevel(ZipOutputStream.STORED);
-			addToZipFile(srcPathRoot, "mimetype", zos);
+			addToZipFile(srcPathRoot, "mimetype", zos, true);
 
 			// Set compression level to DEFLATED (compressed) for everything else
 			zos.setLevel(ZipOutputStream.DEFLATED);
@@ -97,12 +99,37 @@ public class EpubBuilder {
 	 * private methods
 	 */
 	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
+		addToZipFile(sourceFolder, fileName, zos, true);
+	}
+	
+
+	@SuppressWarnings("static-access")
+	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos, boolean compress) throws FileNotFoundException, IOException {
 
 		System.out.println("Writing '" + fileName + "' to zip file");
 
 		File file = new File(sourceFolder + fileName);
 		FileInputStream fis = new FileInputStream(file);
 		ZipEntry zipEntry = new ZipEntry(fileName);
+		if (compress) {
+			zipEntry.setMethod(ZipEntry.DEFLATED);
+		} else {
+	           int bytesRead;
+	            byte[] buffer = new byte[1024];
+	            CRC32 crc = new CRC32();
+	            try (
+	                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+	             ) {
+	                crc.reset();
+	                while ((bytesRead = bis.read(buffer)) != -1) {
+	                    crc.update(buffer, 0, bytesRead);
+	                }
+	            }
+			zipEntry.setMethod(zipEntry.STORED);
+			zipEntry.setCompressedSize(file.length());
+            zipEntry.setSize(file.length());
+            zipEntry.setCrc(crc.getValue());	
+		}
 		zos.putNextEntry(zipEntry);
 
 		byte[] bytes = new byte[1024];

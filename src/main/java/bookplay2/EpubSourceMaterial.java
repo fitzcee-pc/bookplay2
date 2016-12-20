@@ -251,9 +251,9 @@ public class EpubSourceMaterial {
 				, "	    </metadata>"
 				, "	    <manifest>"
 				, "	        <item id=\"ncx\" href=\"toc.ncx\" media-type=\"application/x-dtbncx+xml\"/>"
-				, "	        <item id=\"sample.png\" href=\"Images/sample.png\" media-type=\"image/png\"/>"
-				, "	        <item id=\"page-template.xpgt\" href=\"Styles/page-template.xpgt\" media-type=\"application/vnd.adobe-page-template+xml\"/>"
-				, "	        <item id=\"stylesheet.css\" href=\"Styles/stylesheet.css\" media-type=\"text/css\"/>"
+//				, "	        <item id=\"sample.png\" href=\"Images/sample.png\" media-type=\"image/png\"/>"
+//				, "	        <item id=\"page-template.xpgt\" href=\"Styles/page-template.xpgt\" media-type=\"application/vnd.adobe-page-template+xml\"/>"
+				, "	        <item id=\"stylesheet.css\" href=\"Styles/style.css\" media-type=\"text/css\"/>"
 
 		}));
 
@@ -261,10 +261,10 @@ public class EpubSourceMaterial {
 			lines.add("	        <item id=\"" + s + "\" href=\"Text/" + s + "\" media-type=\"application/xhtml+xml\"/>");
 		}
 
-		lines.add("        <item id=\"title_page.xhtml\" href=\"Text/title_page.xhtml\" media-type=\"application/xhtml+xml\"/>");
+//		lines.add("        <item id=\"title_page.xhtml\" href=\"Text/title_page.xhtml\" media-type=\"application/xhtml+xml\"/>");
 		lines.add("    </manifest>");
 		lines.add("    <spine toc=\"ncx\">");
-		lines.add("        <itemref idref=\"title_page.xhtml\"/>");
+//		lines.add("        <itemref idref=\"title_page.xhtml\"/>");
 
 		for(String s: chapterPathAndFilenames) {
 			lines.add("        <itemref idref=\"" + s + "\"/>");
@@ -272,8 +272,6 @@ public class EpubSourceMaterial {
 
 		lines.add("    </spine>");
 		lines.add("</package>");
-		lines.add("</navMap>");
-		lines.add("</ncx>"); 
 
 		Path path = Paths.get(srcOebpsRoot + "content.opf");
 		try {
@@ -317,7 +315,9 @@ public class EpubSourceMaterial {
 				, "</head>"
 				, "\n"
 				, "<body>"
+				, "<div>"
 				, bodyText
+				, "</div>"
 				, "</body>"
 				, "</html>"
 
