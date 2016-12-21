@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookID" version="2.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+				<dc:title>unknown title</dc:title>
+				<dc:language>en</dc:language>
+		        <dc:rights>Public Domain</dc:rights>
+				<dc:creator opf:role="aut">unknown author</dc:creator>
+		        <dc:publisher>mePub</dc:publisher>
+		        <dc:identifier id="BookID" opf:scheme="UUID">015ffaec-9340-42f8-b163-a0c5ab7d0611</dc:identifier>
+	    </metadata>
+	    <manifest>
+	        <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+	        <item id="stylesheet.css" href="Styles/style.css" media-type="text/css"/>
+	        <item id="0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html" href="Text/0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html" media-type="application/xhtml+xml"/>
+	        <item id="0002 第1519章 ：寻找大师-69书吧.html" href="Text/0002 第1519章 ：寻找大师-69书吧.html" media-type="application/xhtml+xml"/>
+	        <item id="0003 第1520章 ：被找上了门-69书吧.html" href="Text/0003 第1520章 ：被找上了门-69书吧.html" media-type="application/xhtml+xml"/>
+	        <item id="0004 第1521章 ：别这样，有外人在-69书吧.html" href="Text/0004 第1521章 ：别这样，有外人在-69书吧.html" media-type="application/xhtml+xml"/>
+    </manifest>
+    <spine toc="ncx">
+        <itemref idref="0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html"/>
+        <itemref idref="0002 第1519章 ：寻找大师-69书吧.html"/>
+        <itemref idref="0003 第1520章 ：被找上了门-69书吧.html"/>
+        <itemref idref="0004 第1521章 ：别这样，有外人在-69书吧.html"/>
+    </spine>
+</package>

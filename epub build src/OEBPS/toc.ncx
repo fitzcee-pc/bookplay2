@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+	<head>
+		<meta name="dtb:uid" content="015ffaec-9340-42f8-b163-a0c5ab7d0611" />
+</head>
+<docTitle>
+	<text>sample .epub eBook</text>
+</docTitle>
+<navMap>
+	<navPoint id="navPoint-1" playOrder="1">
+		<navLabel>
+			<text>0001 第1章 ：娶你？不可能-69书吧 My Chapter 1</text>
+		</navLabel>
+		<content src="Text/0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html" />
+	</navPoint>
+	<navPoint id="navPoint-2" playOrder="2">
+		<navLabel>
+			<text>0002 第1519章 ：寻找大师-69书吧</text>
+		</navLabel>
+		<content src="Text/0002 第1519章 ：寻找大师-69书吧.html" />
+	</navPoint>
+	<navPoint id="navPoint-3" playOrder="3">
+		<navLabel>
+			<text>0003 第1520章 ：被找上了门-69书吧</text>
+		</navLabel>
+		<content src="Text/0003 第1520章 ：被找上了门-69书吧.html" />
+	</navPoint>
+	<navPoint id="navPoint-4" playOrder="4">
+		<navLabel>
+			<text>0004 第1521章 ：别这样，有外人在-69书吧</text>
+		</navLabel>
+		<content src="Text/0004 第1521章 ：别这样，有外人在-69书吧.html" />
+	</navPoint>
+</navMap>
+</ncx>

@@ -35,17 +35,20 @@ public class EpubSourceMaterial {
 	 * OEBPS/Text/Cover.xhtml
 	 */	
 
-	private String srcRoot;
-	private static String srcMetaInf;
-	private static String srcOebpsRoot;
-	private static String srcOebpsImages;
-	private static String srcOebpsStyles;
-	private static String srcOebpsText;
+	private String srcPathRoot;
+	private static String srcPathMetaInf;
+	private static String srcPathOebpsRoot;
+	private static String srcPathOebpsImages;
+	private static String srcPathOebpsStyles;
+	private static String srcPathOebpsText;
 	private List<String> chapterPathAndFilenames = new ArrayList<>(Arrays.asList());
+	private static String bookAuthor = "unknown author";
+	private static String bookTitle = "unknown title";
 
 	/*
 	 * constructors
 	 */
+	
 	public EpubSourceMaterial(String theSrcRoot) {
 		setSrcRoot(theSrcRoot);
 	}
@@ -53,17 +56,33 @@ public class EpubSourceMaterial {
 	/*
 	 * getters and setters
 	 */
+	public static String getBookAuthor() {
+		return bookAuthor;
+	}
+	
+	public static void setBookAuthor(String bookAuthor) {
+		EpubSourceMaterial.bookAuthor = bookAuthor;
+	}
+	
+	public static String getBookTitle() {
+		return bookTitle;
+	}
+	
+	public static void setBookTitle(String bookTitle) {
+		EpubSourceMaterial.bookTitle = bookTitle;
+	}
+	
 	public String getSrcRoot() {
-		return srcRoot;
+		return srcPathRoot;
 	}
 
 	public void setSrcRoot(String theSrcRoot) {
-		srcRoot = theSrcRoot;
-		srcMetaInf = srcRoot + "META-INF" + File.separator;
-		srcOebpsRoot = srcRoot + "OEBPS" + File.separator;
-		srcOebpsImages = srcOebpsRoot + "Images" + File.separator;
-		srcOebpsStyles = srcOebpsRoot + "Styles" + File.separator;
-		srcOebpsText = srcOebpsRoot + "Text" + File.separator;
+		srcPathRoot = theSrcRoot;
+		srcPathMetaInf = srcPathRoot + "META-INF" + File.separator;
+		srcPathOebpsRoot = srcPathRoot + "OEBPS" + File.separator;
+		srcPathOebpsImages = srcPathOebpsRoot + "Images" + File.separator;
+		srcPathOebpsStyles = srcPathOebpsRoot + "Styles" + File.separator;
+		srcPathOebpsText = srcPathOebpsRoot + "Text" + File.separator;
 	}
 
 
@@ -75,7 +94,7 @@ public class EpubSourceMaterial {
 				"application/epub+zip"
 		});
 
-		Path path = Paths.get(srcRoot + "mimetype");
+		Path path = Paths.get(srcPathRoot + "mimetype");
 
 // WTF: Files.write was appending an extra, empty line at end of file.  This caused epub validation to fail		
 //      as mimetype technically had more than the specified 20 characters in it.  (Calibre could still read it though)
@@ -113,7 +132,7 @@ public class EpubSourceMaterial {
 
 		});
 
-		Path path = Paths.get(srcMetaInf + "container.xml");
+		Path path = Paths.get(srcPathMetaInf + "container.xml");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -147,7 +166,7 @@ public class EpubSourceMaterial {
 
 		});
 
-		Path path = Paths.get(srcOebpsStyles + "style.css");
+		Path path = Paths.get(srcPathOebpsStyles + "style.css");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -258,7 +277,7 @@ public class EpubSourceMaterial {
 		lines.add("</navMap>");
 		lines.add("</ncx>"); 
 
-		Path path = Paths.get(srcOebpsRoot + "toc.ncx");
+		Path path = Paths.get(srcPathOebpsRoot + "toc.ncx");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -272,11 +291,11 @@ public class EpubSourceMaterial {
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
 				, "    <metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf\">"
-				, "				<dc:title>Sample .epub eBook</dc:title>"
+				, "				<dc:title>" + this.bookTitle+ "</dc:title>"
 				, "				<dc:language>en</dc:language>"
 				, "		        <dc:rights>Public Domain</dc:rights>"
-				, "				<dc:creator opf:role=\"aut\">Yoda47</dc:creator>"
-				, "		        <dc:publisher>Jedisaber.com</dc:publisher>"
+				, "				<dc:creator opf:role=\"aut\">" + this.bookAuthor + "</dc:creator>"
+				, "		        <dc:publisher>mePub</dc:publisher>"
 				, "		        <dc:identifier id=\"BookID\" opf:scheme=\"UUID\">015ffaec-9340-42f8-b163-a0c5ab7d0611</dc:identifier>"
 				, "	    </metadata>"
 				, "	    <manifest>"
@@ -303,7 +322,7 @@ public class EpubSourceMaterial {
 		lines.add("    </spine>");
 		lines.add("</package>");
 
-		Path path = Paths.get(srcOebpsRoot + "content.opf");
+		Path path = Paths.get(srcPathOebpsRoot + "content.opf");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -353,7 +372,7 @@ public class EpubSourceMaterial {
 
 		});
 
-		Path path = Paths.get(srcOebpsText + chapterFilename);
+		Path path = Paths.get(srcPathOebpsText + chapterFilename);
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE);
 		} catch (IOException e) {
@@ -365,7 +384,7 @@ public class EpubSourceMaterial {
 	}
 	
 	public void writeChapterSequenceFile() {
-		Path path = Paths.get(srcRoot + "ChapSeq.txt");
+		Path path = Paths.get(srcPathRoot + "ChapSeq.txt");
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) 
 		{
 			for(String s: chapterPathAndFilenames) {
@@ -389,11 +408,11 @@ public class EpubSourceMaterial {
 			e.printStackTrace();
 		}
 		doFolder(getSrcRoot());
-		doFolder(srcMetaInf);
-		doFolder(srcOebpsRoot);
-		doFolder(srcOebpsImages);
-		doFolder(srcOebpsStyles);
-		doFolder(srcOebpsText);
+		doFolder(srcPathMetaInf);
+		doFolder(srcPathOebpsRoot);
+		doFolder(srcPathOebpsImages);
+		doFolder(srcPathOebpsStyles);
+		doFolder(srcPathOebpsText);
 
 	}
 	private void delete(File f) throws IOException {

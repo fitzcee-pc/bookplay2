@@ -33,50 +33,39 @@ public class Test {
 	private static MyBook myBook;
 	private static String outTextPathAndFile;
 	private static MyBookPage myBookPage;
-	private static String epubBuildRoot;
-	private static String basePath;
-	private static String startingDoc;
-	private static String epubBuildSrcRoot;
+	private static String epubSrcDocPath;
+	private static String epubSrcMaterialRootPath;
+	private static String epubBuildDestPath;
 
 	public static void main(String[] args) throws IOException {
 
-//		Double x = 1.23456;
-//		System.out.println(x.toString());
-//		System.out.println(String.format("%1.1f", x));
-//		Integer y = 1;
-//		System.out.println(String.format("%03d", y));
-//		
-		
-		
+		System.out.println("-----Begin Run-----");
+
+		Date now = Calendar.getInstance().getTime();        
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		runDateTime = df.format(now);
+
+		System.out.println(runDateTime);
+
 		initProps();
 		
-		System.out.println(runDateTime);
-		
-		EpubSourceMaterial esm = new EpubSourceMaterial(basePath + epubBuildSrcRoot);
-		
-//		doBookStuff();
-		try {
-			myBookPage = new MyBookPage(Jsoup.parse(new File(basePath + startingDoc),null),"");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-		myBook = new MyBook(null, myBookPage, null);
+////		doBookStuff();
 
+		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath);
 		esm.setupEpubBuildSrcDirStructure();
-		
 		esm.writeEpubSrc_MimetypeFile();
 		esm.writeContainerFile();
 		esm.writeCssFile();
 
-//		esm.writeChapterFile(myBook.firstPage.getBodyText(), "testChap1.html");
-//		esm.addChapterFile("testChap1.html");
-//		esm.writeChapterFile(myBook.firstPage.getNextPage().getBodyText(), "testChap2.html");
-//		esm.addChapterFile("testChap2.html");
-//		esm.writeChapterFile(myBook.firstPage.getNextPage().getNextPage().getBodyText(), "testChap3.html");
-//		esm.addChapterFile("testChap3.html");
-
-		MyBookPage page = myBook.firstPage;
+		//		MyBookPage page = myBook.firstPage;
+		MyBookPage page = null;
+		try {
+			page = new MyBookPage(Jsoup.parse(new File(epubSrcDocPath),null),"");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		
 		String chapFilename;
 
 		Integer i = 0;
@@ -96,6 +85,8 @@ public class Test {
 		esm.writeContentFile();
 		
 		EpubBuilder eb = new EpubBuilder();
+		eb.setEsm(esm);
+		eb.setEpubBuildDestPath(epubBuildDestPath);
 		eb.buildEpub();
 		
 //		esm.writeChapterSequenceFile();
@@ -114,6 +105,10 @@ public class Test {
 		
 //		doZipStuff();
 //
+		now = Calendar.getInstance().getTime();        
+		runDateTime = df.format(now);
+
+		System.out.println(runDateTime);
 		System.out.println("-----Run Complete-----");
 
 	}
@@ -121,23 +116,16 @@ public class Test {
 	private static void initProps() {
 		props = getProps();
 
-		basePath = new String(props.getProperty("basePath"));
-		startingDoc = new String(props.getProperty("startingDoc"));
-		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
-//		epubBuildRoot = new String(props.getProperty("epubBuildSrcRoot"));
-		epubBuildSrcRoot = new String(props.getProperty("epubBuildSrcRoot"));
-		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-		Date today = Calendar.getInstance().getTime();        
-		runDateTime = df.format(today);
-
+		epubSrcDocPath = new String(props.getProperty("epubSrcDocPath"));
+//		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
+		epubSrcMaterialRootPath = new String(props.getProperty("epubSrcMaterialRootPath"));
+		epubBuildDestPath = new String(props.getProperty("epubBuildDestPath"));
 		
 	}
 	
 	private static void doBookStuff() {
 		try {
-			myBookPage = new MyBookPage(Jsoup.parse(new File(basePath + startingDoc),null),"");
+			myBookPage = new MyBookPage(Jsoup.parse(new File(epubSrcDocPath),null),"");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -255,9 +243,9 @@ public class Test {
 //			addToZipFile(file1Name, zos);
 //			zos.setLevel(ZipOutputStream.DEFLATED);
 //			addToZipFile(file2Name, zos);
-//			addToZipFile(file3Name, zos);
 //			addToZipFile(file4Name, zos);
 //			addToZipFile(file5Name, zos);
+//			addToZipFile(file3Name, zos);
 
 			zos.close();
 			fos.close();

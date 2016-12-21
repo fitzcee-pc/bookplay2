@@ -16,10 +16,9 @@ import java.util.zip.ZipOutputStream;
 
 public class EpubBuilder {
 
-	private EpubSourceMaterial esm;
-	private String destPath;
-	private String destFilename;
-	private static String srcPathRoot;
+	private static EpubSourceMaterial esm;
+//	private static String srcPathRoot;
+	private static String epubBuildDestPath;
 	
 	/*
 	 * constructors
@@ -28,15 +27,24 @@ public class EpubBuilder {
 	/*
 	 * getters and setters
 	 */
-	public String getSrcPathRoot() {
-		return srcPathRoot;
-	}
 
-	public void setSrcPathRoot(String srcPathRoot) {
-		this.srcPathRoot = srcPathRoot;
+	public static String getEpubBuildDestPath() {
+		return epubBuildDestPath;
 	}
+	
+	public static void setEpubBuildDestPath(String epubBuildDestPath) {
+		EpubBuilder.epubBuildDestPath = epubBuildDestPath;
+	}
+	
+//	public String getSrcPathRoot() {
+//		return srcPathRoot;
+//	}
+//
+//	public void setSrcPathRoot(String srcPathRoot) {
+//		this.srcPathRoot = srcPathRoot;
+//	}
 
-	public EpubSourceMaterial getEsm() {
+	public static EpubSourceMaterial getEsm() {
 		return esm;
 	}
 
@@ -44,34 +52,25 @@ public class EpubBuilder {
 		this.esm = esm;
 	}
 
-	public void setDestPath(String destPath) {
-		this.destPath = destPath;
-	}
-
-	public void setDestFilename(String destFilename) {
-		this.destFilename = destFilename;
-	}
-
 	/*
 	 * public methods
 	 */
 	public static void buildEpub() {
-		srcPathRoot = "epub build src/";
 		try {
-			FileOutputStream fos = new FileOutputStream("epub build dest/testBook01.epub");
+			FileOutputStream fos = new FileOutputStream(getEpubBuildDestPath() + getEsm().getBookTitle() + ".epub");
 			ZipOutputStream zos = new ZipOutputStream(fos);
 
 
 			// Set compression level to STORED (uncompressed) for mimetype
 			zos.setLevel(ZipOutputStream.STORED);
-			addToZipFile(srcPathRoot, "mimetype", zos, false);
+			addToZipFile(esm.getSrcRoot(), "mimetype", zos, false);
 
 			// Set compression level to DEFLATED (compressed) for everything else
 			zos.setLevel(ZipOutputStream.DEFLATED);
-			addToZipFile(srcPathRoot, "META-INF/container.xml", zos);
-			addToZipFile(srcPathRoot, "OEBPS/content.opf", zos);
-			addToZipFile(srcPathRoot, "OEBPS/toc.ncx", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Styles/style.css", zos);
+			addToZipFile(esm.getSrcRoot(), "META-INF" + File.separator + "container.xml", zos);
+			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "content.opf", zos);
+			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "toc.ncx", zos);
+			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "Styles" + File.separator + "style.css", zos);
 
 			
 //			FileUtils.listFiles(directory, extensions, recursive)
@@ -79,12 +78,13 @@ public class EpubBuilder {
 //			         FileFilterUtils.suffixFileFilter(".txt"), TrueFileFilter.INSTANCE);
 			
 			
-			try(Stream<Path> paths = Files.walk(Paths.get(srcPathRoot + "OEBPS/Text/"))) {
+			try(Stream<Path> paths = Files.walk(Paths.get(esm.getSrcRoot() + "OEBPS" + File.separator + "Text" + File.separator))) {
 			    paths.forEach(filePath -> {
 			        if (Files.isRegularFile(filePath)) {
-			        	String name = new String(filePath.subpath(1, filePath.getNameCount()).toString());
+			        	// TODO refactor, maybe don't need two parts any more?  maybe find better way to find OEBPS than assume "-3"?
+			        	String name = new String(filePath.subpath(filePath.getNameCount() - 3, filePath.getNameCount()).toString());
 						try {
-							addToZipFile(srcPathRoot, name, zos);
+							addToZipFile(esm.getSrcRoot(), name, zos);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -92,22 +92,6 @@ public class EpubBuilder {
 			        }
 			    });
 			} 
-			
-//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0001.html", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0002.html", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0003.html", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0004.html", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Images/epub_logo_color.jpg", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori1.jpg", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori2.jpg", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori3.jpg", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/002.xhtml", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/003.xhtml", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/004.xhtml", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/005.xhtml", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/Contents.xhtml", zos);
-//			addToZipFile(srcPathRoot, "OEBPS/Text/Cover.xhtml", zos);
-
 			
 			zos.close();
 			fos.close();
