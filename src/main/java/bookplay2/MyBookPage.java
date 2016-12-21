@@ -26,6 +26,7 @@ public class MyBookPage  {
 	String indexPageName = new String("");
 	String prevPageName = new String("");
 	String nextPageName = new String("");
+	String chapterName = new String("");
 
 	public MyBookPage(Document theDoc, String outfileName) {
 		
@@ -122,7 +123,22 @@ public class MyBookPage  {
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
+					
+//					try {
+////						p1 = Pattern.compile("(?is)chaptername = \"(.+?)\""); // Regex for the value of the key
+////						p1 = Pattern.compile("(?is)chaptername=\"(.+?)\""); // Regex for the value of the key
+//						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
+//						while (m1.find()) {
+//							chapterName = m1.group(1); // value only
+//						}
+//					} catch (Exception e1) {
+//						e1.printStackTrace();
+//					}
 
+					chapterName = this.doc.title();
+					Integer beginIndex = (chapterName.indexOf(".") == -1) ? 0 : chapterName.indexOf(".") + 1;
+					
+					chapterName = chapterName.substring(beginIndex, chapterName.length());
 				}
 
 
@@ -204,7 +220,7 @@ public class MyBookPage  {
 		bodyText = bodyTextTrimmed;
 		bodyTextTrimmed = bodyText.replaceAll("&nbsp;[\\S\\s]*?(?=[^(&nbsp;)])","");
 		bodyText = bodyTextTrimmed;
-		bodyTextTrimmed = bodyText.replaceAll("<br>","\n");
+		bodyTextTrimmed = bodyText.replaceAll("<br>","<br />");
 //		
 		
 //		return bodyText;

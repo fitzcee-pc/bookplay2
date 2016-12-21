@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -63,15 +67,36 @@ public class EpubBuilder {
 			addToZipFile(srcPathRoot, "mimetype", zos, false);
 
 			// Set compression level to DEFLATED (compressed) for everything else
-//			zos.setLevel(ZipOutputStream.DEFLATED);
+			zos.setLevel(ZipOutputStream.DEFLATED);
 			addToZipFile(srcPathRoot, "META-INF/container.xml", zos);
 			addToZipFile(srcPathRoot, "OEBPS/content.opf", zos);
 			addToZipFile(srcPathRoot, "OEBPS/toc.ncx", zos);
 			addToZipFile(srcPathRoot, "OEBPS/Styles/style.css", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/testChap1.html", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/testChap2.html", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/testChap3.html", zos);
-			addToZipFile(srcPathRoot, "OEBPS/Text/testChap4.html", zos);
+
+			
+//			FileUtils.listFiles(directory, extensions, recursive)
+//			Collection<File> files = FileUtils.listFiles(FileUtils.getFile(srcPathRoot + "OEBPS/"),
+//			         FileFilterUtils.suffixFileFilter(".txt"), TrueFileFilter.INSTANCE);
+			
+			
+			try(Stream<Path> paths = Files.walk(Paths.get(srcPathRoot + "OEBPS/Text/"))) {
+			    paths.forEach(filePath -> {
+			        if (Files.isRegularFile(filePath)) {
+			        	String name = new String(filePath.subpath(1, filePath.getNameCount()).toString());
+						try {
+							addToZipFile(srcPathRoot, name, zos);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			        }
+			    });
+			} 
+			
+//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0001.html", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0002.html", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0003.html", zos);
+//			addToZipFile(srcPathRoot, "OEBPS/Text/Chapter0004.html", zos);
 //			addToZipFile(srcPathRoot, "OEBPS/Images/epub_logo_color.jpg", zos);
 //			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori1.jpg", zos);
 //			addToZipFile(srcPathRoot, "OEBPS/Images/Tutori2.jpg", zos);
@@ -111,8 +136,8 @@ public class EpubBuilder {
 		File file = new File(sourceFolder + fileName);
 		FileInputStream fis = new FileInputStream(file);
 		ZipEntry zipEntry = new ZipEntry(fileName);
-		if (compress && !compress) {
-			zipEntry.setMethod(ZipEntry.STORED);
+		if (compress) {
+			zipEntry.setMethod(ZipEntry.DEFLATED);
 		} else {
 	           int bytesRead;
 	            byte[] buffer = new byte[1024];

@@ -2,6 +2,7 @@ package bookplay2;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
@@ -235,11 +236,20 @@ public class EpubSourceMaterial {
 		}));
 
 		Integer i = 0;
+		Integer endIndex = 1;
 		for(String s: chapterPathAndFilenames) {
 			i++;
+			if (s.indexOf(".html") != -1) {
+				endIndex = s.indexOf(".html"); 
+			} else if (s.indexOf(".html") != -1) {
+				endIndex = s.indexOf(".html"); 
+			} else {
+				endIndex = s.length() + 1;
+			}
+		
 			lines.add("	<navPoint id=\"navPoint-" + i.toString() + "\" playOrder=\"" + i.toString() + "\">");
 			lines.add("		<navLabel>");
-			lines.add("			<text>" + s + "</text>");
+			lines.add("			<text>" + s.substring(0, endIndex) + "</text>");
 			lines.add("		</navLabel>");
 			lines.add("		<content src=\"Text/" + s + "\" />");
 			lines.add("	</navPoint>");
@@ -371,6 +381,13 @@ public class EpubSourceMaterial {
 	}
 	
 	public void setupEpubBuildSrcDirStructure() {
+		
+		try {
+			delete(new File(getSrcRoot()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		doFolder(getSrcRoot());
 		doFolder(srcMetaInf);
 		doFolder(srcOebpsRoot);
@@ -379,7 +396,14 @@ public class EpubSourceMaterial {
 		doFolder(srcOebpsText);
 
 	}
-	
+	private void delete(File f) throws IOException {
+		  if (f.isDirectory()) {
+		    for (File c : f.listFiles())
+		      delete(c);
+		  }
+		  if (!f.delete())
+		    throw new FileNotFoundException("Failed to delete file: " + f);
+		}
 	/*
 	 * private methods
 	 */

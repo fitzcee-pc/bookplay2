@@ -8,24 +8,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -85,14 +77,21 @@ public class Test {
 //		esm.addChapterFile("testChap3.html");
 
 		MyBookPage page = myBook.firstPage;
+		String chapFilename;
 
 		Integer i = 0;
 		do {
 			i++;
-			esm.writeChapterFile(page.getBodyText(), "testChap" + i.toString() + ".html");
-			esm.addChapterFile("testChap" + i.toString() + ".html");
+			if (page.chapterName.isEmpty()) {
+				chapFilename = new String("" + String.format("%04d", i) + ".html");
+			} else {
+				chapFilename = new String("" + String.format("%04d", i) + " " + page.chapterName + ".html");
+			}
+			esm.writeChapterFile(page.getBodyText(), chapFilename);
+			System.out.println("Add to Src: " + chapFilename);
+			esm.addChapterFile(chapFilename);
 		} while ((page = page.getNextPage()) != null);
-		
+
 		esm.writeTocFile();
 		esm.writeContentFile();
 		
