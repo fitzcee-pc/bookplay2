@@ -3,6 +3,7 @@ package bookplay2;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -10,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 
@@ -73,10 +75,28 @@ public class EpubSourceMaterial {
 		});
 
 		Path path = Paths.get(srcRoot + "mimetype");
-		try {
-			Files.write(path, lines, StandardCharsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
+
+// WTF: Files.write was appending an extra, empty line at end of file.  This caused epub validation to fail		
+//      as mimetype technically had more than the specified 20 characters in it.  (Calibre could still read it though)
+//      Switch to BufferedWriter made it work.
+//
+//		try {
+////			Files.write(path, lines, StandardCharsets.UTF_8);
+//			Files.write(path, Collections.singletonList("application/epub+zip"), StandardCharsets.UTF_8);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
+		String txt = new String("application/epub+zip");
+		final int chunkSize=8000;
+		try(Writer w=Files.newBufferedWriter(path)) {
+		    for(int s=0, e; s<txt.length(); s=e) {
+		        e=Math.min(s+chunkSize, txt.length());
+		        w.append(txt.subSequence(s, e));
+		    }
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
 	}

@@ -60,10 +60,10 @@ public class EpubBuilder {
 
 			// Set compression level to STORED (uncompressed) for mimetype
 			zos.setLevel(ZipOutputStream.STORED);
-			addToZipFile(srcPathRoot, "mimetype", zos, true);
+			addToZipFile(srcPathRoot, "mimetype", zos, false);
 
 			// Set compression level to DEFLATED (compressed) for everything else
-			zos.setLevel(ZipOutputStream.DEFLATED);
+//			zos.setLevel(ZipOutputStream.DEFLATED);
 			addToZipFile(srcPathRoot, "META-INF/container.xml", zos);
 			addToZipFile(srcPathRoot, "OEBPS/content.opf", zos);
 			addToZipFile(srcPathRoot, "OEBPS/toc.ncx", zos);
@@ -111,8 +111,8 @@ public class EpubBuilder {
 		File file = new File(sourceFolder + fileName);
 		FileInputStream fis = new FileInputStream(file);
 		ZipEntry zipEntry = new ZipEntry(fileName);
-		if (compress) {
-			zipEntry.setMethod(ZipEntry.DEFLATED);
+		if (compress && !compress) {
+			zipEntry.setMethod(ZipEntry.STORED);
 		} else {
 	           int bytesRead;
 	            byte[] buffer = new byte[1024];
