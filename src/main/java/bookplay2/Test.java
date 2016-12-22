@@ -36,7 +36,8 @@ public class Test {
 	private static String epubSrcDocPath;
 	private static String epubSrcMaterialRootPath;
 	private static String epubBuildDestPath;
-
+	private static Integer epubSrcMaterialLevel1Multiple;
+	
 	public static void main(String[] args) throws IOException {
 
 		System.out.println("-----Begin Run-----");
@@ -51,7 +52,8 @@ public class Test {
 		
 ////		doBookStuff();
 
-		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath);
+		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, epubSrcMaterialLevel1Multiple);
+//		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, 2);
 		esm.setupEpubBuildSrcDirStructure();
 		esm.writeEpubSrc_MimetypeFile();
 		esm.writeContainerFile();
@@ -119,6 +121,7 @@ public class Test {
 		props = getProps();
 
 		epubSrcDocPath = new String(props.getProperty("epubSrcDocPath"));
+		epubSrcMaterialLevel1Multiple = new Integer(props.getProperty("epubSrcMaterialLevel1Multiple"));
 //		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
 		epubSrcMaterialRootPath = new String(props.getProperty("epubSrcMaterialRootPath"));
 		epubBuildDestPath = new String(props.getProperty("epubBuildDestPath"));

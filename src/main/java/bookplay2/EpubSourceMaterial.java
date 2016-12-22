@@ -44,6 +44,7 @@ public class EpubSourceMaterial {
 	private List<String> chapterPathAndFilenames = new ArrayList<>(Arrays.asList());
 	private static String bookAuthor = "unknown author";
 	private static String bookTitle = "unknown title";
+	private Integer level1Multiple;
 
 	/*
 	 * constructors
@@ -51,6 +52,12 @@ public class EpubSourceMaterial {
 	
 	public EpubSourceMaterial(String theSrcRoot) {
 		setSrcRoot(theSrcRoot);
+		level1Multiple = 10;
+	}
+
+	public EpubSourceMaterial(String theSrcRoot, Integer level1Multiple) {
+		setSrcRoot(theSrcRoot);
+		this.level1Multiple = level1Multiple;
 	}
 
 	/*
@@ -254,13 +261,15 @@ public class EpubSourceMaterial {
 
 		}));
 
-		Integer level1Multiple = 2;
-		Integer level = 1;
-		Integer i = 0;
+		Integer curLevel = 1;
+		Integer playOrder = 0;
+		Integer chapterCount = 0;
 		Integer endIndex = 1;
-		Boolean indentedAtLeastOnce = false;
+
 		for(String s: chapterPathAndFilenames) {
-			i++;
+			playOrder++;
+			chapterCount++;
+			
 			if (s.indexOf(".html") != -1) {
 				endIndex = s.indexOf(".html"); 
 			} else if (s.indexOf(".html") != -1) {
@@ -269,20 +278,27 @@ public class EpubSourceMaterial {
 				endIndex = s.length() + 1;
 			}
 		
-			if (i % level1Multiple == 0) {
-				if (indentedAtLeastOnce){
-					level--;
+
+			if ( (playOrder == 1) || ((chapterCount - 1) % level1Multiple == 0) ) {
+				/* TODO WTF: validator giving errors about multiple navPoints with same target.  I found this to be
+				 * because <content src= ... /> had same page. I tried using a # at the end of one, but validator complained because
+				 * that anchor didn't exist in the doc. I don't know what to put in <content /> to just have it fold in lower nav
+				 * without pointing to page itself.  Giving up now as reader seems to handle it ok and only validator is complaining
+				 * NOTE TO SELF: ignore these errors in validator and get used to not seeing a clean report.
+				*/
+				if (curLevel > 1) {
+					curLevel--;
 					lines.add("	</navPoint>");
 				}
-				level++;
-				lines.add("	<navPoint id=\"navPoint-" + "2-3" + "\" playOrder=\"" + i.toString() + "\">");
+				curLevel++;
+				lines.add("	<navPoint id=\"navPoint-" + playOrder.toString() + "\" playOrder=\"" + playOrder.toString() + "\">");
 				lines.add("		<navLabel>");
-				lines.add("			<text>" + "2-3" + "</text>");
+				lines.add("			<text>Chapter: " + chapterCount.toString() + "</text>");
 				lines.add("		</navLabel>");
 				lines.add("		<content src=\"Text/" + s + "\" />");
-				
+				playOrder++;
 			}
-			lines.add("	<navPoint id=\"navPoint-" + i.toString() + "\" playOrder=\"" + i.toString() + "\">");
+			lines.add("	<navPoint id=\"navPoint-" + playOrder.toString() + "\" playOrder=\"" + playOrder.toString() + "\">");
 			lines.add("		<navLabel>");
 			lines.add("			<text>" + s.substring(0, endIndex) + "</text>");
 			lines.add("		</navLabel>");
@@ -294,9 +310,9 @@ public class EpubSourceMaterial {
 //			}
 		}
 		
-		while (level > 1) {
+		while (curLevel > 1) {
 			lines.add("	</navPoint>");
-			level--;
+			curLevel--;
 		}
 
 		lines.add("</navMap>");
