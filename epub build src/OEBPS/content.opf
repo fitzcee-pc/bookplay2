@@ -11,15 +11,15 @@
 	    <manifest>
 	        <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
 	        <item id="stylesheet.css" href="Styles/style.css" media-type="text/css"/>
-	        <item id="0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html" href="Text/0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html" media-type="application/xhtml+xml"/>
-	        <item id="0002 第1519章 ：寻找大师-69书吧.html" href="Text/0002 第1519章 ：寻找大师-69书吧.html" media-type="application/xhtml+xml"/>
-	        <item id="0003 第1520章 ：被找上了门-69书吧.html" href="Text/0003 第1520章 ：被找上了门-69书吧.html" media-type="application/xhtml+xml"/>
-	        <item id="0004 第1521章 ：别这样，有外人在-69书吧.html" href="Text/0004 第1521章 ：别这样，有外人在-69书吧.html" media-type="application/xhtml+xml"/>
+	        <item id="x0001" href="Text/0001 第1章 -娶你？不可能-69书吧 My Chapter 1.html" media-type="application/xhtml+xml"/>
+	        <item id="x0002" href="Text/0002 第1519章 -寻找大师-69书吧.html" media-type="application/xhtml+xml"/>
+	        <item id="x0003" href="Text/0003 第1520章 -被找上了门-69书吧.html" media-type="application/xhtml+xml"/>
+	        <item id="x0004" href="Text/0004 第1521章 -别这样，有外人在-69书吧.html" media-type="application/xhtml+xml"/>
     </manifest>
     <spine toc="ncx">
-        <itemref idref="0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html"/>
-        <itemref idref="0002 第1519章 ：寻找大师-69书吧.html"/>
-        <itemref idref="0003 第1520章 ：被找上了门-69书吧.html"/>
-        <itemref idref="0004 第1521章 ：别这样，有外人在-69书吧.html"/>
+        <itemref idref="x0001"/>
+        <itemref idref="x0002"/>
+        <itemref idref="x0003"/>
+        <itemref idref="x0004"/>
     </spine>
 </package>

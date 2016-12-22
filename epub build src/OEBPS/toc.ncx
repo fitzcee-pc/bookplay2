@@ -9,27 +9,39 @@
 <navMap>
 	<navPoint id="navPoint-1" playOrder="1">
 		<navLabel>
-			<text>0001 第1章 ：娶你？不可能-69书吧 My Chapter 1</text>
+			<text>0001 第1章 -娶你？不可能-69书吧 My Chapter 1</text>
 		</navLabel>
-		<content src="Text/0001 第1章 ：娶你？不可能-69书吧 My Chapter 1.html" />
+		<content src="Text/0001 第1章 -娶你？不可能-69书吧 My Chapter 1.html" />
 	</navPoint>
+	<navPoint id="navPoint-2-3" playOrder="2">
+		<navLabel>
+			<text>2-3</text>
+		</navLabel>
+		<content src="Text/0002 第1519章 -寻找大师-69书吧.html" />
 	<navPoint id="navPoint-2" playOrder="2">
 		<navLabel>
-			<text>0002 第1519章 ：寻找大师-69书吧</text>
+			<text>0002 第1519章 -寻找大师-69书吧</text>
 		</navLabel>
-		<content src="Text/0002 第1519章 ：寻找大师-69书吧.html" />
+		<content src="Text/0002 第1519章 -寻找大师-69书吧.html" />
 	</navPoint>
 	<navPoint id="navPoint-3" playOrder="3">
 		<navLabel>
-			<text>0003 第1520章 ：被找上了门-69书吧</text>
+			<text>0003 第1520章 -被找上了门-69书吧</text>
 		</navLabel>
-		<content src="Text/0003 第1520章 ：被找上了门-69书吧.html" />
+		<content src="Text/0003 第1520章 -被找上了门-69书吧.html" />
 	</navPoint>
+	<navPoint id="navPoint-2-3" playOrder="4">
+		<navLabel>
+			<text>2-3</text>
+		</navLabel>
+		<content src="Text/0004 第1521章 -别这样，有外人在-69书吧.html" />
 	<navPoint id="navPoint-4" playOrder="4">
 		<navLabel>
-			<text>0004 第1521章 ：别这样，有外人在-69书吧</text>
+			<text>0004 第1521章 -别这样，有外人在-69书吧</text>
 		</navLabel>
-		<content src="Text/0004 第1521章 ：别这样，有外人在-69书吧.html" />
+		<content src="Text/0004 第1521章 -别这样，有外人在-69书吧.html" />
+	</navPoint>
+	</navPoint>
 	</navPoint>
 </navMap>
 </ncx>

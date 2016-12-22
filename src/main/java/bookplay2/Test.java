@@ -76,6 +76,8 @@ public class Test {
 			} else {
 				chapFilename = new String("" + String.format("%04d", i) + " " + page.chapterName + ".html");
 			}
+			String chapFilenameXX = chapFilename.replaceAll("：", "-");  // NOTE: this is not a (regular) colon.  i had to copy-paste from the chinese title to get the char
+			chapFilename = chapFilenameXX;
 			esm.writeChapterFile(page.getBodyText(), chapFilename);
 			System.out.println("Add to Src: " + chapFilename);
 			esm.addChapterFile(chapFilename);

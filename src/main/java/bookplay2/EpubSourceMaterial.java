@@ -254,8 +254,11 @@ public class EpubSourceMaterial {
 
 		}));
 
+		Integer level1Multiple = 2;
+		Integer level = 1;
 		Integer i = 0;
 		Integer endIndex = 1;
+		Boolean indentedAtLeastOnce = false;
 		for(String s: chapterPathAndFilenames) {
 			i++;
 			if (s.indexOf(".html") != -1) {
@@ -266,12 +269,34 @@ public class EpubSourceMaterial {
 				endIndex = s.length() + 1;
 			}
 		
+			if (i % level1Multiple == 0) {
+				if (indentedAtLeastOnce){
+					level--;
+					lines.add("	</navPoint>");
+				}
+				level++;
+				lines.add("	<navPoint id=\"navPoint-" + "2-3" + "\" playOrder=\"" + i.toString() + "\">");
+				lines.add("		<navLabel>");
+				lines.add("			<text>" + "2-3" + "</text>");
+				lines.add("		</navLabel>");
+				lines.add("		<content src=\"Text/" + s + "\" />");
+				
+			}
 			lines.add("	<navPoint id=\"navPoint-" + i.toString() + "\" playOrder=\"" + i.toString() + "\">");
 			lines.add("		<navLabel>");
 			lines.add("			<text>" + s.substring(0, endIndex) + "</text>");
 			lines.add("		</navLabel>");
 			lines.add("		<content src=\"Text/" + s + "\" />");
 			lines.add("	</navPoint>");
+//			if (i == 3) {
+//				level--;
+//				lines.add("	</navPoint>");
+//			}
+		}
+		
+		while (level > 1) {
+			lines.add("	</navPoint>");
+			level--;
 		}
 
 		lines.add("</navMap>");
@@ -306,8 +331,14 @@ public class EpubSourceMaterial {
 
 		}));
 
+//		for(String s: chapterPathAndFilenames) {
+//			lines.add("	        <item id=\"" + s + "\" href=\"Text/" + s + "\" media-type=\"application/xhtml+xml\"/>");
+//		}
+//
+		Integer index = 0;
 		for(String s: chapterPathAndFilenames) {
-			lines.add("	        <item id=\"" + s + "\" href=\"Text/" + s + "\" media-type=\"application/xhtml+xml\"/>");
+			index++;
+			lines.add("	        <item id=\"x" + String.format("%04d", index) + "\" href=\"Text/" + s + "\" media-type=\"application/xhtml+xml\"/>");
 		}
 
 //		lines.add("        <item id=\"title_page.xhtml\" href=\"Text/title_page.xhtml\" media-type=\"application/xhtml+xml\"/>");
@@ -315,8 +346,11 @@ public class EpubSourceMaterial {
 		lines.add("    <spine toc=\"ncx\">");
 //		lines.add("        <itemref idref=\"title_page.xhtml\"/>");
 
+		index = 0;
 		for(String s: chapterPathAndFilenames) {
-			lines.add("        <itemref idref=\"" + s + "\"/>");
+			index++;
+//			lines.add("        <itemref idref=\"" + s + "\"/>");
+			lines.add("        <itemref idref=\"x" + String.format("%04d", index) + "\"/>");
 		}
 
 		lines.add("    </spine>");
@@ -337,7 +371,7 @@ public class EpubSourceMaterial {
 	}
 	
 	public  void writeChapterFile(String bodyText, String chapterFilename) {
-
+		
 		if (bodyText == null) {
 			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
 					+ "\n" + "\t\t<p class=\"sgc-3\">Body text goes here.</p>" + "\n" + "\t\t<p>&nbsp;</p>";
