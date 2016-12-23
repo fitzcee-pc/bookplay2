@@ -57,6 +57,8 @@ public class EpubBuilder {
 	 */
 	public static void buildEpub() {
 		try {
+			System.out.println(">>>>>> building " + esm.getBookTitle()  + " epub.........");
+
 			FileOutputStream fos = new FileOutputStream(getEpubBuildDestPath() + getEsm().getBookTitle() + ".epub");
 			ZipOutputStream zos = new ZipOutputStream(fos);
 
@@ -69,6 +71,7 @@ public class EpubBuilder {
 			zos.setLevel(ZipOutputStream.DEFLATED);
 			addToZipFile(esm.getSrcRoot(), "META-INF" + File.separator + "container.xml", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "content.opf", zos);
+			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "coverpage.html", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "toc.ncx", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "Styles" + File.separator + "style.css", zos);
 
@@ -77,6 +80,21 @@ public class EpubBuilder {
 //			Collection<File> files = FileUtils.listFiles(FileUtils.getFile(srcPathRoot + "OEBPS/"),
 //			         FileFilterUtils.suffixFileFilter(".txt"), TrueFileFilter.INSTANCE);
 			
+			
+			try(Stream<Path> paths = Files.walk(Paths.get(esm.getSrcRoot() + "OEBPS" + File.separator + "Images" + File.separator))) {
+			    paths.forEach(filePath -> {
+			        if (Files.isRegularFile(filePath)) {
+			        	// TODO refactor, maybe don't need two parts any more?  maybe find better way to find OEBPS than assume "-3"?
+			        	String name = new String(filePath.subpath(filePath.getNameCount() - 3, filePath.getNameCount()).toString());
+						try {
+							addToZipFile(esm.getSrcRoot(), name, zos);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			        }
+			    });
+			} 
 			
 			try(Stream<Path> paths = Files.walk(Paths.get(esm.getSrcRoot() + "OEBPS" + File.separator + "Text" + File.separator))) {
 			    paths.forEach(filePath -> {

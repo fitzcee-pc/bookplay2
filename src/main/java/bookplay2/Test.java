@@ -34,9 +34,11 @@ public class Test {
 	private static String outTextPathAndFile;
 	private static MyBookPage myBookPage;
 	private static String epubSrcDocPath;
+	private static String epubSrcDocImagePath;
 	private static String epubSrcMaterialRootPath;
 	private static String epubBuildDestPath;
 	private static Integer epubSrcMaterialLevel1Multiple;
+	private static String epubSrcMaterialBookTitle;
 	
 	public static void main(String[] args) throws IOException {
 
@@ -56,8 +58,8 @@ public class Test {
 //		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, 2);
 		esm.setupEpubBuildSrcDirStructure();
 		esm.writeEpubSrc_MimetypeFile();
-		esm.writeContainerFile();
-		esm.writeCssFile();
+		esm.writeEpubSrc_ContainerFile();
+		esm.writeEpubSrc_CssFile();
 
 		//		MyBookPage page = myBook.firstPage;
 		MyBookPage page = null;
@@ -80,13 +82,18 @@ public class Test {
 			}
 			String chapFilenameXX = chapFilename.replaceAll("：", "-");  // NOTE: this is not a (regular) colon.  i had to copy-paste from the chinese title to get the char
 			chapFilename = chapFilenameXX;
-			esm.writeChapterFile(page.getBodyText(), chapFilename);
+			esm.writeEpubSrc_ChapterFile(page.getBodyText(), chapFilename);
 			System.out.println("Add to Src: " + chapFilename);
 			esm.addChapterFile(chapFilename);
 		} while ((page = page.getNextPage()) != null);
 
-		esm.writeTocFile();
-		esm.writeContentFile();
+		esm.setBookTitle(epubSrcMaterialBookTitle);
+		esm.setSrcDocImagePath(epubSrcDocImagePath);
+		esm.writeEpubSrc_ImageFile(new File(epubSrcDocImagePath) );
+		esm.writeEpubSrc_CoverPageFile("xxx", "yyy");
+		esm.writeEpubSrc_HtmlCoverPageFile("xxx", "yyy");
+		esm.writeEpubSrc_TocFile();
+		esm.writeEpubSrc_ContentFile();
 		
 		EpubBuilder eb = new EpubBuilder();
 		eb.setEsm(esm);
@@ -121,10 +128,12 @@ public class Test {
 		props = getProps();
 
 		epubSrcDocPath = new String(props.getProperty("epubSrcDocPath"));
+		epubSrcDocImagePath = new String(props.getProperty("epubSrcDocImagePath"));
 		epubSrcMaterialLevel1Multiple = new Integer(props.getProperty("epubSrcMaterialLevel1Multiple"));
 //		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
 		epubSrcMaterialRootPath = new String(props.getProperty("epubSrcMaterialRootPath"));
 		epubBuildDestPath = new String(props.getProperty("epubBuildDestPath"));
+		epubSrcMaterialBookTitle = new String(props.getProperty("epubSrcMaterialBookTitle"));
 		
 	}
 	
