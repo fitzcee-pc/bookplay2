@@ -26,15 +26,15 @@ public class EpubSourceMaterial {
 	 * META-INF/container.xml
 	 * OEBPS/content.opf
 	 * OEBPS/toc.ncx
-	 * OEBPS/Images/epub_logo_color.jpg
-	 * OEBPS/Images/img1.jpg
-	 * OEBPS/Images/img2.jpg
+	 * OEBPS/cover.jpg   (optional)
+	 * OEBPS/coverpage.html		(optional.  used to display cover image on readers that don't honor <id=cover>
+	 * OEBPS/Images/<image.jpg>  (optional.  any images used in content)
 	 * OEBPS/Styles/style.css
 	 * OEBPS/Text/chap002.xhtml
 	 * OEBPS/Text/chap003.xhtml
 	 * OEBPS/Text/chap004.xhtml
 	 * OEBPS/Text/Contents.xhtml
-	 * OEBPS/Text/Cover.xhtml
+	 * OEBPS/Text/htmltoc.xhtml  
 	 */	
 
 	private String srcPathRoot;
@@ -72,7 +72,7 @@ public class EpubSourceMaterial {
 
 	public EpubSourceMaterial(String theSrcRoot, Integer level1Multiple) {
 		setSrcRoot(theSrcRoot);
-		this.level1Multiple = level1Multiple;
+		setLevel1Multiple(level1Multiple);
 	}
 
 	/*
@@ -108,10 +108,18 @@ public class EpubSourceMaterial {
 	}
 
 
+	public Integer getLevel1Multiple() {
+		return level1Multiple;
+	}
+
+	public void setLevel1Multiple(Integer level1Multiple) {
+		this.level1Multiple = level1Multiple;
+	}
+
 	/*
 	 * public methods
 	 */
-	public void prepEpubSrc_WriteMimetypeFile() {
+	public void createMimetypeFile() {
 		List<String> lines = Arrays.asList(new String[] { 
 				"application/epub+zip"
 		});
@@ -143,7 +151,7 @@ public class EpubSourceMaterial {
 
 	}
 
-	public void prepEpubSrc_WriteContainerFile() {
+	public void createContainerFile() {
 		List<String> lines = Arrays.asList(new String[] { 
 				  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">"
@@ -163,7 +171,7 @@ public class EpubSourceMaterial {
 
 	}
 	
-	public void prepEpubSrc_WriteCssFile() {
+	public void createCssFile() {
 		List<String> lines = Arrays.asList(new String[] { 
 				  "/* Style Sheet */"
 				, "/* This defines styles and classes used in the book */"
@@ -197,7 +205,7 @@ public class EpubSourceMaterial {
 
 	}
 
-	public void prepEpubSrc_TocFile___OverlyComplicated() {
+	public void createEpubSrc_TocFile___OverlyComplicated() {
 		// according to one source, much of this is not needed.
 		// https://gist.github.com/elmimmo/d7b8dbebc4e972734e9a
 //		List<String> lines = Arrays.asList(new String[] { 
@@ -259,7 +267,7 @@ public class EpubSourceMaterial {
 //
 	}
 
-	public void prepEpubSrc_WriteTocFile() {
+	public void createTocFile() {
 		// WTF: what is the diff?  http://stackoverflow.com/questions/16748030/difference-between-arrays-aslistarray-vs-new-arraylistintegerarrays-aslist
 		// List<String> lines = Arrays.asList(new String[] { 
 		// the one above wouldn't let me lines.add
@@ -294,7 +302,7 @@ public class EpubSourceMaterial {
 			}
 		
 
-			if ( (playOrder == 1) || ((chapterCount - 1) % level1Multiple == 0) ) {
+			if ( (getLevel1Multiple() > 0) && (playOrder == 1) || ((chapterCount - 1) % getLevel1Multiple() == 0) ) {
 				/* TODO WTF: validator giving errors about multiple navPoints with same target.  I found this to be
 				 * because <content src= ... /> had same page. I tried using a # at the end of one, but validator complained because
 				 * that anchor didn't exist in the doc. I don't know what to put in <content /> to just have it fold in lower nav
@@ -319,15 +327,13 @@ public class EpubSourceMaterial {
 			lines.add("		</navLabel>");
 			lines.add("		<content src=\"Text/" + s + "\" />");
 			lines.add("	</navPoint>");
-//			if (i == 3) {
-//				level--;
-//				lines.add("	</navPoint>");
-//			}
 		}
-		
-		while (curLevel > 1) {
-			lines.add("	</navPoint>");
-			curLevel--;
+
+		if (getLevel1Multiple() > 0){
+			while (curLevel > 1) {
+				lines.add("	</navPoint>");
+				curLevel--;
+			}
 		}
 
 		lines.add("</navMap>");
@@ -342,7 +348,11 @@ public class EpubSourceMaterial {
 
 	}
 	
-	public void prepEpubSrc_WriteContentFile() {
+	public void createHtmlTocFile() {
+		// TODO build this page
+	}
+	
+	public void createContentFile() {
 		List<String> lines = new ArrayList<String>(Arrays.asList(new String[] { 
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
@@ -414,11 +424,11 @@ public class EpubSourceMaterial {
 	}
 	
 
-	public void prepEpubSrc_AddChapterFile(String chapterFilename) {
+	public void addContentFilenameToList(String chapterFilename) {
 		this.chapterPathAndFilenames.add(chapterFilename);
 	}
 	
-	public  void prepEpubSrc_WriteChapterFile(String bodyText, String chapterFilename) {
+	public  void createIndividualContentFile(String bodyText, String chapterFilename) {
 		
 		if (bodyText == null) {
 			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
@@ -462,6 +472,7 @@ public class EpubSourceMaterial {
 			e.printStackTrace();
 		}
 
+		addContentFilenameToList(chapterFilename);
 		
 	}
 	
@@ -481,68 +492,69 @@ public class EpubSourceMaterial {
 		}
 	}
 	
-	public  void prepEpubSrc_WriteCoverPageFile(String bodyText, String chapterFilename) {
-		
-		if (bodyText == null) {
-			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
-					+ "\n" + "\t\t<p class=\"sgc-3\">Body text goes here.</p>" + "\n" + "\t\t<p>&nbsp;</p>";
-		}
-		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
-				"<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>"
-				, "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
-				, ""
-				, "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
-				, "<head>"
-				, "  <link href=\"../Styles/style.css\" rel=\"stylesheet\" type=\"text/css\" />"
-				, ""
-				, "  <title>Cover</title>"
-				, "  <style type=\"text/css\">"
-				, "/*<![CDATA[*/"
-				, ""
-				, "  body.sgc-1 {word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;}"
-				, ""
-				, "  span.sgc-2 {font-family: Arial; font-size: medium;}"
-				, ""
-				, "  p.sgc-4 {text-align: center;}"
-				, "  h1.sgc-3 {text-align: center;}"
-				, ""
-				, "  div.sgc-5 {font-weight: bold; text-align: center}"
-				, ""
-				, "  p.sgc-6 {font-weight: bold}"
-				, "  /*]]>*/"
-				, "  </style>"
-				, "</head>"
-				, ""
-				, "<body class=\"sgc-1\">"
-				, "  <p class=\"sgc-4\">&nbsp;</p>"
-				, ""
-				, "  <h1 class=\"sgc-3\" id=\"heading_id_2\" title=\"Cover\">" + this.getBookTitle() + "</h1>"
-				, ""
-				, "  <p class=\"sgc-4\">&nbsp;</p>"
-				, ""
-				, "  <h1 class=\"sgc-3 sigilNotInTOC\" id=\"heading_id_3\"><img align=\"middle\" alt=\"ePub\" src=\"../Images/" + this.srcDocImageFilename + "\" />" + "" + "</h1>"
-				, ""
-				, "  <p class=\"sgc-4\">&nbsp;</p>"
-				, ""
-				, "  <p class=\"sgc-4\">&nbsp;</p>"
-				, ""
-				, "  <p class=\"sgc-4 sgc-6\">By: " + this.getBookAuthor() + "</p>"
-				, "</body>"
-				, "</html>"
-
-		});
-
-		Path path = Paths.get(srcPathOebpsText + "Cover.xhtml");
-		try {
-			Files.write(path, lines, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+//	public  void createEpubSrc_CoverPageFile(String bodyText, String chapterFilename) {
+//		
+//		if (bodyText == null) {
+//			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
+//					+ "\n" + "\t\t<p class=\"sgc-3\">Body text goes here.</p>" + "\n" + "\t\t<p>&nbsp;</p>";
+//		}
+//		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
+//				"<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>"
+//				, "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
+//				, ""
+//				, "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+//				, "<head>"
+//				, "  <link href=\"../Styles/style.css\" rel=\"stylesheet\" type=\"text/css\" />"
+//				, ""
+//				, "  <title>Cover</title>"
+//				, "  <style type=\"text/css\">"
+//				, "/*<![CDATA[*/"
+//				, ""
+//				, "  body.sgc-1 {word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;}"
+//				, ""
+//				, "  span.sgc-2 {font-family: Arial; font-size: medium;}"
+//				, ""
+//				, "  p.sgc-4 {text-align: center;}"
+//				, "  h1.sgc-3 {text-align: center;}"
+//				, ""
+//				, "  div.sgc-5 {font-weight: bold; text-align: center}"
+//				, ""
+//				, "  p.sgc-6 {font-weight: bold}"
+//				, "  /*]]>*/"
+//				, "  </style>"
+//				, "</head>"
+//				, ""
+//				, "<body class=\"sgc-1\">"
+//				, "  <p class=\"sgc-4\">&nbsp;</p>"
+//				, ""
+//				, "  <h1 class=\"sgc-3\" id=\"heading_id_2\" title=\"Cover\">" + this.getBookTitle() + "</h1>"
+//				, ""
+//				, "  <p class=\"sgc-4\">&nbsp;</p>"
+//				, ""
+//				, "  <h1 class=\"sgc-3 sigilNotInTOC\" id=\"heading_id_3\"><img align=\"middle\" alt=\"ePub\" src=\"../Images/" + this.srcDocImageFilename + "\" />" + "" + "</h1>"
+//				, ""
+//				, "  <p class=\"sgc-4\">&nbsp;</p>"
+//				, ""
+//				, "  <p class=\"sgc-4\">&nbsp;</p>"
+//				, ""
+//				, "  <p class=\"sgc-4 sgc-6\">By: " + this.getBookAuthor() + "</p>"
+//				, "</body>"
+//				, "</html>"
+//
+//		});
+//
+//		Path path = Paths.get(srcPathOebpsText + "Cover.xhtml");
+//		try {
+//			Files.write(path, lines, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 	
-	public  void prepEpubSrc_WriteHtmlCoverPageFile(String bodyText, String chapterFilename) {
+//	public  void createEpubSrc_HtmlCoverPageFile(String bodyText, String chapterFilename) {
+	public  void createHtmlCoverPageFile() {
 		
 		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
 				"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
@@ -550,7 +562,7 @@ public class EpubSourceMaterial {
 				, "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">"
 				, "<head>"
 				, "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\" />"
-				, "<title>My eBook</title>"
+				, "<title>My eBook</title>"  // TODO format dynamically
 				, "<style type=\"text/css\">"
 				, "  body {text-align: center; padding:0; margin: 0;}"
 				, "  div {text-align: center; padding:0; margin: 0;}"
@@ -558,7 +570,7 @@ public class EpubSourceMaterial {
 				, "</style>"
 				, "</head>"
 				, "<body>"
-				, "<div><img src=\"cover.jpg\" alt=\"Cover for My eBook\" /></div>"
+				, "<div><img src=\"cover.jpg\" alt=\"Cover for My eBook\" /></div>" // TODO check if this exists
 //				, "<div><img src=\"Images" + File.separator + this.srcDocImageFilename + "\" alt=\"Cover for this book\" /></div>"
 				, "</body>"
 				, "</html>"
@@ -575,7 +587,7 @@ public class EpubSourceMaterial {
 
 	}
 	
-	public void prepEpubSrc_CopyImageFile(File src) {
+	public void createEpubSrc_IndividualImageFile(File src) {
 		File dest = new File(this.srcPathOebpsImages + src.getName());
 		try {
 		    FileUtils.copyFile(src, dest);
@@ -584,22 +596,22 @@ public class EpubSourceMaterial {
 		}
 	}
 	
-	public void prepEpubSrc_PlaceCoverImageFile(File src) {
-		File dest = new File(this.srcPathOebpsRoot + "cover.jpg");
-		try {
-		    FileUtils.copyFile(src, dest);
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-	}
+//	public void prepEpubSrc_PlaceCoverImageFile(File src) {
+//		File dest = new File(this.srcPathOebpsRoot + "cover.jpg");
+//		try {
+//		    FileUtils.copyFile(src, dest);
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		}
+//	}
 	
-	public void prepEpubSrc_SetUpEpubSrcDirStructure() {
+	public void prepEpubSrcDirStructure() {
 		
 		try {
 			delete(new File(getSrcRoot()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		doFolder(getSrcRoot());
 		doFolder(srcPathMetaInf);

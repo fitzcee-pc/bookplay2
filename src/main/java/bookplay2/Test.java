@@ -34,13 +34,16 @@ public class Test {
 	private static String outTextPathAndFile;
 	private static MyBookPage myBookPage;
 	private static String epubSrcDocPath;
-	private static String epubSrcDocImagePath;
+//	private static String epubSrcDocImagePath;
 	private static String epubSrcMaterialRootPath;
 	private static String epubBuildDestPath;
 	private static Integer epubSrcMaterialLevel1Multiple;
 	private static String epubSrcMaterialBookTitle;
-	
-	public static void main(String[] args) throws IOException {
+
+	/* 
+	 * just build
+	 */
+	public static void mainx(String[] args) throws IOException {
 		System.out.println("-----Build Only-----");
 
 		initProps();
@@ -50,13 +53,16 @@ public class Test {
 		EpubBuilder eb = new EpubBuilder();
 		eb.setEsm(esm);
 		eb.setEpubBuildDestPath(epubBuildDestPath);
-		eb.buildEpubByWalking();
+		eb.buildEpubByWalkingSrc();
 
 		System.out.println("-----Run Complete-----");
 
 	}
 	
-	public static void mainx(String[] args) throws IOException {
+	/*
+	 * assemble src material, then build
+	*/
+	 public static void main(String[] args) throws IOException {
 
 		System.out.println("-----Begin Run-----");
 
@@ -70,53 +76,54 @@ public class Test {
 		
 ////		doBookStuff();
 
-		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, epubSrcMaterialLevel1Multiple);
-//		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, 2);
-		esm.prepEpubSrc_SetUpEpubSrcDirStructure();
-		esm.prepEpubSrc_WriteMimetypeFile();
-		esm.prepEpubSrc_WriteContainerFile();
-		esm.prepEpubSrc_WriteCssFile();
+		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath);
+		esm.prepEpubSrcDirStructure();
+		esm.createMimetypeFile();
+		esm.createContainerFile();
+		esm.createCssFile();
 
-		//		MyBookPage page = myBook.firstPage;
-		MyBookPage page = null;
+		MyBookPage chineseBookPage = null;
 		try {
-			page = new MyBookPage(Jsoup.parse(new File(epubSrcDocPath),null),"");
+			chineseBookPage = new MyBookPage(Jsoup.parse(new File(epubSrcDocPath),null),"");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
+		esm.setBookTitle(epubSrcMaterialBookTitle);
+//		esm.setBookTitle(chineseBookPage.getBookTitle());  // TODO this instead of hardcode above
 		
-		String chapFilename;
+		String pageFilename;
 
 		Integer i = 0;
 		do {
 			i++;
-			if (page.chapterName.isEmpty()) {
-				chapFilename = new String("" + String.format("%04d", i) + ".html");
-			} else {
-				chapFilename = new String("" + String.format("%04d", i) + " " + page.chapterName + ".html");
-			}
-			String chapFilenameXX = chapFilename.replaceAll("：", "-");  // NOTE: this is not a (regular) colon.  i had to copy-paste from the chinese title to get the char
-			chapFilename = chapFilenameXX;
-			esm.prepEpubSrc_WriteChapterFile(page.getBodyText(), chapFilename);
-			System.out.println("Add to Src: " + chapFilename);
-			esm.prepEpubSrc_AddChapterFile(chapFilename);
-		} while ((page = page.getNextPage()) != null);
+//			if (chineseBookPage.pageName.isEmpty()) {
+				pageFilename = new String("ch" + String.format("%04d", i) + ".html");
+//			} else {
+//				pageFilename = new String("ch" + String.format("%04d", i) + " " + page.chapterName + ".html");
+//			}
+//			String pageFilenameFixed = pageFilename.replaceAll("：", "-");  // NOTE: this is not a (regular) colon.  i had to copy-paste from the chinese title to get the char
+//			pageFilename = pageFilenameFixed;
+			esm.createIndividualContentFile(chineseBookPage.getBodyText(), pageFilename);
+			System.out.println("Add to Src: " + pageFilename);
+//			esm.addContentFilenameToList(pageFilename);  // TODO now auto fill the list in esm. 
+		} while ((chineseBookPage = chineseBookPage.getNextPage()) != null);
 
-		esm.setBookTitle(epubSrcMaterialBookTitle);
-		esm.setSrcDocImagePath(epubSrcDocImagePath);
-		esm.prepEpubSrc_CopyImageFile(new File(epubSrcDocImagePath) );
-		esm.prepEpubSrc_PlaceCoverImageFile(new File(epubSrcDocImagePath) );
-		esm.prepEpubSrc_WriteCoverPageFile("xxx", "yyy");
-		esm.prepEpubSrc_WriteHtmlCoverPageFile("xxx", "yyy");
-		esm.prepEpubSrc_WriteTocFile();
-		esm.prepEpubSrc_WriteContentFile();
+//		esm.setSrcDocImagePath(epubSrcDocImagePath);
+//		esm.prepEpubSrc_CopyImageFile(new File(epubSrcDocImagePath) );
+//		esm.prepEpubSrc_PlaceCoverImageFile(new File(epubSrcDocImagePath) );
+//		esm.createEpubSrc_CoverPageFile("xxx", "yyy");
+		esm.createHtmlCoverPageFile();
+		esm.setLevel1Multiple(epubSrcMaterialLevel1Multiple);
+		esm.createTocFile();
+		esm.createHtmlTocFile();
+		esm.createContentFile();
 		
 		EpubBuilder eb = new EpubBuilder();
 		eb.setEsm(esm);
 		eb.setEpubBuildDestPath(epubBuildDestPath);
 //		eb.buildEpub();
-		eb.buildEpubByWalking();
+		eb.buildEpubByWalkingSrc();
 		
 //		esm.writeChapterSequenceFile();
 
@@ -146,7 +153,7 @@ public class Test {
 		props = getProps();
 
 		epubSrcDocPath = new String(props.getProperty("epubSrcDocPath"));
-		epubSrcDocImagePath = new String(props.getProperty("epubSrcDocImagePath"));
+//		epubSrcDocImagePath = new String(props.getProperty("epubSrcDocImagePath"));
 		epubSrcMaterialLevel1Multiple = new Integer(props.getProperty("epubSrcMaterialLevel1Multiple"));
 //		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
 		epubSrcMaterialRootPath = new String(props.getProperty("epubSrcMaterialRootPath"));
@@ -155,29 +162,6 @@ public class Test {
 		
 	}
 	
-	private static void doBookStuff() {
-		try {
-			myBookPage = new MyBookPage(Jsoup.parse(new File(epubSrcDocPath),null),"");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-
-		myBook = new MyBook(null, myBookPage, null);
-
-		System.out.println(runDateTime);
-
-		System.out.println(getBookDeets());
-
-		writeDeetsToOutfile(getBookDeets());
-
-	}
-
-	private static void doZipStuff(){
-		zipFiles1();
-		zipFiles2();
-	}
-
 	private static Properties getProps() {
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -199,96 +183,6 @@ public class Test {
 		return prop;
 	}
 
-	private static String getBookDeets() {
-		String bookDeets;
-
-		bookDeets = "\n" + myBook.toString();
-		bookDeets += "\n-----body text-----\n" + myBook.firstPage.getBodyText();
-		bookDeets += "\n";
-
-
-		return bookDeets;
-	}	
-	
-	private static void writeDeetsToOutfile(String theDeets) {
-		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
-				"<html>"
-				,"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head>"
-				, "<body>"
-				, runDateTime
-				, theDeets
-				, "</body>"
-				, "</html>" 
-		});
-
-		Path path = Paths.get(outTextPathAndFile);
-		try {
-			Files.write(path, lines, StandardCharsets.UTF_8);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	private static void zipFiles1() {
-		try
-		{
-			ZipOutputStream out = new ZipOutputStream(new 
-					BufferedOutputStream(new FileOutputStream("out.zip")));
-			out.setLevel(ZipOutputStream.STORED);
-			byte[] data = new byte[1000]; 
-			BufferedInputStream in = new BufferedInputStream
-					(new FileInputStream("out.txt"));
-			int count;
-			out.putNextEntry(new ZipEntry("out.txt"));
-			while((count = in.read(data,0,1000)) != -1)
-			{  
-				out.write(data, 0, count);
-			}
-			in.close();
-			out.flush();
-			out.close();
-			System.out.println("Your file is zipped");
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}  
-
-	}
-
-	private static void zipFiles2() {
-		try {
-			FileOutputStream fos = new FileOutputStream("somecompressed-test.zip");
-			ZipOutputStream zos = new ZipOutputStream(fos);
-
-			// This sets the compression level to STORED, ie, uncompressed
-			zos.setLevel(ZipOutputStream.STORED);
-
-			String file1Name = "out.txt";
-			String file2Name = "file2.txt";
-			String file3Name = "folder/file3.txt";
-			String file4Name = "folder/file4.txt";
-			String file5Name = "f1/f2/f3/file5.txt";
-
-//			addToZipFile(file1Name, zos);
-//			zos.setLevel(ZipOutputStream.DEFLATED);
-//			addToZipFile(file2Name, zos);
-//			addToZipFile(file4Name, zos);
-//			addToZipFile(file5Name, zos);
-//			addToZipFile(file3Name, zos);
-
-			zos.close();
-			fos.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 }
 

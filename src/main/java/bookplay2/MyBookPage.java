@@ -26,7 +26,7 @@ public class MyBookPage  {
 	String indexPageName = new String("");
 	String prevPageName = new String("");
 	String nextPageName = new String("");
-	String chapterName = new String("");
+	String pageName = new String("");
 	String author = new String("");
 
 	public MyBookPage(Document theDoc, String outfileName) {
@@ -136,10 +136,10 @@ public class MyBookPage  {
 						e1.printStackTrace();
 					}
 
-					chapterName = this.doc.title();
-					Integer beginIndex = (chapterName.indexOf(".") == -1) ? 0 : chapterName.indexOf(".") + 1;
+					pageName = this.doc.title();
+					Integer beginIndex = (pageName.indexOf(".") == -1) ? 0 : pageName.indexOf(".") + 1;
 					
-					chapterName = chapterName.substring(beginIndex, chapterName.length());
+					pageName = pageName.substring(beginIndex, pageName.length());
 				}
 
 

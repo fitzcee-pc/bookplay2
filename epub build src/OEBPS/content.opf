@@ -1,46 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookID" version="2.0">
     <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
-				<dc:title>痴傻三小姐在线阅读</dc:title>
+				<dc:title>testEpub</dc:title>
 				<dc:language>en</dc:language>
 		        <dc:rights>Public Domain</dc:rights>
 				<dc:creator opf:role="aut">unknown author</dc:creator>
 		        <dc:publisher>mePub</dc:publisher>
 		        <dc:identifier id="BookID" opf:scheme="UUID">015ffaec-9340-42f8-b163-a0c5ab7d0611</dc:identifier>
     </metadata>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <manifest>
         <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
         <item id="Book1.jpg" href="Images/Book1.jpg" media-type="image/jpeg"/>
         <item id="stylesheet.css" href="Styles/style.css" media-type="text/css"/>
-        <item id="x0001" href="Text/0001%20第1章%20-娶你？不可能-69书吧%20My%20Chapter%201.html" media-type="application/xhtml+xml"/>
-        <item id="x0002" href="Text/0002%20第1519章%20-寻找大师-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0003" href="Text/0003 第1520章 -被找上了门-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0004" href="Text/0004 第1521章 -别这样，有外人在-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0005" href="Text/0005 第5章 是什么好东西-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0006" href="Text/0006 第6章 居然有这般神奇的东西-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0007" href="Text/0007 第7章 永安侯府的寿宴-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0008" href="Text/0008 第8章 痴傻三小姐-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0009" href="Text/0009 第9章 我不吃粽！-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0010" href="Text/0010 第10章 九王爷-69书吧.html" media-type="application/xhtml+xml"/>
-        <item id="x0011" href="Text/0011 第11章 温微凝出场-69书吧.html" media-type="application/xhtml+xml"/>
+	        <item id="x0001" href="Text/ch0001.html" media-type="application/xhtml+xml"/>
+	        <item id="x0002" href="Text/ch0002.html" media-type="application/xhtml+xml"/>
+	        <item id="x0003" href="Text/ch0003.html" media-type="application/xhtml+xml"/>
+	        <item id="x0004" href="Text/ch0004.html" media-type="application/xhtml+xml"/>
+	        <item id="x0005" href="Text/ch0005.html" media-type="application/xhtml+xml"/>
+	        <item id="x0006" href="Text/ch0006.html" media-type="application/xhtml+xml"/>
+	        <item id="x0007" href="Text/ch0007.html" media-type="application/xhtml+xml"/>
+	        <item id="x0008" href="Text/ch0008.html" media-type="application/xhtml+xml"/>
+	        <item id="x0009" href="Text/ch0009.html" media-type="application/xhtml+xml"/>
+	        <item id="x0010" href="Text/ch0010.html" media-type="application/xhtml+xml"/>
+	        <item id="x0011" href="Text/ch0011.html" media-type="application/xhtml+xml"/>
         <item id="Cover.xhtml" href="Text/Cover.xhtml" media-type="application/xhtml+xml"/>
         <item id="htmlcoverpage.html" href="coverpage.html" media-type="application/xhtml+xml"/>
-		<item id="cover" href="boo.jpg" media-type="image/jpeg" />
     </manifest>
     <spine toc="ncx">
         <itemref idref="Cover.xhtml"/>

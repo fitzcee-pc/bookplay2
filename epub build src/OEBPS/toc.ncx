@@ -11,72 +11,72 @@
 		<navLabel>
 			<text>Chapter: 1</text>
 		</navLabel>
-		<content src="Text/0001 第1章 -娶你？不可能-69书吧 My Chapter 1.html" />
+		<content src="Text/ch0001.html" />
 	<navPoint id="navPoint-2" playOrder="2">
 		<navLabel>
-			<text>0001 第1章 -娶你？不可能-69书吧 My Chapter 1</text>
+			<text>ch0001</text>
 		</navLabel>
-		<content src="Text/0001 第1章 -娶你？不可能-69书吧 My Chapter 1.html" />
+		<content src="Text/ch0001.html" />
 	</navPoint>
 	<navPoint id="navPoint-3" playOrder="3">
 		<navLabel>
-			<text>0002 第1519章 -寻找大师-69书吧</text>
+			<text>ch0002</text>
 		</navLabel>
-		<content src="Text/0002 第1519章 -寻找大师-69书吧.html" />
+		<content src="Text/ch0002.html" />
 	</navPoint>
 	<navPoint id="navPoint-4" playOrder="4">
 		<navLabel>
-			<text>0003 第1520章 -被找上了门-69书吧</text>
+			<text>ch0003</text>
 		</navLabel>
-		<content src="Text/0003 第1520章 -被找上了门-69书吧.html" />
+		<content src="Text/ch0003.html" />
 	</navPoint>
 	<navPoint id="navPoint-5" playOrder="5">
 		<navLabel>
-			<text>0004 第1521章 -别这样，有外人在-69书吧</text>
+			<text>ch0004</text>
 		</navLabel>
-		<content src="Text/0004 第1521章 -别这样，有外人在-69书吧.html" />
+		<content src="Text/ch0004.html" />
 	</navPoint>
 	<navPoint id="navPoint-6" playOrder="6">
 		<navLabel>
-			<text>0005 第5章 是什么好东西-69书吧</text>
+			<text>ch0005</text>
 		</navLabel>
-		<content src="Text/0005 第5章 是什么好东西-69书吧.html" />
+		<content src="Text/ch0005.html" />
 	</navPoint>
 	<navPoint id="navPoint-7" playOrder="7">
 		<navLabel>
-			<text>0006 第6章 居然有这般神奇的东西-69书吧</text>
+			<text>ch0006</text>
 		</navLabel>
-		<content src="Text/0006 第6章 居然有这般神奇的东西-69书吧.html" />
+		<content src="Text/ch0006.html" />
 	</navPoint>
 	<navPoint id="navPoint-8" playOrder="8">
 		<navLabel>
-			<text>0007 第7章 永安侯府的寿宴-69书吧</text>
+			<text>ch0007</text>
 		</navLabel>
-		<content src="Text/0007 第7章 永安侯府的寿宴-69书吧.html" />
+		<content src="Text/ch0007.html" />
 	</navPoint>
 	<navPoint id="navPoint-9" playOrder="9">
 		<navLabel>
-			<text>0008 第8章 痴傻三小姐-69书吧</text>
+			<text>ch0008</text>
 		</navLabel>
-		<content src="Text/0008 第8章 痴傻三小姐-69书吧.html" />
+		<content src="Text/ch0008.html" />
 	</navPoint>
 	<navPoint id="navPoint-10" playOrder="10">
 		<navLabel>
-			<text>0009 第9章 我不吃粽！-69书吧</text>
+			<text>ch0009</text>
 		</navLabel>
-		<content src="Text/0009 第9章 我不吃粽！-69书吧.html" />
+		<content src="Text/ch0009.html" />
 	</navPoint>
 	<navPoint id="navPoint-11" playOrder="11">
 		<navLabel>
-			<text>0010 第10章 九王爷-69书吧</text>
+			<text>ch0010</text>
 		</navLabel>
-		<content src="Text/0010 第10章 九王爷-69书吧.html" />
+		<content src="Text/ch0010.html" />
 	</navPoint>
 	<navPoint id="navPoint-12" playOrder="12">
 		<navLabel>
-			<text>0011 第11章 温微凝出场-69书吧</text>
+			<text>ch0011</text>
 		</navLabel>
-		<content src="Text/0011 第11章 温微凝出场-69书吧.html" />
+		<content src="Text/ch0011.html" />
 	</navPoint>
 	</navPoint>
 </navMap>

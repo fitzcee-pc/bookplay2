@@ -59,7 +59,7 @@ public class EpubBuilder {
 	/*
 	 * public methods
 	 */
-	public static void buildEpubByWalking() {
+	public static void buildEpubByWalkingSrc() {
 		try {
 			System.out.println(">>>>>> building " + esm.getBookTitle()  + " epub.........");
 
