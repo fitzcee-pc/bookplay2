@@ -6,9 +6,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
@@ -55,6 +59,45 @@ public class EpubBuilder {
 	/*
 	 * public methods
 	 */
+	public static void buildEpubByWalking() {
+		try {
+			System.out.println(">>>>>> building " + esm.getBookTitle()  + " epub.........");
+
+			FileOutputStream fos = new FileOutputStream(getEpubBuildDestPath() + getEsm().getBookTitle() + ".epub");
+			ZipOutputStream zos = new ZipOutputStream(fos);
+
+
+			addToZipFile(esm.getSrcRoot(), "mimetype", zos, false); // do not compress mimetype
+
+			Path start = Paths.get(esm.getSrcRoot());
+			Integer startIndex = start.getNameCount();
+			Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+				@Override
+				public FileVisitResult visitFile(Path file,
+						BasicFileAttributes attrs) throws IOException {
+					if (file.getFileName().toString().startsWith(".")) {
+						System.out.println("skip: " + file);
+					} else if (file.getFileName().toString().equals("mimetype")) {
+						System.out.println("already got: " + file);
+					} else {
+						System.out.println("zip: " + file.toString());
+						addToZipFile(esm.getSrcRoot(), new String(file.subpath(startIndex, file.getNameCount()).toString()), zos);
+					}
+					return FileVisitResult.CONTINUE;
+				}
+			});
+			
+			zos.close();
+			fos.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public static void buildEpub() {
 		try {
 			System.out.println(">>>>>> building " + esm.getBookTitle()  + " epub.........");
@@ -71,7 +114,10 @@ public class EpubBuilder {
 			zos.setLevel(ZipOutputStream.DEFLATED);
 			addToZipFile(esm.getSrcRoot(), "META-INF" + File.separator + "container.xml", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "content.opf", zos);
+			// TODO "if exists..."
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "coverpage.html", zos);
+			// TODO "if exists..."
+			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "cover.jpg", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "toc.ncx", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "Styles" + File.separator + "style.css", zos);
 

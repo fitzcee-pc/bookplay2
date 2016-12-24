@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
+  <head>
+    <meta content="urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee" name="dtb:uid" /> <!--Must be exactly the same as dtb:uid in content.opf-->
+    <meta content="1" name="dtb:depth" /> <!-- Set for 2 if you want a sub-level. It can go up to 4 -->
+    <meta content="0" name="dtb:totalPageCount" /> <!-- Do Not change -->
+    <meta content="0" name="dtb:maxPageNumber" /> <!-- Do Not change -->
+  </head>
+  <docTitle>
+    <text>Sample EPUB 2.0.1 File for Developers</text>
+  </docTitle>
+  <docAuthor>
+    <text>BB eBooks</text>
+  </docAuthor>
+  <navMap>
+    <navPoint id="ncxcoverpage" playOrder="1">
+      <navLabel>
+        <text>Cover</text>
+      </navLabel>
+      <content src="coverpage.html" />
+    </navPoint>
+    <navPoint id="ncxcontent001h1-1" playOrder="2">
+      <navLabel>
+        <text>Sample EPUB 2.0.1 File for Developers</text>
+      </navLabel>
+      <content src="content/content001.html#h1-1" />
+    </navPoint>
+    <navPoint id="ncxcontent002h2-1" playOrder="3">
+      <navLabel>
+        <text>Chapter 1 - Getting Started</text>
+      </navLabel>
+      <content src="content/content002.html#h2-1" />
+    </navPoint>
+    <navPoint id="ncxcontent003h2-2" playOrder="4">
+      <navLabel>
+        <text>Chapter 2 - Media</text>
+      </navLabel>
+      <content src="content/content003.html#h2-2" />
+    </navPoint>
+    <navPoint id="ncxcontent004h2-3" playOrder="5">
+      <navLabel>
+        <text>Chapter 3 - Caution</text>
+      </navLabel>
+      <content src="content/content004.html#h2-3" />
+    </navPoint>
+    <navPoint id="ncxcontent005h2-4" playOrder="6">
+      <navLabel>
+        <text>Chapter 4 - MOBI/KF8</text>
+      </navLabel>
+      <content src="content/content005.html#h2-4" />
+    </navPoint>
+  </navMap>
+</ncx>

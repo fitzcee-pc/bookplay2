@@ -41,6 +41,22 @@ public class Test {
 	private static String epubSrcMaterialBookTitle;
 	
 	public static void main(String[] args) throws IOException {
+		System.out.println("-----Build Only-----");
+
+		initProps();
+
+		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, epubSrcMaterialLevel1Multiple);
+
+		EpubBuilder eb = new EpubBuilder();
+		eb.setEsm(esm);
+		eb.setEpubBuildDestPath(epubBuildDestPath);
+		eb.buildEpubByWalking();
+
+		System.out.println("-----Run Complete-----");
+
+	}
+	
+	public static void mainx(String[] args) throws IOException {
 
 		System.out.println("-----Begin Run-----");
 
@@ -56,10 +72,10 @@ public class Test {
 
 		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, epubSrcMaterialLevel1Multiple);
 //		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, 2);
-		esm.setupEpubBuildSrcDirStructure();
-		esm.writeEpubSrc_MimetypeFile();
-		esm.writeEpubSrc_ContainerFile();
-		esm.writeEpubSrc_CssFile();
+		esm.prepEpubSrc_SetUpEpubSrcDirStructure();
+		esm.prepEpubSrc_WriteMimetypeFile();
+		esm.prepEpubSrc_WriteContainerFile();
+		esm.prepEpubSrc_WriteCssFile();
 
 		//		MyBookPage page = myBook.firstPage;
 		MyBookPage page = null;
@@ -82,23 +98,25 @@ public class Test {
 			}
 			String chapFilenameXX = chapFilename.replaceAll("：", "-");  // NOTE: this is not a (regular) colon.  i had to copy-paste from the chinese title to get the char
 			chapFilename = chapFilenameXX;
-			esm.writeEpubSrc_ChapterFile(page.getBodyText(), chapFilename);
+			esm.prepEpubSrc_WriteChapterFile(page.getBodyText(), chapFilename);
 			System.out.println("Add to Src: " + chapFilename);
-			esm.addChapterFile(chapFilename);
+			esm.prepEpubSrc_AddChapterFile(chapFilename);
 		} while ((page = page.getNextPage()) != null);
 
 		esm.setBookTitle(epubSrcMaterialBookTitle);
 		esm.setSrcDocImagePath(epubSrcDocImagePath);
-		esm.writeEpubSrc_ImageFile(new File(epubSrcDocImagePath) );
-		esm.writeEpubSrc_CoverPageFile("xxx", "yyy");
-		esm.writeEpubSrc_HtmlCoverPageFile("xxx", "yyy");
-		esm.writeEpubSrc_TocFile();
-		esm.writeEpubSrc_ContentFile();
+		esm.prepEpubSrc_CopyImageFile(new File(epubSrcDocImagePath) );
+		esm.prepEpubSrc_PlaceCoverImageFile(new File(epubSrcDocImagePath) );
+		esm.prepEpubSrc_WriteCoverPageFile("xxx", "yyy");
+		esm.prepEpubSrc_WriteHtmlCoverPageFile("xxx", "yyy");
+		esm.prepEpubSrc_WriteTocFile();
+		esm.prepEpubSrc_WriteContentFile();
 		
 		EpubBuilder eb = new EpubBuilder();
 		eb.setEsm(esm);
 		eb.setEpubBuildDestPath(epubBuildDestPath);
-		eb.buildEpub();
+//		eb.buildEpub();
+		eb.buildEpubByWalking();
 		
 //		esm.writeChapterSequenceFile();
 

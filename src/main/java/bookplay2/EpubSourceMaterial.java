@@ -111,7 +111,7 @@ public class EpubSourceMaterial {
 	/*
 	 * public methods
 	 */
-	public void writeEpubSrc_MimetypeFile() {
+	public void prepEpubSrc_WriteMimetypeFile() {
 		List<String> lines = Arrays.asList(new String[] { 
 				"application/epub+zip"
 		});
@@ -143,7 +143,7 @@ public class EpubSourceMaterial {
 
 	}
 
-	public void writeEpubSrc_ContainerFile() {
+	public void prepEpubSrc_WriteContainerFile() {
 		List<String> lines = Arrays.asList(new String[] { 
 				  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">"
@@ -163,7 +163,7 @@ public class EpubSourceMaterial {
 
 	}
 	
-	public void writeEpubSrc_CssFile() {
+	public void prepEpubSrc_WriteCssFile() {
 		List<String> lines = Arrays.asList(new String[] { 
 				  "/* Style Sheet */"
 				, "/* This defines styles and classes used in the book */"
@@ -197,7 +197,7 @@ public class EpubSourceMaterial {
 
 	}
 
-	public void writeEpubSrc_TocFile___OverlyComplicated() {
+	public void prepEpubSrc_TocFile___OverlyComplicated() {
 		// according to one source, much of this is not needed.
 		// https://gist.github.com/elmimmo/d7b8dbebc4e972734e9a
 //		List<String> lines = Arrays.asList(new String[] { 
@@ -259,7 +259,7 @@ public class EpubSourceMaterial {
 //
 	}
 
-	public void writeEpubSrc_TocFile() {
+	public void prepEpubSrc_WriteTocFile() {
 		// WTF: what is the diff?  http://stackoverflow.com/questions/16748030/difference-between-arrays-aslistarray-vs-new-arraylistintegerarrays-aslist
 		// List<String> lines = Arrays.asList(new String[] { 
 		// the one above wouldn't let me lines.add
@@ -342,7 +342,7 @@ public class EpubSourceMaterial {
 
 	}
 	
-	public void writeEpubSrc_ContentFile() {
+	public void prepEpubSrc_WriteContentFile() {
 		List<String> lines = new ArrayList<String>(Arrays.asList(new String[] { 
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
@@ -414,11 +414,11 @@ public class EpubSourceMaterial {
 	}
 	
 
-	public void addChapterFile(String chapterFilename) {
+	public void prepEpubSrc_AddChapterFile(String chapterFilename) {
 		this.chapterPathAndFilenames.add(chapterFilename);
 	}
 	
-	public  void writeEpubSrc_ChapterFile(String bodyText, String chapterFilename) {
+	public  void prepEpubSrc_WriteChapterFile(String bodyText, String chapterFilename) {
 		
 		if (bodyText == null) {
 			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
@@ -481,7 +481,7 @@ public class EpubSourceMaterial {
 		}
 	}
 	
-	public  void writeEpubSrc_CoverPageFile(String bodyText, String chapterFilename) {
+	public  void prepEpubSrc_WriteCoverPageFile(String bodyText, String chapterFilename) {
 		
 		if (bodyText == null) {
 			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
@@ -542,40 +542,24 @@ public class EpubSourceMaterial {
 
 	}
 	
-	public  void writeEpubSrc_HtmlCoverPageFile(String bodyText, String chapterFilename) {
+	public  void prepEpubSrc_WriteHtmlCoverPageFile(String bodyText, String chapterFilename) {
 		
 		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
-				"<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>"
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
 				, "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
-				, ""
-				, "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+				, "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">"
 				, "<head>"
-				, "  <link href=\"Styles/style.css\" rel=\"stylesheet\" type=\"text/css\" />"
-				, ""
-				, "  <title>Cover</title>"
-				, "  <style type=\"text/css\">"
-				, "/*<![CDATA[*/"
-				, ""
-				, "  body.sgc-1 {word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;}"
-				, ""
-				, "  span.sgc-2 {font-family: Arial; font-size: medium;}"
-				, ""
-				, "  p.sgc-4 {text-align: center;}"
-				, "  h1.sgc-3 {text-align: center;}"
-				, ""
-				, "  div.sgc-5 {font-weight: bold; text-align: center}"
-				, ""
-				, "  p.sgc-6 {font-weight: bold}"
-				, "  /*]]>*/"
-				, "  </style>"
+				, "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\" />"
+				, "<title>My eBook</title>"
+				, "<style type=\"text/css\">"
+				, "  body {text-align: center; padding:0; margin: 0;}"
+				, "  div {text-align: center; padding:0; margin: 0;}"
+				, "  img {padding:0; margin: 0; height: 100%;}"
+				, "</style>"
 				, "</head>"
-				, ""
-				, "<body class=\"sgc-1\">"
-				, "  <div>"
-				, ""
-				, "  <img align=\"middle\" alt=\"ePub\" src=\"Images/" + this.srcDocImageFilename + "\" />"
-				, ""
-				, "  </div>"
+				, "<body>"
+				, "<div><img src=\"cover.jpg\" alt=\"Cover for My eBook\" /></div>"
+//				, "<div><img src=\"Images" + File.separator + this.srcDocImageFilename + "\" alt=\"Cover for this book\" /></div>"
 				, "</body>"
 				, "</html>"
 
@@ -589,10 +573,9 @@ public class EpubSourceMaterial {
 			e.printStackTrace();
 		}
 
-		
 	}
 	
-	public void writeEpubSrc_ImageFile(File src) {
+	public void prepEpubSrc_CopyImageFile(File src) {
 		File dest = new File(this.srcPathOebpsImages + src.getName());
 		try {
 		    FileUtils.copyFile(src, dest);
@@ -601,7 +584,16 @@ public class EpubSourceMaterial {
 		}
 	}
 	
-	public void setupEpubBuildSrcDirStructure() {
+	public void prepEpubSrc_PlaceCoverImageFile(File src) {
+		File dest = new File(this.srcPathOebpsRoot + "cover.jpg");
+		try {
+		    FileUtils.copyFile(src, dest);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	}
+	
+	public void prepEpubSrc_SetUpEpubSrcDirStructure() {
 		
 		try {
 			delete(new File(getSrcRoot()));

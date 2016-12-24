@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="../Styles/style.css" />
+<title>Sample EPUB 2.0.1 File for Developers</title>
+</head>
+<body>
+<div id="h2-3"><h2>Chapter 3 – Caution</h2></div>
+<p>You have to be very careful when building your EPUB package, because a lot can go wrong. Make sure that everything inside the EPUB package (every HTML, CSS, and media file) is declared in the manifest section with the appropriate mimetype. Another issue is that when you split your source HTML file into many smaller ones, make sure that your relative links in your HTML files to your CSS file and images match based on the sub-directory structure of the EPUB package.</p>
+<p>For example, the correct <span class="tech">src</span> attribute in our HTML would be <span class="tech">../images/someimage.jpg</span>, which ensures that the relative path is accurate, since we have all of our content in a folder called content, and all our images in a folder called images.</p>
+<p>You should always validate your EPUB file for errors after you package. You can either download the EpubCheck command-line program <a href="http://code.google.com/p/epubcheck/">here</a> or use the <a href="http://validator.idpf.org/">IDPF’s free online validator service</a>. This can catch a lot of errors that may not be obvious.</p>
+</body>
+</html>

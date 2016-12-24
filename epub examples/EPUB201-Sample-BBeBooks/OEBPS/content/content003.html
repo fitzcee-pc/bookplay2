@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="../css/bbstylesheet-epub.css" />
+<title>Sample EPUB 2.0.1 File for Developers</title>
+</head>
+<body>
+<div id="h2-2"><h2>Chapter 2 – Media</h2></div>
+<p>Did you see how this chapter started on a new page? This would occur even if we chose not to use CSS styling to achieve this effect. The reason is that each chapter is split into its own HTML files, and almost every eReading device will automatically start a new HTML file on a new page. It is wise to split up your HTML files this way. If your readers try to open one big monstrous HTML file that contains the entire content of your book, it will be very slow and a painful experience.</p>
+<p>You can add images, audio, video, fonts, and some other things to your EPUB package and utilize them throughout your HTML. You just have to make sure that they are declared in the Manifest Section of the <span class="tech">content.opf</span> file. Below is a picture:</p>
+<p class="centered"><span class="ipadcenterfix"><img src="../images/someimage.jpg" width="300" height="225" alt="A Picture of a Little Girl" /></span></p>
+<p class="chunkfivepara">And here we are trying out the Chunkfive font that is embedded in the EPUB package in a directory called <span class="tech">fonts</span>.</p>
+<p>Pretty cool.</p>
+</body>
+</html>
