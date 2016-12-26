@@ -33,12 +33,12 @@ public class Test {
 	private static MyBook myBook;
 	private static String outTextPathAndFile;
 	private static MyBookPage myBookPage;
-	private static String epubSrcDocPath;
-//	private static String epubSrcDocImagePath;
-	private static String epubSrcMaterialRootPath;
-	private static String epubBuildDestPath;
-	private static Integer epubSrcMaterialLevel1Multiple;
-	private static String epubSrcMaterialBookTitle;
+	private static String inSrcDocPathAndFilename;
+//	private static String inSrcDocImagePath;
+	private static String outEpubSrcMaterialRootPath;
+	private static String outEpubBuildDestPath;
+	private static Integer outEpubSrcMaterialLevel1Multiple;
+	private static String outEpubSrcMaterialBookTitle;
 
 	/* 
 	 * just build
@@ -48,11 +48,11 @@ public class Test {
 
 		initProps();
 
-		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath, epubSrcMaterialLevel1Multiple);
+		EpubSourceMaterial esm = new EpubSourceMaterial(outEpubSrcMaterialRootPath, outEpubSrcMaterialLevel1Multiple);
 
 		EpubBuilder eb = new EpubBuilder();
 		eb.setEsm(esm);
-		eb.setEpubBuildDestPath(epubBuildDestPath);
+		eb.setEpubBuildDestPath(outEpubBuildDestPath);
 		eb.buildEpubByWalkingSrc();
 
 		System.out.println("-----Run Complete-----");
@@ -76,7 +76,7 @@ public class Test {
 		
 ////		doBookStuff();
 
-		EpubSourceMaterial esm = new EpubSourceMaterial(epubSrcMaterialRootPath);
+		EpubSourceMaterial esm = new EpubSourceMaterial(outEpubSrcMaterialRootPath);
 		esm.prepEpubSrcDirStructure();
 		esm.createMimetypeFile();
 		esm.createContainerFile();
@@ -84,12 +84,12 @@ public class Test {
 
 		MyBookPage chineseBookPage = null;
 		try {
-			chineseBookPage = new MyBookPage(Jsoup.parse(new File(epubSrcDocPath),null),"");
+			chineseBookPage = new MyBookPage(Jsoup.parse(new File(inSrcDocPathAndFilename),null),"");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-		esm.setBookTitle(epubSrcMaterialBookTitle);
+		esm.setBookTitle(outEpubSrcMaterialBookTitle);
 //		esm.setBookTitle(chineseBookPage.getBookTitle());  // TODO this instead of hardcode above
 		
 		String pageFilename;
@@ -109,19 +109,24 @@ public class Test {
 //			esm.addContentFilenameToList(pageFilename);  // TODO now auto fill the list in esm. 
 		} while ((chineseBookPage = chineseBookPage.getNextPage()) != null);
 
-//		esm.setSrcDocImagePath(epubSrcDocImagePath);
-//		esm.prepEpubSrc_CopyImageFile(new File(epubSrcDocImagePath) );
-//		esm.prepEpubSrc_PlaceCoverImageFile(new File(epubSrcDocImagePath) );
+		Integer endIndex = Paths.get(inSrcDocPathAndFilename).getNameCount() - 1;
+		String inSrcDocPath = Paths.get(inSrcDocPathAndFilename).subpath(0, endIndex).toString();
+		esm.copyAllImagesToEpubSrc(Paths.get(File.separator + inSrcDocPath + File.separator));
+//		esm.setInSrcDocImagePath(inSrcDocImagePath);
+//		esm.prepEpubSrc_CopyImageFile(new File(inSrcDocImagePath) );
+//		esm.prepEpubSrc_PlaceCoverImageFile(new File(inSrcDocImagePath) );
 //		esm.createEpubSrc_CoverPageFile("xxx", "yyy");
-		esm.createHtmlCoverPageFile();
-		esm.setLevel1Multiple(epubSrcMaterialLevel1Multiple);
+		esm.createHtmlCoverPageFile(false, esm.getBookTitle());
+		esm.setLevel1Multiple(outEpubSrcMaterialLevel1Multiple);
 		esm.createTocFile();
 		esm.createHtmlTocFile();
 		esm.createContentFile();
+//		Path inSrcImageRootPath = Paths.get(inSrcDocPathAndFilename);
+//		inSrcImageRootPath = inSrcImageRootPath.subpath(0, inSrcImageRootPath.getNameCount() - 1);
 		
 		EpubBuilder eb = new EpubBuilder();
 		eb.setEsm(esm);
-		eb.setEpubBuildDestPath(epubBuildDestPath);
+		eb.setEpubBuildDestPath(outEpubBuildDestPath);
 //		eb.buildEpub();
 		eb.buildEpubByWalkingSrc();
 		
@@ -152,13 +157,13 @@ public class Test {
 	private static void initProps() {
 		props = getProps();
 
-		epubSrcDocPath = new String(props.getProperty("epubSrcDocPath"));
-//		epubSrcDocImagePath = new String(props.getProperty("epubSrcDocImagePath"));
-		epubSrcMaterialLevel1Multiple = new Integer(props.getProperty("epubSrcMaterialLevel1Multiple"));
+		inSrcDocPathAndFilename = new String(props.getProperty("inSrcDocPathAndFilename"));
+//		inSrcDocImagePath = new String(props.getProperty("inSrcDocImagePath"));
+		outEpubSrcMaterialLevel1Multiple = new Integer(props.getProperty("outEpubSrcMaterialLevel1Multiple"));
 //		outTextPathAndFile = new String(props.getProperty("outTextPathAndFile"));
-		epubSrcMaterialRootPath = new String(props.getProperty("epubSrcMaterialRootPath"));
-		epubBuildDestPath = new String(props.getProperty("epubBuildDestPath"));
-		epubSrcMaterialBookTitle = new String(props.getProperty("epubSrcMaterialBookTitle"));
+		outEpubSrcMaterialRootPath = new String(props.getProperty("outEpubSrcMaterialRootPath"));
+		outEpubBuildDestPath = new String(props.getProperty("epubBuildDestPath"));
+		outEpubSrcMaterialBookTitle = new String(props.getProperty("outEpubSrcMaterialBookTitle"));
 		
 	}
 	

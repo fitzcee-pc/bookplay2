@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,34 +40,23 @@ public class EpubSourceMaterial {
 	 * OEBPS/Text/htmltoc.xhtml  
 	 */	
 
-	private String srcPathRoot;
-	private static String srcPathMetaInf;
-	private static String srcPathOebpsRoot;
-	private static String srcPathOebpsImages;
-	private static String srcPathOebpsStyles;
-	private static String srcPathOebpsText;
-	private List<String> chapterPathAndFilenames = new ArrayList<>(Arrays.asList());
+	private String epubSrcPathRoot;
+	private static String epubSrcPathMetaInf;
+	private static String epubSrcPathOebpsRoot;
+	private static String epubSrcPathOebpsImages;
+	private static String epubSrcPathOebpsStyles;
+	private static String epubSrcPathOebpsText;
+	private List<String> contentPathAndFilenames = new ArrayList<>(Arrays.asList());
 	private static String bookAuthor = "unknown author";
 	private static String bookTitle = "unknown title";
 	private Integer level1Multiple;
-	private String srcDocImagePath;
-	private String srcDocImageFilename;
+	private String inSrcDocImagePath;
+	private String inSrcDocImageFilename;
 
 	/*
 	 * constructors
 	 */
 	
-	public String getSrcDocImagePath() {
-		return srcDocImagePath;
-	}
-
-	public void setSrcDocImagePath(String srcDocImagePath) {
-		this.srcDocImagePath = srcDocImagePath;
-		this.srcDocImageFilename = srcDocImagePath.substring(srcDocImagePath.lastIndexOf("/") + 1, srcDocImagePath.length());
-//				urlPathBeforePageName = urlPathBeforePageName.substring(0, urlPathBeforePageName.lastIndexOf("/") + 1);
-
-	}
-
 	public EpubSourceMaterial(String theSrcRoot) {
 		setSrcRoot(theSrcRoot);
 		level1Multiple = 10;
@@ -78,6 +70,17 @@ public class EpubSourceMaterial {
 	/*
 	 * getters and setters
 	 */
+	public String getInSrcDocImagePath() {
+		return inSrcDocImagePath;
+	}
+
+	public void setInSrcDocImagePath(String inSrcDocImagePath) {
+		this.inSrcDocImagePath = inSrcDocImagePath;
+		this.inSrcDocImageFilename = inSrcDocImagePath.substring(inSrcDocImagePath.lastIndexOf("/") + 1, inSrcDocImagePath.length());
+//				urlPathBeforePageName = urlPathBeforePageName.substring(0, urlPathBeforePageName.lastIndexOf("/") + 1);
+
+	}
+
 	public static String getBookAuthor() {
 		return bookAuthor;
 	}
@@ -95,16 +98,16 @@ public class EpubSourceMaterial {
 	}
 	
 	public String getSrcRoot() {
-		return srcPathRoot;
+		return epubSrcPathRoot;
 	}
 
 	public void setSrcRoot(String theSrcRoot) {
-		srcPathRoot = theSrcRoot;
-		srcPathMetaInf = srcPathRoot + "META-INF" + File.separator;
-		srcPathOebpsRoot = srcPathRoot + "OEBPS" + File.separator;
-		srcPathOebpsImages = srcPathOebpsRoot + "Images" + File.separator;
-		srcPathOebpsStyles = srcPathOebpsRoot + "Styles" + File.separator;
-		srcPathOebpsText = srcPathOebpsRoot + "Text" + File.separator;
+		epubSrcPathRoot = theSrcRoot;
+		epubSrcPathMetaInf = epubSrcPathRoot + "META-INF" + File.separator;
+		epubSrcPathOebpsRoot = epubSrcPathRoot + "OEBPS" + File.separator;
+		epubSrcPathOebpsImages = epubSrcPathOebpsRoot + "Images" + File.separator;
+		epubSrcPathOebpsStyles = epubSrcPathOebpsRoot + "Styles" + File.separator;
+		epubSrcPathOebpsText = epubSrcPathOebpsRoot + "Text" + File.separator;
 	}
 
 
@@ -124,7 +127,7 @@ public class EpubSourceMaterial {
 				"application/epub+zip"
 		});
 
-		Path path = Paths.get(srcPathRoot + "mimetype");
+		Path path = Paths.get(epubSrcPathRoot + "mimetype");
 
 // WTF: Files.write was appending an extra, empty line at end of file.  This caused epub validation to fail		
 //      as mimetype technically had more than the specified 20 characters in it.  (Calibre could still read it though)
@@ -162,7 +165,7 @@ public class EpubSourceMaterial {
 
 		});
 
-		Path path = Paths.get(srcPathMetaInf + "container.xml");
+		Path path = Paths.get(epubSrcPathMetaInf + "container.xml");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -196,7 +199,7 @@ public class EpubSourceMaterial {
 
 		});
 
-		Path path = Paths.get(srcPathOebpsStyles + "style.css");
+		Path path = Paths.get(epubSrcPathOebpsStyles + "style.css");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -289,14 +292,14 @@ public class EpubSourceMaterial {
 		Integer chapterCount = 0;
 		Integer endIndex = 1;
 
-		for(String s: chapterPathAndFilenames) {
+		for(String s: contentPathAndFilenames) {
 			playOrder++;
 			chapterCount++;
 			
 			if (s.indexOf(".html") != -1) {
 				endIndex = s.indexOf(".html"); 
-			} else if (s.indexOf(".html") != -1) {
-				endIndex = s.indexOf(".html"); 
+			} else if (s.indexOf(".xhtml") != -1) {
+				endIndex = s.indexOf(".xhtml"); 
 			} else {
 				endIndex = s.length() + 1;
 			}
@@ -339,7 +342,7 @@ public class EpubSourceMaterial {
 		lines.add("</navMap>");
 		lines.add("</ncx>"); 
 
-		Path path = Paths.get(srcPathOebpsRoot + "toc.ncx");
+		Path path = Paths.get(epubSrcPathOebpsRoot + "toc.ncx");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -374,15 +377,20 @@ public class EpubSourceMaterial {
 
 		}));
 
+		File coverImageFile = new File(epubSrcPathOebpsRoot + "cover.jpg");
+		if(coverImageFile.exists() && !coverImageFile.isDirectory()) { 
+			lines.add("        <item id=\"cover\" href=\"cover.jpg\" media-type=\"image/jpeg\"/>");
+		}
+			
 		// Manifest entries for each chapter
 		Integer index = 0;
-		for(String s: chapterPathAndFilenames) {
+		for(String s: contentPathAndFilenames) {
 			index++;
 			lines.add("	        <item id=\"x" + String.format("%04d", index) + "\" href=\"Text/" + s + "\" media-type=\"application/xhtml+xml\"/>");
 		}
 
 //		lines.add("        <item id=\"title_page.xhtml\" href=\"Text/title_page.xhtml\" media-type=\"application/xhtml+xml\"/>");
-		lines.add("        <item id=\"Cover.xhtml\" href=\"Text/Cover.xhtml\" media-type=\"application/xhtml+xml\"/>");
+//		lines.add("        <item id=\"Cover.xhtml\" href=\"Text/Cover.xhtml\" media-type=\"application/xhtml+xml\"/>");
 		lines.add("        <item id=\"htmlcoverpage.html\" href=\"coverpage.html\" media-type=\"application/xhtml+xml\"/>");
 		lines.add("    </manifest>");
 		// ***** </manifest>
@@ -390,12 +398,12 @@ public class EpubSourceMaterial {
 		// ***** <spine>
 		lines.add("    <spine toc=\"ncx\">");
 //		lines.add("        <itemref idref=\"title_page.xhtml\"/>");
-		lines.add("        <itemref idref=\"Cover.xhtml\"/>");
+//		lines.add("        <itemref idref=\"Cover.xhtml\"/>");
 		lines.add("        <itemref idref=\"htmlcoverpage.html\"/>");
 
 		// spine toc entries for each chapter
 		index = 0;
-		for(String s: chapterPathAndFilenames) {
+		for(String s: contentPathAndFilenames) {
 			index++;
 //			lines.add("        <itemref idref=\"" + s + "\"/>");
 			lines.add("        <itemref idref=\"x" + String.format("%04d", index) + "\"/>");
@@ -406,7 +414,7 @@ public class EpubSourceMaterial {
 		
 		// ***** <guide>
 		lines.add("    <guide>");
-		lines.add("    <reference href=\"Text/Cover.xhtml\" title=\"Cover\" type=\"cover\" />");
+		lines.add("    <reference href=\"coverpage.html\" title=\"cover\" type=\"cover\" />");
 		lines.add("    </guide>");
 		  // ***** </guide>
 		
@@ -414,7 +422,7 @@ public class EpubSourceMaterial {
 		
 		lines.add("</package>");
 
-		Path path = Paths.get(srcPathOebpsRoot + "content.opf");
+		Path path = Paths.get(epubSrcPathOebpsRoot + "content.opf");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8);
 		} catch (IOException e) {
@@ -425,7 +433,7 @@ public class EpubSourceMaterial {
 	
 
 	public void addContentFilenameToList(String chapterFilename) {
-		this.chapterPathAndFilenames.add(chapterFilename);
+		this.contentPathAndFilenames.add(chapterFilename);
 	}
 	
 	public  void createIndividualContentFile(String bodyText, String chapterFilename) {
@@ -464,7 +472,7 @@ public class EpubSourceMaterial {
 
 		});
 
-		Path path = Paths.get(srcPathOebpsText + chapterFilename);
+		Path path = Paths.get(epubSrcPathOebpsText + chapterFilename);
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE);
 		} catch (IOException e) {
@@ -477,10 +485,10 @@ public class EpubSourceMaterial {
 	}
 	
 	public void writeChapterSequenceFile() {
-		Path path = Paths.get(srcPathRoot + "ChapSeq.txt");
+		Path path = Paths.get(epubSrcPathRoot + "ChapSeq.txt");
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) 
 		{
-			for(String s: chapterPathAndFilenames) {
+			for(String s: contentPathAndFilenames) {
 				writer.write(s + "\n");
 			}
 			// WTF: how do you do lambdas where function throws exception?
@@ -554,9 +562,9 @@ public class EpubSourceMaterial {
 //	}
 	
 //	public  void createEpubSrc_HtmlCoverPageFile(String bodyText, String chapterFilename) {
-	public  void createHtmlCoverPageFile() {
+	public  void createHtmlCoverPageFile(boolean hasCoverArt, String coverText) {
 		
-		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
+		List<String> lines = new ArrayList<String>(Arrays.asList(new String[] { 
 				"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
 				, "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
 				, "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">"
@@ -570,14 +578,19 @@ public class EpubSourceMaterial {
 				, "</style>"
 				, "</head>"
 				, "<body>"
-				, "<div><img src=\"cover.jpg\" alt=\"Cover for My eBook\" /></div>" // TODO check if this exists
+		}));
+		
+		if (hasCoverArt) {
+			lines.add("<div><img src=\"cover.jpg\" alt=\"" + coverText + "\" /></div>"); // TODO check if this exists
 //				, "<div><img src=\"Images" + File.separator + this.srcDocImageFilename + "\" alt=\"Cover for this book\" /></div>"
-				, "</body>"
-				, "</html>"
+		} else {
+			lines.add("<div>" + coverText + "</div>"); 
+		}
+		lines.add("</body>");
+		lines.add("</html>");
 
-		});
 
-		Path path = Paths.get(srcPathOebpsRoot + "coverpage.html");
+		Path path = Paths.get(epubSrcPathOebpsRoot + "coverpage.html");
 		try {
 			Files.write(path, lines, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE);
 		} catch (IOException e) {
@@ -588,7 +601,7 @@ public class EpubSourceMaterial {
 	}
 	
 	public void createEpubSrc_IndividualImageFile(File src) {
-		File dest = new File(this.srcPathOebpsImages + src.getName());
+		File dest = new File(this.epubSrcPathOebpsImages + src.getName());
 		try {
 		    FileUtils.copyFile(src, dest);
 		} catch (IOException e) {
@@ -614,13 +627,66 @@ public class EpubSourceMaterial {
 //			e.printStackTrace();
 		}
 		doFolder(getSrcRoot());
-		doFolder(srcPathMetaInf);
-		doFolder(srcPathOebpsRoot);
-		doFolder(srcPathOebpsImages);
-		doFolder(srcPathOebpsStyles);
-		doFolder(srcPathOebpsText);
+		doFolder(epubSrcPathMetaInf);
+		doFolder(epubSrcPathOebpsRoot);
+		doFolder(epubSrcPathOebpsImages);
+		doFolder(epubSrcPathOebpsStyles);
+		doFolder(epubSrcPathOebpsText);
 
 	}
+	
+	
+	public void copyAllImagesToEpubSrc(Path inputSrcPath) {
+		try {
+			Path rootPath = inputSrcPath;
+			Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>() {
+				@Override
+				public FileVisitResult visitFile(Path filePath,
+						BasicFileAttributes attrs) throws IOException {
+					if ( (filePath.getFileName().toString().endsWith("jpg")) 
+							|| (filePath.getFileName().toString().endsWith("jpeg")) 
+							|| (filePath.getFileName().toString().endsWith("png")) 
+							|| (filePath.getFileName().toString().endsWith("gif")) ) {
+
+						File dest = new File(epubSrcPathOebpsImages + filePath.getFileName());
+						try {
+							FileUtils.copyFile(filePath.toFile(), dest);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+					}
+					
+					if ( (filePath.getFileName().toString().endsWith("cover.jpg")) 
+							|| (filePath.getFileName().toString().endsWith("cover.jpeg")) 
+							|| (filePath.getFileName().toString().endsWith("cover.png")) 
+							|| (filePath.getFileName().toString().endsWith("covergif")) ) {
+
+						File dest = new File(epubSrcPathOebpsRoot + filePath.getFileName());
+						try {
+							FileUtils.copyFile(filePath.toFile(), dest);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+					}
+
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+
+	}
+
+	
+	/*
+	 * private methods
+	 */
 	private void delete(File f) throws IOException {
 		  if (f.isDirectory()) {
 		    for (File c : f.listFiles())
@@ -629,9 +695,6 @@ public class EpubSourceMaterial {
 		  if (!f.delete())
 		    throw new FileNotFoundException("Failed to delete file: " + f);
 		}
-	/*
-	 * private methods
-	 */
 	private void doFolder(String theFolder) {
 		Path path = Paths.get(theFolder);
 

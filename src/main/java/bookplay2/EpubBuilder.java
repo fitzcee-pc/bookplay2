@@ -69,19 +69,19 @@ public class EpubBuilder {
 
 			addToZipFile(esm.getSrcRoot(), "mimetype", zos, false); // do not compress mimetype
 
-			Path start = Paths.get(esm.getSrcRoot());
-			Integer startIndex = start.getNameCount();
-			Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+			Path rootPath = Paths.get(esm.getSrcRoot());
+			Integer startIndex = rootPath.getNameCount();
+			Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>() {
 				@Override
-				public FileVisitResult visitFile(Path file,
+				public FileVisitResult visitFile(Path filePath,
 						BasicFileAttributes attrs) throws IOException {
-					if (file.getFileName().toString().startsWith(".")) {
-						System.out.println("skip: " + file);
-					} else if (file.getFileName().toString().equals("mimetype")) {
-						System.out.println("already got: " + file);
+					if (filePath.getFileName().toString().startsWith(".")) {
+						System.out.println("skip: " + filePath);
+					} else if (filePath.getFileName().toString().equals("mimetype")) {
+						System.out.println("already got: " + filePath);
 					} else {
-						System.out.println("zip: " + file.toString());
-						addToZipFile(esm.getSrcRoot(), new String(file.subpath(startIndex, file.getNameCount()).toString()), zos);
+						System.out.println("zip: " + filePath.toString());
+						addToZipFile(esm.getSrcRoot(), new String(filePath.subpath(startIndex, filePath.getNameCount()).toString()), zos);
 					}
 					return FileVisitResult.CONTINUE;
 				}
@@ -178,7 +178,7 @@ public class EpubBuilder {
 
 	@SuppressWarnings("static-access")
 	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos, boolean compress) throws FileNotFoundException, IOException {
-
+		
 		System.out.println("Writing '" + fileName + "' to zip file");
 
 		File file = new File(sourceFolder + fileName);
@@ -187,7 +187,7 @@ public class EpubBuilder {
 		if (compress) {
 			zipEntry.setMethod(ZipEntry.DEFLATED);
 		} else {
-	           int bytesRead;
+			int bytesRead;
 	            byte[] buffer = new byte[1024];
 	            CRC32 crc = new CRC32();
 	            try (
