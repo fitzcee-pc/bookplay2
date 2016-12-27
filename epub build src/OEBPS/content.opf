@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookID" version="2.0">
     <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
-				<dc:title>testEpub</dc:title>
+				<dc:title>妃本猖狂：痴傻三小姐</dc:title>
 				<dc:language>en</dc:language>
 		        <dc:rights>Public Domain</dc:rights>
 				<dc:creator opf:role="aut">unknown author</dc:creator>
@@ -12,6 +12,7 @@
         <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
         <item id="Book1.jpg" href="Images/Book1.jpg" media-type="image/jpeg"/>
         <item id="stylesheet.css" href="Styles/style.css" media-type="text/css"/>
+        <item id="cover" href="cover.jpg" media-type="image/jpeg"/>
 	        <item id="x0001" href="Text/ch0001.html" media-type="application/xhtml+xml"/>
 	        <item id="x0002" href="Text/ch0002.html" media-type="application/xhtml+xml"/>
 	        <item id="x0003" href="Text/ch0003.html" media-type="application/xhtml+xml"/>
@@ -23,11 +24,9 @@
 	        <item id="x0009" href="Text/ch0009.html" media-type="application/xhtml+xml"/>
 	        <item id="x0010" href="Text/ch0010.html" media-type="application/xhtml+xml"/>
 	        <item id="x0011" href="Text/ch0011.html" media-type="application/xhtml+xml"/>
-        <item id="Cover.xhtml" href="Text/Cover.xhtml" media-type="application/xhtml+xml"/>
         <item id="htmlcoverpage.html" href="coverpage.html" media-type="application/xhtml+xml"/>
     </manifest>
     <spine toc="ncx">
-        <itemref idref="Cover.xhtml"/>
         <itemref idref="htmlcoverpage.html"/>
         <itemref idref="x0001"/>
         <itemref idref="x0002"/>
@@ -42,6 +41,6 @@
         <itemref idref="x0011"/>
     </spine>
     <guide>
-    <reference href="Text/Cover.xhtml" title="Cover" type="cover" />
+    <reference href="coverpage.html" title="cover" type="cover" />
     </guide>
 </package>
