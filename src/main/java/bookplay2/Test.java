@@ -79,7 +79,7 @@ public class Test {
 		EpubSourceMaterial esm = new EpubSourceMaterial(outEpubSrcMaterialRootPath);
 		esm.prepEpubSrcDirStructure();
 		esm.createMimetypeFile();
-		esm.createContainerFile();
+		esm.createContainerXmlFile();
 		esm.createCssFile();
 
 		MyBookPage chineseBookPage = null;
@@ -90,7 +90,8 @@ public class Test {
 			e.printStackTrace();
 		}  
 		esm.setBookTitle(outEpubSrcMaterialBookTitle);
-//		esm.setBookTitle(chineseBookPage.getBookTitle());  // TODO this instead of hardcode above
+		esm.setBookTitle(chineseBookPage.bookTitle);
+		esm.setBookAuthor(chineseBookPage.author);
 		
 		String pageFilename;
 
@@ -104,23 +105,23 @@ public class Test {
 //			}
 //			String pageFilenameFixed = pageFilename.replaceAll("：", "-");  // NOTE: this is not a (regular) colon.  i had to copy-paste from the chinese title to get the char
 //			pageFilename = pageFilenameFixed;
-			esm.createIndividualContentFile(chineseBookPage.getBodyText(), pageFilename);
+			esm.createIndividualContentFile(chineseBookPage.getBodyText(), pageFilename, chineseBookPage.chapterName);
 			System.out.println("Add to Src: " + pageFilename);
 //			esm.addContentFilenameToList(pageFilename);  // TODO now auto fill the list in esm. 
 		} while ((chineseBookPage = chineseBookPage.getNextPage()) != null);
 
 		Integer endIndex = Paths.get(inSrcDocPathAndFilename).getNameCount() - 1;
 		String inSrcDocPath = Paths.get(inSrcDocPathAndFilename).subpath(0, endIndex).toString();
-		esm.copyAllImagesToEpubSrc(Paths.get(File.separator + inSrcDocPath + File.separator));
+		esm.copyAllImagesToEpubSrcDirs(Paths.get(File.separator + inSrcDocPath + File.separator));
 //		esm.setInSrcDocImagePath(inSrcDocImagePath);
 //		esm.prepEpubSrc_CopyImageFile(new File(inSrcDocImagePath) );
 //		esm.prepEpubSrc_PlaceCoverImageFile(new File(inSrcDocImagePath) );
 //		esm.createEpubSrc_CoverPageFile("xxx", "yyy");
 		esm.createHtmlCoverPageFile(false, esm.getBookTitle());
 		esm.setLevel1Multiple(outEpubSrcMaterialLevel1Multiple);
-		esm.createTocFile();
+		esm.createTocNcxFile();
 		esm.createHtmlTocFile();
-		esm.createContentFile();
+		esm.createContentOpfFile();
 //		Path inSrcImageRootPath = Paths.get(inSrcDocPathAndFilename);
 //		inSrcImageRootPath = inSrcImageRootPath.subpath(0, inSrcImageRootPath.getNameCount() - 1);
 		

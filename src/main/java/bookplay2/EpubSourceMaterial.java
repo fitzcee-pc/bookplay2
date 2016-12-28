@@ -46,7 +46,9 @@ public class EpubSourceMaterial {
 	private static String epubSrcPathOebpsImages;
 	private static String epubSrcPathOebpsStyles;
 	private static String epubSrcPathOebpsText;
-	private List<String> contentPathAndFilenames = new ArrayList<>(Arrays.asList());
+//	private List<String> contentPathAndFilenames = new ArrayList<>(Arrays.asList());
+//	private List<List<String>> contentPathAndFilenames = new ArrayList<List<String>>();
+	private List<ContentPiece> contentPieces = new ArrayList<ContentPiece>();
 	private static String bookAuthor = "unknown author";
 	private static String bookTitle = "unknown title";
 	private Integer level1Multiple;
@@ -154,7 +156,7 @@ public class EpubSourceMaterial {
 
 	}
 
-	public void createContainerFile() {
+	public void createContainerXmlFile() {
 		List<String> lines = Arrays.asList(new String[] { 
 				  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">"
@@ -270,7 +272,7 @@ public class EpubSourceMaterial {
 //
 	}
 
-	public void createTocFile() {
+	public void createTocNcxFile() {
 		// WTF: what is the diff?  http://stackoverflow.com/questions/16748030/difference-between-arrays-aslistarray-vs-new-arraylistintegerarrays-aslist
 		// List<String> lines = Arrays.asList(new String[] { 
 		// the one above wouldn't let me lines.add
@@ -292,18 +294,28 @@ public class EpubSourceMaterial {
 		Integer chapterCount = 0;
 		Integer endIndex = 1;
 
-		for(String s: contentPathAndFilenames) {
+//		for(String s: contentPathAndFilenames) {
+//			for(List<String> s: contentPathAndFilenames) {
+				for(ContentPiece te: contentPieces) {
 			playOrder++;
 			chapterCount++;
 			
-			if (s.indexOf(".html") != -1) {
-				endIndex = s.indexOf(".html"); 
-			} else if (s.indexOf(".xhtml") != -1) {
-				endIndex = s.indexOf(".xhtml"); 
-			} else {
-				endIndex = s.length() + 1;
-			}
+//			if (s.get(0).indexOf(".html") != -1) {
+//				endIndex = s.get(0).indexOf(".html"); 
+//			} else if (s.indexOf(".xhtml") != -1) {
+//				endIndex = s.get(0).indexOf(".xhtml"); 
+//			} else {
+//				endIndex = s.get(0).length() + 1;
+//			}
 		
+			if (te.Filename.indexOf(".html") != -1) {
+				endIndex = te.Filename.indexOf(".html"); 
+			} else if (te.Filename.indexOf(".xhtml") != -1) {
+				endIndex = te.Filename.indexOf(".xhtml"); 
+			} else {
+				endIndex = te.Filename.length() + 1;
+			}
+			
 
 			if ( (getLevel1Multiple() > 0) && (playOrder == 1) || ((chapterCount - 1) % getLevel1Multiple() == 0) ) {
 				/* TODO WTF: validator giving errors about multiple navPoints with same target.  I found this to be
@@ -321,14 +333,16 @@ public class EpubSourceMaterial {
 				lines.add("		<navLabel>");
 				lines.add("			<text>Chapter: " + chapterCount.toString() + "</text>");
 				lines.add("		</navLabel>");
-				lines.add("		<content src=\"Text/" + s + "\" />");
+				lines.add("		<content src=\"Text/" + te.Filename + "\" />");
 				playOrder++;
 			}
 			lines.add("	<navPoint id=\"navPoint-" + playOrder.toString() + "\" playOrder=\"" + playOrder.toString() + "\">");
 			lines.add("		<navLabel>");
-			lines.add("			<text>" + s.substring(0, endIndex) + "</text>");
+//			lines.add("			<text>" + te.Filename.substring(0, endIndex) + "</text>");
+			lines.add("			<text>" + te.DisplayName + "</text>");
 			lines.add("		</navLabel>");
-			lines.add("		<content src=\"Text/" + s + "\" />");
+//			lines.add("		<content src=\"Text/" + s.get(0) + "\" />");
+			lines.add("		<content src=\"Text/" + te.Filename + "\" />");
 			lines.add("	</navPoint>");
 		}
 
@@ -338,6 +352,14 @@ public class EpubSourceMaterial {
 				curLevel--;
 			}
 		}
+
+		playOrder++;
+		lines.add("	<navPoint id=\"navPoint-" + playOrder.toString() + "\" playOrder=\"" + playOrder.toString() + "\">");
+		lines.add("		<navLabel>");
+		lines.add("			<text>Table of Contents</text>");
+		lines.add("		</navLabel>");
+		lines.add("		<content src=\"Text/htmltoc.html\" />");
+		lines.add("	</navPoint>");
 
 		lines.add("</navMap>");
 		lines.add("</ncx>"); 
@@ -352,10 +374,58 @@ public class EpubSourceMaterial {
 	}
 	
 	public void createHtmlTocFile() {
-		// TODO build this page
+		List<String> lines = new ArrayList<String>(Arrays.asList(new String[] { 
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+				, "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
+				, "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">"
+				, "<head>"
+				, "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\" />"
+				, "<link type=\"text/css\" rel=\"stylesheet\" href=\"../Styles/style.css\" />"
+				, "<title>" + getBookTitle() + "</title>"
+				, "</head>"
+				, "<body>"
+				, "<h2>Table of Contents</h2>"
+				, "<p class=\"toctext\"><a href=\"../coverpage.html\">Cover</a></p>"
+		}));
+
+		Integer endIndex = 1;
+
+		for(ContentPiece te: contentPieces) {
+		
+			if (te.Filename.indexOf(".html") != -1) {
+				endIndex = te.Filename.indexOf(".html"); 
+			} else if (te.Filename.indexOf(".xhtml") != -1) {
+				endIndex = te.Filename.indexOf(".xhtml"); 
+			} else {
+				endIndex = te.Filename.length() + 1;
+			}
+			
+			lines.add("	<p class=\"toctext\"><a href=\"" + te.Filename + "\">"  + te.DisplayName + "</a></p>");
+		}
+
+
+		lines.add("</body>");
+		lines.add("</html>"); 
+
+		Path path = Paths.get(epubSrcPathOebpsText + "htmltoc.html");
+		try {
+			Files.write(path, lines, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
-	public void createContentFile() {
+	public void createContentOpfFile() {
+		Boolean coverImageFileExists = false;
+		Boolean htmlTocFileExists = false;
+
+		File file = new File(epubSrcPathOebpsRoot + "cover.jpg");
+		coverImageFileExists = (file.exists() && !file.isDirectory());
+
+		file = new File(epubSrcPathOebpsText + "htmltoc.html");
+		htmlTocFileExists = (file.exists() && !file.isDirectory());
+
 		List<String> lines = new ArrayList<String>(Arrays.asList(new String[] { 
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				, "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
@@ -364,62 +434,69 @@ public class EpubSourceMaterial {
 				, "				<dc:language>en</dc:language>"
 				, "		        <dc:rights>Public Domain</dc:rights>"
 				, "				<dc:creator opf:role=\"aut\">" + this.bookAuthor + "</dc:creator>"
-				, "		        <dc:publisher>mePub</dc:publisher>"
+				, "		        <dc:publisher>[publisher]</dc:publisher>"
 				, "		        <dc:identifier id=\"BookID\" opf:scheme=\"UUID\">015ffaec-9340-42f8-b163-a0c5ab7d0611</dc:identifier>"
 				, "    </metadata>"
 				// ***** <manifest>
 				, "    <manifest>"
 				, "        <item id=\"ncx\" href=\"toc.ncx\" media-type=\"application/x-dtbncx+xml\"/>"
-//				, "        <item id=\"sample.png\" href=\"Images/sample.png\" media-type=\"image/png\"/>"
 				, "        <item id=\"Book1.jpg\" href=\"Images/Book1.jpg\" media-type=\"image/jpeg\"/>"
-//				, "        <item id=\"page-template.xpgt\" href=\"Styles/page-template.xpgt\" media-type=\"application/vnd.adobe-page-template+xml\"/>"
 				, "        <item id=\"stylesheet.css\" href=\"Styles/style.css\" media-type=\"text/css\"/>"
 
 		}));
 
-		File coverImageFile = new File(epubSrcPathOebpsRoot + "cover.jpg");
-		if(coverImageFile.exists() && !coverImageFile.isDirectory()) { 
+		if (coverImageFileExists) { 
 			lines.add("        <item id=\"cover\" href=\"cover.jpg\" media-type=\"image/jpeg\"/>");
 		}
-			
-		// Manifest entries for each chapter
-		Integer index = 0;
-		for(String s: contentPathAndFilenames) {
-			index++;
-			lines.add("	        <item id=\"x" + String.format("%04d", index) + "\" href=\"Text/" + s + "\" media-type=\"application/xhtml+xml\"/>");
+
+		if (htmlTocFileExists) { 
+			lines.add("        <item id=\"htmltoc.html\" href=\"Text/htmltoc.html\" media-type=\"application/xhtml+xml\"/>");
 		}
 
-//		lines.add("        <item id=\"title_page.xhtml\" href=\"Text/title_page.xhtml\" media-type=\"application/xhtml+xml\"/>");
-//		lines.add("        <item id=\"Cover.xhtml\" href=\"Text/Cover.xhtml\" media-type=\"application/xhtml+xml\"/>");
+		// Manifest entries for each chapter
+		Integer index = 0;
+		//		for(List<String> s: contentPathAndFilenames) {
+		for(ContentPiece te: contentPieces) {
+			index++;
+			//			lines.add("	        <item id=\"x" + String.format("%04d", index) + "\" href=\"Text/" + s.get(0) + "\" media-type=\"application/xhtml+xml\"/>");
+			lines.add("	        <item id=\"x" + String.format("%04d", index) + "\" href=\"Text/" + te.Filename + "\" media-type=\"application/xhtml+xml\"/>");
+		}
+
+		//		lines.add("        <item id=\"title_page.xhtml\" href=\"Text/title_page.xhtml\" media-type=\"application/xhtml+xml\"/>");
+		//		lines.add("        <item id=\"Cover.xhtml\" href=\"Text/Cover.xhtml\" media-type=\"application/xhtml+xml\"/>");
 		lines.add("        <item id=\"htmlcoverpage.html\" href=\"coverpage.html\" media-type=\"application/xhtml+xml\"/>");
+
 		lines.add("    </manifest>");
 		// ***** </manifest>
-		
+
 		// ***** <spine>
 		lines.add("    <spine toc=\"ncx\">");
-//		lines.add("        <itemref idref=\"title_page.xhtml\"/>");
-//		lines.add("        <itemref idref=\"Cover.xhtml\"/>");
 		lines.add("        <itemref idref=\"htmlcoverpage.html\"/>");
 
 		// spine toc entries for each chapter
 		index = 0;
-		for(String s: contentPathAndFilenames) {
+		//		for(List<String> s: contentPathAndFilenames) {
+		for(ContentPiece te: contentPieces) {
 			index++;
-//			lines.add("        <itemref idref=\"" + s + "\"/>");
+			//			lines.add("        <itemref idref=\"" + s.get(0) + "\"/>");
 			lines.add("        <itemref idref=\"x" + String.format("%04d", index) + "\"/>");
+		}
+
+		if (htmlTocFileExists) { 
+			lines.add("        <itemref idref=\"htmltoc.html\"/>");
 		}
 
 		lines.add("    </spine>");
 		// ***** </spine>
-		
+
 		// ***** <guide>
 		lines.add("    <guide>");
 		lines.add("    <reference href=\"coverpage.html\" title=\"cover\" type=\"cover\" />");
 		lines.add("    </guide>");
-		  // ***** </guide>
-		
-		
-		
+		// ***** </guide>
+
+
+
 		lines.add("</package>");
 
 		Path path = Paths.get(epubSrcPathOebpsRoot + "content.opf");
@@ -430,16 +507,25 @@ public class EpubSourceMaterial {
 		}
 
 	}
-	
 
-	public void addContentFilenameToList(String chapterFilename) {
-		this.contentPathAndFilenames.add(chapterFilename);
+
+	public void addContentFilenameToList(String contentFilename, String displayName) {
+		Integer endIndex = 1;
+		if (contentFilename.indexOf(".html") != -1) {
+			endIndex = contentFilename.indexOf(".html"); 
+		} else if (contentFilename.indexOf(".xhtml") != -1) {
+			endIndex = contentFilename.indexOf(".xhtml"); 
+		} else {
+			endIndex = contentFilename.length() + 1;
+		}
+//		contentPathAndFilenames.add(new ContentPiece(true, contentFilename, contentFilename.substring(0, endIndex)));
+		contentPieces.add(new ContentPiece(true, contentFilename, displayName));
 	}
 	
-	public  void createIndividualContentFile(String bodyText, String chapterFilename) {
+	public  void createIndividualContentFile(String bodyText, String chapterFilename, String chapterTitle) {
 		
 		if (bodyText == null) {
-			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Default Chapter</h1>" + "\n" + "\t\t<p><br /></p>"
+			bodyText = "\t\t<h1 class=\"sgc-2\" id=\"heading_id_2\">Blank Page</h1>" + "\n" + "\t\t<p><br /></p>"
 					+ "\n" + "\t\t<p class=\"sgc-3\">Body text goes here.</p>" + "\n" + "\t\t<p>&nbsp;</p>";
 		}
 		List<String> lines = Arrays.asList(new String[] { //!!!!! NOTE: display in file fixed by using charset=UTF-8 instead of charset=gbk. (don't know where I got that originally)
@@ -480,7 +566,7 @@ public class EpubSourceMaterial {
 			e.printStackTrace();
 		}
 
-		addContentFilenameToList(chapterFilename);
+		addContentFilenameToList(chapterFilename, chapterTitle);
 		
 	}
 	
@@ -488,8 +574,10 @@ public class EpubSourceMaterial {
 		Path path = Paths.get(epubSrcPathRoot + "ChapSeq.txt");
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) 
 		{
-			for(String s: contentPathAndFilenames) {
-				writer.write(s + "\n");
+//			for(List<String> s: contentPathAndFilenames) {
+				for(ContentPiece te: contentPieces) {
+//				writer.write(s.get(0) + "\n");
+				writer.write(te.Filename + "\n");
 			}
 			// WTF: how do you do lambdas where function throws exception?
 //			chapterPathAndFilenames.forEach(s -> writer.write(s + "\n"));
@@ -570,7 +658,7 @@ public class EpubSourceMaterial {
 				, "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">"
 				, "<head>"
 				, "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\" />"
-				, "<title>My eBook</title>"  // TODO format dynamically
+				, "<title>" + this.bookTitle + "</title>"  // TODO format dynamically
 				, "<style type=\"text/css\">"
 				, "  body {text-align: center; padding:0; margin: 0;}"
 				, "  div {text-align: center; padding:0; margin: 0;}"
@@ -580,15 +668,15 @@ public class EpubSourceMaterial {
 				, "<body>"
 		}));
 		
-		if (hasCoverArt) {
+
+		File coverImageFile = new File(epubSrcPathOebpsRoot + "cover.jpg");
+		if(coverImageFile.exists() && !coverImageFile.isDirectory()) { 
 			lines.add("<div><img src=\"cover.jpg\" alt=\"" + coverText + "\" /></div>"); // TODO check if this exists
-//				, "<div><img src=\"Images" + File.separator + this.srcDocImageFilename + "\" alt=\"Cover for this book\" /></div>"
 		} else {
 			lines.add("<div>" + coverText + "</div>"); 
 		}
 		lines.add("</body>");
 		lines.add("</html>");
-
 
 		Path path = Paths.get(epubSrcPathOebpsRoot + "coverpage.html");
 		try {
@@ -636,7 +724,7 @@ public class EpubSourceMaterial {
 	}
 	
 	
-	public void copyAllImagesToEpubSrc(Path inputSrcPath) {
+	public void copyAllImagesToEpubSrcDirs(Path inputSrcPath) {
 		try {
 			Path rootPath = inputSrcPath;
 			Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>() {

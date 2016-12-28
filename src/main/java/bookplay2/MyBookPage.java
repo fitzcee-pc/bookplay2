@@ -28,6 +28,8 @@ public class MyBookPage  {
 	String nextPageName = new String("");
 	String pageName = new String("");
 	String author = new String("");
+	String chapterName = new String("");
+	String bookTitle = new String("");
 
 	public MyBookPage(Document theDoc, String outfileName) {
 		
@@ -127,7 +129,6 @@ public class MyBookPage  {
 					
 					try {
 						p1 = Pattern.compile("(?is)author=\'(.+?)\'"); // Regex for the value of the key
-//						p1 = Pattern.compile("(?is)chaptername=\"(.+?)\""); // Regex for the value of the key
 						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
 						while (m1.find()) {
 							author = m1.group(1); // value only
@@ -136,6 +137,39 @@ public class MyBookPage  {
 						e1.printStackTrace();
 					}
 
+					
+					try {
+						p1 = Pattern.compile("(?is)chaptername=\'(.+?)\'"); // Regex for the value of the key
+						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
+						while (m1.find()) {
+							chapterName = m1.group(1); // value only
+						}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					if (chapterName.equals("")) {
+						try {
+							p1 = Pattern.compile("(?is)chaptername=\"(.+?)\""); // Regex for the value of the key
+							m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
+							while (m1.find()) {
+								chapterName = m1.group(1); // value only
+							}
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+
+					try {
+						p1 = Pattern.compile("(?is)articlename=\'(.+?)\'"); // Regex for the value of the key
+						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
+						while (m1.find()) {
+							bookTitle = m1.group(1); // value only
+						}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
+	
 					pageName = this.doc.title();
 					Integer beginIndex = (pageName.indexOf(".") == -1) ? 0 : pageName.indexOf(".") + 1;
 					

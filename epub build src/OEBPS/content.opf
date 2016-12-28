@@ -4,8 +4,8 @@
 				<dc:title>妃本猖狂：痴傻三小姐</dc:title>
 				<dc:language>en</dc:language>
 		        <dc:rights>Public Domain</dc:rights>
-				<dc:creator opf:role="aut">unknown author</dc:creator>
-		        <dc:publisher>mePub</dc:publisher>
+				<dc:creator opf:role="aut">火柴很忙</dc:creator>
+		        <dc:publisher>[publisher]</dc:publisher>
 		        <dc:identifier id="BookID" opf:scheme="UUID">015ffaec-9340-42f8-b163-a0c5ab7d0611</dc:identifier>
     </metadata>
     <manifest>
@@ -13,6 +13,7 @@
         <item id="Book1.jpg" href="Images/Book1.jpg" media-type="image/jpeg"/>
         <item id="stylesheet.css" href="Styles/style.css" media-type="text/css"/>
         <item id="cover" href="cover.jpg" media-type="image/jpeg"/>
+        <item id="htmltoc.html" href="Text/htmltoc.html" media-type="application/xhtml+xml"/>
 	        <item id="x0001" href="Text/ch0001.html" media-type="application/xhtml+xml"/>
 	        <item id="x0002" href="Text/ch0002.html" media-type="application/xhtml+xml"/>
 	        <item id="x0003" href="Text/ch0003.html" media-type="application/xhtml+xml"/>
@@ -39,6 +40,7 @@
         <itemref idref="x0009"/>
         <itemref idref="x0010"/>
         <itemref idref="x0011"/>
+        <itemref idref="htmltoc.html"/>
     </spine>
     <guide>
     <reference href="coverpage.html" title="cover" type="cover" />

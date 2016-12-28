@@ -114,19 +114,13 @@ public class EpubBuilder {
 			zos.setLevel(ZipOutputStream.DEFLATED);
 			addToZipFile(esm.getSrcRoot(), "META-INF" + File.separator + "container.xml", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "content.opf", zos);
-			// TODO "if exists..."
-			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "coverpage.html", zos);
-			// TODO "if exists..."
-			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "cover.jpg", zos);
+
+			addToZipFileIfExists(esm.getSrcRoot(), "OEBPS" + File.separator + "coverpage.html",  zos, true);
+			addToZipFileIfExists(esm.getSrcRoot(), "OEBPS" + File.separator + "cover.jpg", zos, true);
+			
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "toc.ncx", zos);
 			addToZipFile(esm.getSrcRoot(), "OEBPS" + File.separator + "Styles" + File.separator + "style.css", zos);
 
-			
-//			FileUtils.listFiles(directory, extensions, recursive)
-//			Collection<File> files = FileUtils.listFiles(FileUtils.getFile(srcPathRoot + "OEBPS/"),
-//			         FileFilterUtils.suffixFileFilter(".txt"), TrueFileFilter.INSTANCE);
-			
-			
 			try(Stream<Path> paths = Files.walk(Paths.get(esm.getSrcRoot() + "OEBPS" + File.separator + "Images" + File.separator))) {
 			    paths.forEach(filePath -> {
 			        if (Files.isRegularFile(filePath)) {
@@ -171,6 +165,13 @@ public class EpubBuilder {
 	/*
 	 * private methods
 	 */
+	private static void addToZipFileIfExists(String sourceFolder, String fileName, ZipOutputStream zos, boolean compress) throws FileNotFoundException, IOException {
+		File file = new File(sourceFolder + fileName);
+		if(file.exists() && !file.isDirectory()) { 
+			addToZipFile(sourceFolder, fileName, zos, compress);
+		}
+	}
+
 	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
 		addToZipFile(sourceFolder, fileName, zos, true);
 	}
