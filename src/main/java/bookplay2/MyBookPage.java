@@ -20,17 +20,47 @@ public class MyBookPage  {
 	Document doc = null;
 	private URL url = null;
 	private String fullDecodedUrl = new String("");
-	String urlPathBeforePageName = new String("");
-	String thisPageName = new String("");
-	String thisPageOutfileName = new String("");
-	String indexPageName = new String("");
-	String prevPageName = new String("");
-	String nextPageName = new String("");
-	String pageName = new String("");
-	String author = new String("");
-	String chapterName = new String("");
-	String bookTitle = new String("");
+	private String urlPathBeforePageName = new String("");
+	private String thisPageName = new String("");
+	private String thisPageOutfileName = new String("");
+	private String indexPageName = new String("");
+	private String prevPageName = new String("");
+	private String nextPageName = new String("");
+	private String pageName = new String("");
+	private String author = new String("");
+	private String chapterName = new String("");
+	private String bookTitle = new String("");
 
+	/*
+	 *  Getters/Setters
+	 */
+	public String getBookTitle() {
+		return bookTitle;
+	}
+
+	private void setBookTitle(String bookTitle) {
+	this.bookTitle = bookTitle;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	private void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getChapterName() {
+		return chapterName;
+	}
+
+	private void setChapterName(String chapterName) {
+		this.chapterName = chapterName;
+	}
+
+	/* 
+	 * Constructors
+	 */
 	public MyBookPage(Document theDoc, String outfileName) {
 		
 		// note underlying JSoup doc
@@ -131,7 +161,7 @@ public class MyBookPage  {
 						p1 = Pattern.compile("(?is)author=\'(.+?)\'"); // Regex for the value of the key
 						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
 						while (m1.find()) {
-							author = m1.group(1); // value only
+							setAuthor(m1.group(1)); // value only
 						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -142,17 +172,17 @@ public class MyBookPage  {
 						p1 = Pattern.compile("(?is)chaptername=\'(.+?)\'"); // Regex for the value of the key
 						m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
 						while (m1.find()) {
-							chapterName = m1.group(1); // value only
+							setChapterName(m1.group(1)); // value only
 						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-					if (chapterName.equals("")) {
+					if (getChapterName().equals("")) {
 						try {
 							p1 = Pattern.compile("(?is)chaptername=\"(.+?)\""); // Regex for the value of the key
 							m1 = p1.matcher(scr.html()); // you have to use html here and NOT text! Text will drop the 'key' part
 							while (m1.find()) {
-								chapterName = m1.group(1); // value only
+								setChapterName(m1.group(1)); // value only
 							}
 						} catch (Exception e1) {
 							e1.printStackTrace();
@@ -203,16 +233,8 @@ public class MyBookPage  {
 		String bodyText = new String("body");
 		
 		Elements bodyDivX = doc.getElementsByClass("yd_text2");
-//		bodyText = "-----body text-----\n" + bodyDivX.first().toString();
 		Element bodyElement = bodyDivX.first();
 		bodyText = bodyDivX.first().toString();
-//		Element bodyDiv = doc.getElementById("txtright");
-//		bodyText = "\n\ttoString: \n" + bodyDiv.toString()
-//			+ "\n\tparent toString: \n" + bodyDiv.parent().toString()
-//			+ "\n\tnext sibling toString: \n" + bodyDiv.nextSibling().toString()
-//			+ "\n\tnext next sibling toString: \n" + bodyDiv.nextSibling().nextSibling().toString()
-//			+ "\n\tnext next next sibling toString: \n" + bodyDiv.nextSibling().nextSibling().nextSibling().toString()
-//			+ "\n\tnext element sibling toString: \n" + bodyDiv.nextElementSibling().toString();
 
 		/* findings:
 		 * - file has 	
@@ -256,9 +278,6 @@ public class MyBookPage  {
 		bodyTextTrimmed = bodyText.replaceAll("&nbsp;[\\S\\s]*?(?=[^(&nbsp;)])","");
 		bodyText = bodyTextTrimmed;
 		bodyTextTrimmed = bodyText.replaceAll("<br>","<br />");
-//		
-		
-//		return bodyText;
 
 		return bodyTextTrimmed;
 	}

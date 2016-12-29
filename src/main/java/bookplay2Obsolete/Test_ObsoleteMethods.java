@@ -1,4 +1,4 @@
-package bookplay2;
+package bookplay2Obsolete;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

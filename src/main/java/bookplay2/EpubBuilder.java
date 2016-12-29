@@ -20,9 +20,9 @@ import java.util.zip.ZipOutputStream;
 
 public class EpubBuilder {
 
-	private static EpubSourceMaterial esm;
-//	private static String srcPathRoot;
-	private static String epubBuildDestPath;
+	private EpubSourceMaterial esm;
+//	private  String srcPathRoot;
+	private  String epubBuildDestPath;
 	
 	/*
 	 * constructors
@@ -32,12 +32,12 @@ public class EpubBuilder {
 	 * getters and setters
 	 */
 
-	public static String getEpubBuildDestPath() {
+	public  String getEpubBuildDestPath() {
 		return epubBuildDestPath;
 	}
 	
-	public static void setEpubBuildDestPath(String epubBuildDestPath) {
-		EpubBuilder.epubBuildDestPath = epubBuildDestPath;
+	public  void setEpubBuildDestPath(String epubBuildDestPath) {
+		this.epubBuildDestPath = epubBuildDestPath;
 	}
 	
 //	public String getSrcPathRoot() {
@@ -48,7 +48,7 @@ public class EpubBuilder {
 //		this.srcPathRoot = srcPathRoot;
 //	}
 
-	public static EpubSourceMaterial getEsm() {
+	public  EpubSourceMaterial getEsm() {
 		return esm;
 	}
 
@@ -59,7 +59,7 @@ public class EpubBuilder {
 	/*
 	 * public methods
 	 */
-	public static void buildEpubByWalkingSrc() {
+	public  void buildEpubByWalkingSrc() {
 		try {
 			System.out.println(">>>>>> building " + esm.getBookTitle()  + " epub.........");
 
@@ -98,7 +98,7 @@ public class EpubBuilder {
 
 	}
 
-	public static void buildEpub() {
+	public  void buildEpub() {
 		try {
 			System.out.println(">>>>>> building " + esm.getBookTitle()  + " epub.........");
 
@@ -165,20 +165,20 @@ public class EpubBuilder {
 	/*
 	 * private methods
 	 */
-	private static void addToZipFileIfExists(String sourceFolder, String fileName, ZipOutputStream zos, boolean compress) throws FileNotFoundException, IOException {
+	private  void addToZipFileIfExists(String sourceFolder, String fileName, ZipOutputStream zos, boolean compress) throws FileNotFoundException, IOException {
 		File file = new File(sourceFolder + fileName);
 		if(file.exists() && !file.isDirectory()) { 
 			addToZipFile(sourceFolder, fileName, zos, compress);
 		}
 	}
 
-	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
+	private  void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
 		addToZipFile(sourceFolder, fileName, zos, true);
 	}
 	
 
-	@SuppressWarnings("static-access")
-	private static void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos, boolean compress) throws FileNotFoundException, IOException {
+	@SuppressWarnings("-access")
+	private  void addToZipFile(String sourceFolder, String fileName, ZipOutputStream zos, boolean compress) throws FileNotFoundException, IOException {
 		
 		System.out.println("Writing '" + fileName + "' to zip file");
 
